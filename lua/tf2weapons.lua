@@ -254,13 +254,6 @@ CreateConVar( "tf2weapons_overheal", 1, { FCVAR_REPLICATED, FCVAR_SERVER_CAN_EXE
 
 TF2Weapons = {}
 
-function TF2Weapons:AddSpawnIcon( class )
-	
-	//local path = "entities/" .. class .. ".png"
-	//if SERVER then resource.AddFile( "materials/" .. path ) end
-	
-end
-
 TF2Weapons.UnspawnableEntities = {
 	
 	[ "tf2_base" ] = true,
