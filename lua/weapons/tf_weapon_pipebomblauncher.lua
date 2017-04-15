@@ -145,6 +145,7 @@ function SWEP:Initialize()
 	self:DoInitialize()
 	
 	self:PrecacheParticles( self.PipebombParticles )
+	self:PrecacheParticles( self.MuzzleParticle )
 	
 end
 
