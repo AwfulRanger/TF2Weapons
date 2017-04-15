@@ -3,6 +3,14 @@
 	"title" : "Team Fortress 2 Weapons",
 	"type" : "weapon",
 	"tags" : [ "cartoon" ],
-	"ignore" : []
+	"ignore" : [
+		
+		".git/*",
+		"changelist.md",
+		"LICENSE",
+		"README.md",
+		"tf2weapons.jpg"
+		
+	]
 	
 }
