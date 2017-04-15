@@ -1,4 +1,4 @@
-[Team Fortress 2 Weapons](https://github.com/AwfulRanger/TF2Weapons/raw/master/tf2weapons.jpg)
+![Team Fortress 2 Weapons](https://github.com/AwfulRanger/TF2Weapons/raw/master/tf2weapons.jpg)
 
 # TF2Weapons
 Team Fortress 2 weapons for Garry's Mod
