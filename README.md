@@ -16,21 +16,6 @@ Team Fortress 2 weapons for Garry's Mod
 
 - More attributes in general
 
-### KNOWN ISSUES:
-
-##### Primary Issues
-- Currently multi control point particles are broken, instead of being parented to the attachment specified they stay at the origin of the entity specified while spamming the console
-
-##### Secondary Issues
-- Bat idle animation doesn't loop
-- Minigun barrel only spins for client
-- Stickybombs don't emit explosion particles
-- Grenade Launcher barrels don't spin
-- Medi Gun beam doesn't connect with target
-- Ubercharge material is constantly flashing
-- Knife doesn't wait for the backstab start animation to finish before playing the backstab end animation
-- Sometimes projectile particles aren't set early enough
-
 ## V4 Changelist
 
 - Medi Gun now heals based on time passed instead of each tick
