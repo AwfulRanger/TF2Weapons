@@ -13,7 +13,7 @@ SWEP.Author = "AwfulRanger"
 SWEP.Category = "Team Fortress 2"
 SWEP.Level = 1
 SWEP.Type = "Wrench"
-SWEP.Base = "tf2_base_melee"
+SWEP.Base = "tf2weapons_base_melee"
 SWEP.Classes = { TF2Weapons.Class.ENGINEER }
 SWEP.Quality = TF2Weapons.Quality.NORMAL
 

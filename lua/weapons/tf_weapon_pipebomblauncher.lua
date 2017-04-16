@@ -2,14 +2,14 @@ AddCSLuaFile()
 
 if SERVER then
 	
-	util.AddNetworkString( "tf_weapon_pipebomblauncher_insert" )
+	util.AddNetworkString( "tf2weapons_pipebomblauncher_insert" )
 	
 else
 	
 	game.AddParticles( "particles/explosion.pcf" )
 	game.AddParticles( "particles/stickybomb.pcf" )
 	
-	net.Receive( "tf_weapon_pipebomblauncher_insert", function()
+	net.Receive( "tf2weapons_pipebomblauncher_insert", function()
 		
 		local wep = net.ReadEntity()
 		local pipe = net.ReadEntity()
@@ -32,7 +32,7 @@ SWEP.Author = "AwfulRanger"
 SWEP.Category = "Team Fortress 2"
 SWEP.Level = 1
 SWEP.Type = "Stickybomb Launcher"
-SWEP.Base = "tf2_base"
+SWEP.Base = "tf2weapons_base"
 SWEP.Classes = { TF2Weapons.Class.DEMOMAN }
 SWEP.Quality = TF2Weapons.Quality.NORMAL
 
@@ -60,7 +60,7 @@ SWEP.Attributes = {}
 SWEP.Primary.ClipSize = 8
 SWEP.Primary.DefaultClip = 32
 SWEP.Primary.Automatic = true
-SWEP.Primary.Ammo = "tf2_pipebomb"
+SWEP.Primary.Ammo = "tf2weapons_pipebomb"
 SWEP.Primary.Damage = 60
 SWEP.Primary.Shots = 1
 SWEP.Primary.Spread = 0.005
@@ -70,7 +70,6 @@ SWEP.Primary.TakeAmmo = 1
 SWEP.Primary.Delay = 0.6
 
 SWEP.Secondary.Automatic = true
-SWEP.Secondary.Ammo = "tf2_pipebomb"
 
 function SWEP:SetVariables()
 	
@@ -356,7 +355,7 @@ function SWEP:PrimaryAttack( charged, charge )
 			
 			timer.Simple( 0, function()
 				
-				net.Start( "tf_weapon_pipebomblauncher_insert" )
+				net.Start( "tf2weapons_pipebomblauncher_insert" )
 					
 					net.WriteEntity( self )
 					net.WriteEntity( pipebomb )

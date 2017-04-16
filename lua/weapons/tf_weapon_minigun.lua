@@ -2,12 +2,12 @@ AddCSLuaFile()
 
 if SERVER then
 	
-	util.AddNetworkString( "tf_weapon_minigun_spinreset" )
-	util.AddNetworkString( "tf_weapon_minigun_spooling" )
+	util.AddNetworkString( "tf2weapons_minigun_spinreset" )
+	util.AddNetworkString( "tf2weapons_minigun_spooling" )
 	
 else
 	
-	net.Receive( "tf_weapon_minigun_spinreset", function()
+	net.Receive( "tf2weapons_minigun_spinreset", function()
 		
 		local wep = net.ReadEntity()
 		if IsValid( wep ) == true then wep:Holster() wep:RemoveHands( wep.LastOwner ) end
@@ -15,7 +15,7 @@ else
 		
 	end )
 	
-	net.Receive( "tf_weapon_minigun_spooling", function()
+	net.Receive( "tf2weapons_minigun_spooling", function()
 		
 		local wep = net.ReadEntity()
 		if IsValid( wep ) == true then wep.IsSpooling = net.ReadBool() end
@@ -25,11 +25,11 @@ else
 end
 
 CreateConVar( "tf2weapons_minigun_revspeed", 110 / 230, { FCVAR_SERVER_CAN_EXECUTE, FCVAR_REPLICATED }, "What to multiply a revved up player's speed by (speed * value)" )
-SWEP.TF2MinigunRev = true
+SWEP.TF2Weapons_MinigunRev = true
 
 hook.Add( "SetupMove", "tf2weapons_minigun_revspeed", function( ply, mv, cmd )
 	
-	if IsValid( ply:GetActiveWeapon() ) == true and ply:GetActiveWeapon().TF2MinigunRev == true and ply:GetActiveWeapon():GetTFSpooled() == true then
+	if IsValid( ply:GetActiveWeapon() ) == true and ply:GetActiveWeapon().TF2Weapons_MinigunRev == true and ply:GetActiveWeapon():GetTFSpooled() == true then
 		
 		if mv:KeyDown( IN_JUMP ) == true then mv:SetButtons( mv:GetButtons() - IN_JUMP ) end
 		--this doesn't remove the extra speed you get from sprinting
@@ -85,7 +85,7 @@ SWEP.Author = "AwfulRanger"
 SWEP.Category = "Team Fortress 2"
 SWEP.Level = 1
 SWEP.Type = "Minigun"
-SWEP.Base = "tf2_base"
+SWEP.Base = "tf2weapons_base"
 SWEP.Classes = { TF2Weapons.Class.HEAVY }
 SWEP.Quality = TF2Weapons.Quality.NORMAL
 
@@ -115,7 +115,7 @@ SWEP.Attributes = {}
 SWEP.Primary.ClipSize = -1
 SWEP.Primary.DefaultClip = 200
 SWEP.Primary.Automatic = true
-SWEP.Primary.Ammo = "tf2_minigun"
+SWEP.Primary.Ammo = "tf2weapons_minigun"
 SWEP.Primary.Damage = 9
 SWEP.Primary.Shots = 4
 SWEP.Primary.Spread = 0.075
@@ -499,7 +499,7 @@ function SWEP:OnDrop()
 	if CLIENT then self:ResetSpool() end
 	self:RemoveHands( self:GetTFLastOwner() )
 	
-	net.Start( "tf_weapon_minigun_spinreset" )
+	net.Start( "tf2weapons_minigun_spinreset" )
 		
 		net.WriteEntity( self )
 		

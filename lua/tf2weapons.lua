@@ -1,12 +1,12 @@
 if SERVER then
 	
-	util.AddNetworkString( "tf_weaponanim" )
-	util.AddNetworkString( "tf_inspect_weapon" )
-	util.AddNetworkString( "tf_addparticle" )
+	util.AddNetworkString( "tf2weapons_anim" )
+	util.AddNetworkString( "tf2weapons_inspect" )
+	util.AddNetworkString( "tf2weapons_addparticle" )
 	
-	net.Receive( "tf_inspect_weapon", function( len, ply )
+	net.Receive( "tf2weapons_inspect", function( len, ply )
 		
-		ply.TF2InspectingWeapon = net.ReadBool()
+		ply.TF2Weapons_Inspecting = net.ReadBool()
 		
 	end )
 	
@@ -34,19 +34,19 @@ else
 		
 	} )
 	
-	net.Receive( "tf_weaponanim", function()
+	net.Receive( "tf2weapons_anim", function()
 		
 		net.ReadEntity():SetVMAnimation( net.ReadInt( 32 ), true )
 		
 	end )
 	
-	net.Receive( "tf_inspect_weapon", function()
+	net.Receive( "tf2weapons_inspect", function()
 		
-		net.ReadEntity().TF2InspectingWeapon = net.ReadBool()
+		net.ReadEntity().TF2Weapons_Inspecting = net.ReadBool()
 		
 	end )
 	
-	net.Receive( "tf_addparticle", function()
+	net.Receive( "tf2weapons_addparticle", function()
 		
 		local weapon = net.ReadEntity()
 		if IsValid( weapon ) != true then return end
@@ -96,26 +96,26 @@ else
 	
 end
 
-concommand.Add( "+tf_inspect_weapon", function( ply )
+concommand.Add( "+tf2weapons_inspect", function( ply )
 	
 	if IsValid( ply ) == false then return end
 	
-	ply.TF2InspectingWeapon = true
+	ply.TF2Weapons_Inspecting = true
 	
 	if CLIENT then
 		
-		net.Start( "tf_inspect_weapon" )
+		net.Start( "tf2weapons_inspect" )
 			
-			net.WriteBool( ply.TF2InspectingWeapon )
+			net.WriteBool( ply.TF2Weapons_Inspecting )
 			
 		net.SendToServer()
 		
 	else
 		
-		net.Start( "tf_inspect_weapon" )
+		net.Start( "tf2weapons_inspect" )
 			
 			net.WriteEntity( ply )
-			net.WriteBool( ply.TF2InspectingWeapon )
+			net.WriteBool( ply.TF2Weapons_Inspecting )
 			
 		net.Broadcast()
 		
@@ -123,25 +123,25 @@ concommand.Add( "+tf_inspect_weapon", function( ply )
 	
 end )
 
-concommand.Add( "-tf_inspect_weapon", function( ply )
+concommand.Add( "-tf2weapons_inspect", function( ply )
 	
 	if IsValid( ply ) == false then return end
 	
-	ply.TF2InspectingWeapon = false
+	ply.TF2Weapons_Inspecting = false
 	if CLIENT then
 		
-		net.Start( "tf_inspect_weapon" )
+		net.Start( "tf2weapons_inspect" )
 			
-			net.WriteBool( ply.TF2InspectingWeapon )
+			net.WriteBool( ply.TF2Weapons_Inspecting )
 			
 		net.SendToServer()
 		
 	else
 		
-		net.Start( "tf_inspect_weapon" )
+		net.Start( "tf2weapons_inspect" )
 			
 			net.WriteEntity( ply )
-			net.WriteBool( ply.TF2InspectingWeapon )
+			net.WriteBool( ply.TF2Weapons_Inspecting )
 			
 		net.Broadcast()
 		
@@ -154,7 +154,7 @@ hook.Add( "Initialize", "TF2Weapons_Initialize", function()
 	for _, v in pairs( TF2Weapons.UnspawnableEntities ) do
 		
 		local unspawnablewep = weapons.GetStored( _ )
-		unspawnablewep.Spawnable = false
+		if unspawnablewep != nil then unspawnablewep.Spawnable = false end
 		
 	end
 	
@@ -219,27 +219,27 @@ end )
 
 hook.Add( "EntityTakeDamage", "TF2Weapons_EntityTakeDamage", function( ent, dmg )
 	
-	ent:SetNW2Float( "TFLastDamage", CurTime() )
+	ent:SetNW2Float( "TF2Weapons_LastDamage", CurTime() )
 	
 end )
 
-game.AddAmmoType( { name = "tf2_shotgun" } )
-game.AddAmmoType( { name = "tf2_pistol" } )
-game.AddAmmoType( { name = "tf2_rifle" } )
-game.AddAmmoType( { name = "tf2_rocket" } )
-game.AddAmmoType( { name = "tf2_minigun" } )
-game.AddAmmoType( { name = "tf2_flamethrower" } )
-game.AddAmmoType( { name = "tf2_syringe" } )
-game.AddAmmoType( { name = "tf2_grenade" } )
-game.AddAmmoType( { name = "tf2_pipebomb" } )
+game.AddAmmoType( { name = "tf2weapons_shotgun" } )
+game.AddAmmoType( { name = "tf2weapons_pistol" } )
+game.AddAmmoType( { name = "tf2weapons_rifle" } )
+game.AddAmmoType( { name = "tf2weapons_rocket" } )
+game.AddAmmoType( { name = "tf2weapons_minigun" } )
+game.AddAmmoType( { name = "tf2weapons_flamethrower" } )
+game.AddAmmoType( { name = "tf2weapons_syringe" } )
+game.AddAmmoType( { name = "tf2weapons_grenade" } )
+game.AddAmmoType( { name = "tf2weapons_pipebomb" } )
 
-concommand.Add( "tf2_printanims", function( ply )
+concommand.Add( "tf2weapons_printanims", function( ply )
 	
 	PrintTable( ply:GetViewModel( 1 ):GetSequenceList() )
 	
 end, nil, "Print animations for the hand model", FCVAR_CHEAT )
 
-concommand.Add( "tf2_printattach", function( ply )
+concommand.Add( "tf2weapons_printattach", function( ply )
 	
 	print( "\nhands\n" )
 	PrintTable( ply:GetViewModel( 1 ):GetAttachments() )
@@ -256,8 +256,8 @@ TF2Weapons = {}
 
 TF2Weapons.UnspawnableEntities = {
 	
-	[ "tf2_base" ] = true,
-	[ "tf2_base_melee" ] = true,
+	[ "tf2weapons_base" ] = true,
+	[ "tf2weapons_base_melee" ] = true,
 	
 }
 TF2Weapons.BrokenEntities = {}

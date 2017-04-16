@@ -2,13 +2,13 @@ AddCSLuaFile()
 
 if SERVER then
 	
-	util.AddNetworkString( "tf_airblast" )
+	util.AddNetworkString( "tf2weapons_airblast" )
 	
 else
 	
 	game.AddParticles( "particles/flamethrower.pcf" )
 	
-	net.Receive( "tf_airblast", function()
+	net.Receive( "tf2weapons_airblast", function()
 		
 		local weapon = net.ReadEntity()
 		local entities = {}
@@ -22,17 +22,17 @@ else
 		
 		for _, v in pairs( entities ) do
 			
-			if IsValid( v ) == true and v != weapon and v != weapon.Owner and weapon.NoAirblast[ v:GetClass() ] != true and v.TF2NoAirblast != true then
+			if IsValid( v ) == true and v != weapon and v != weapon.Owner and weapon.NoAirblast[ v:GetClass() ] != true and v.TF2Weapons_NoAirblast != true then
 				
-				if weapon.OwnOnAirblast[ v:GetClass() ] == true or v.TF2OwnOnAirblast == true then sound = weapon.AirblastRedirectSound end
+				if weapon.OwnOnAirblast[ v:GetClass() ] == true or v.TF2Weapons_OwnOnAirblast == true then sound = weapon.AirblastRedirectSound end
 				
 				if v:IsPlayer() == true then
 					
 					if IsValid( v:GetPhysicsObject() ) != false then v:SetVelocity( Vector( weapon.Owner:GetAimVector().x * ( weapon.Secondary.Force * 0.5 ), weapon.Owner:GetAimVector().y * ( weapon.Secondary.Force * 0.5 ), weapon.Secondary.UpForce ) ) end
 					
-				elseif v.TF2OnAirblasted != nil then
+				elseif v.TF2Weapons_OnAirblasted != nil then
 					
-					v:TF2OnAirblasted( weapon, v )
+					v:TF2Weapons_OnAirblasted( weapon, v )
 					
 				elseif weapon.OnAirblasted[ v:GetClass() ] != nil then
 					
@@ -40,8 +40,8 @@ else
 					
 				elseif IsValid( v:GetPhysicsObject() ) != false then
 					
-					if weapon.NoAirblast[ v:GetClass() ] == true or v.TF2NoAirblast == true then return end
-					if weapon.OwnOnAirblast[ v:GetClass() ] == true or v.TF2OwnOnAirblast == true then v:SetOwner( weapon.Owner ) end
+					if weapon.NoAirblast[ v:GetClass() ] == true or v.TF2Weapons_NoAirblast == true then return end
+					if weapon.OwnOnAirblast[ v:GetClass() ] == true or v.TF2WeaponsOwnOnAirblast == true then v:SetOwner( weapon.Owner ) end
 					
 					local mult = v:GetVelocity():Length() + weapon.Secondary.Force
 					v:GetPhysicsObject():SetVelocity( Vector( weapon.Owner:GetAimVector().x * mult, weapon.Owner:GetAimVector().y * mult, weapon.Owner:GetAimVector().z * mult ) )
@@ -74,7 +74,7 @@ SWEP.Author = "AwfulRanger"
 SWEP.Category = "Team Fortress 2"
 SWEP.Level = 1
 SWEP.Type = "Flame Thrower"
-SWEP.Base = "tf2_base"
+SWEP.Base = "tf2weapons_base"
 SWEP.Classes = { TF2Weapons.Class.PYRO }
 SWEP.Quality = TF2Weapons.Quality.NORMAL
 
@@ -112,7 +112,7 @@ SWEP.DamageFalloff = 0.7
 SWEP.Primary.ClipSize = -1
 SWEP.Primary.DefaultClip = 200
 SWEP.Primary.Automatic = true
-SWEP.Primary.Ammo = "tf2_flamethrower"
+SWEP.Primary.Ammo = "tf2weapons_flamethrower"
 SWEP.Primary.Damage = 7
 SWEP.Primary.Shots = 1
 SWEP.Primary.Spread = 0.025
@@ -566,9 +566,9 @@ function SWEP:SecondaryAttack()
 		
 		for _, v in pairs( entities ) do
 			
-			if v != self and v != self:GetOwner() and self.NoAirblast[ v:GetClass() ] != true and v.TF2NoAirblast != true then
+			if v != self and v != self:GetOwner() and self.NoAirblast[ v:GetClass() ] != true and v.TF2Weapons_NoAirblast != true then
 				
-				if self.OwnOnAirblast[ v:GetClass() ] == true or v.TF2OwnOnAirblast == true then sound = self.AirblastRedirectSound end
+				if self.OwnOnAirblast[ v:GetClass() ] == true or v.TF2Weapons_OwnOnAirblast == true then sound = self.AirblastRedirectSound end
 				
 				if v:IsPlayer() == true then
 					
@@ -598,9 +598,9 @@ function SWEP:SecondaryAttack()
 						
 					end
 					
-				elseif v.TF2OnAirblasted != nil then
+				elseif v.TF2Weapons_OnAirblasted != nil then
 					
-					v:TF2OnAirblasted( self, v )
+					v:TF2Weapons_OnAirblasted( self, v )
 					
 				elseif self.OnAirblasted[ v:GetClass() ] != nil then
 					
@@ -608,8 +608,8 @@ function SWEP:SecondaryAttack()
 					
 				elseif IsValid( v:GetPhysicsObject() ) != false then
 					
-					if self.NoAirblast[ v:GetClass() ] == true or v.TF2NoAirblast == true then return end
-					if self.OwnOnAirblast[ v:GetClass() ] == true or v.TF2OwnOnAirblast == true then v:SetOwner( self:GetOwner() ) end
+					if self.NoAirblast[ v:GetClass() ] == true or v.TF2Weapons_NoAirblast == true then return end
+					if self.OwnOnAirblast[ v:GetClass() ] == true or v.TF2Weapons_OwnOnAirblast == true then v:SetOwner( self:GetOwner() ) end
 					
 					local mult = v:GetVelocity():Length() + self.Secondary.Force
 					local zmult = v:GetVelocity():Length() + self.Secondary.UpForce
@@ -623,7 +623,7 @@ function SWEP:SecondaryAttack()
 		
 		self:PlaySound( sound )
 		
-		net.Start( "tf_airblast" )
+		net.Start( "tf2weapons_airblast" )
 			
 			net.WriteEntity( self )
 			net.WriteInt( #entities, 32 )

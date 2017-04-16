@@ -8,7 +8,7 @@ ENT.Author = "AwfulRanger"
 ENT.Spawnable = false
 ENT.AdminOnly = false
 
-ENT.TF2OwnOnAirblast = true
+ENT.TF2Weapons_OwnOnAirblast = true
 
 ENT.Model = "models/weapons/w_models/w_grenade_grenadelauncher.mdl"
 ENT.Skin = 0

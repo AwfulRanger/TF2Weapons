@@ -14,12 +14,12 @@ SWEP.KillIconY = 0
 SWEP.KillIconW = 96
 SWEP.KillIconH = 32
 
-SWEP.PrintName = "TF2 Melee Base"
+SWEP.PrintName = "TF2Weapons Melee Base"
 SWEP.Author = "AwfulRanger"
 SWEP.Category = "Team Fortress 2"
 SWEP.Level = 101
 SWEP.Type = "Weapon Base"
-SWEP.Base = "tf2_base"
+SWEP.Base = "tf2weapons_base"
 SWEP.Classes = { TF2Weapons.Class.NONE }
 SWEP.Quality = TF2Weapons.Quality.DEVELOPER
 

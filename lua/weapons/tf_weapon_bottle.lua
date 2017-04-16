@@ -2,11 +2,11 @@ AddCSLuaFile()
 
 if SERVER then
 	
-	util.AddNetworkString( "tf_weapon_bottle_break" )
+	util.AddNetworkString( "tf2weapons_bottle_break" )
 	
 else
 	
-	net.Receive( "tf_weapon_bottle_break", function()
+	net.Receive( "tf2weapons_bottle_break", function()
 		
 		net.ReadEntity():Break()
 		
@@ -27,7 +27,7 @@ SWEP.Author = "AwfulRanger"
 SWEP.Category = "Team Fortress 2"
 SWEP.Level = 1
 SWEP.Type = "Bottle"
-SWEP.Base = "tf2_base_melee"
+SWEP.Base = "tf2weapons_base_melee"
 SWEP.Classes = { TF2Weapons.Class.DEMOMAN }
 SWEP.Quality = TF2Weapons.Quality.NORMAL
 
@@ -130,7 +130,7 @@ function SWEP:Think()
 			elseif SERVER then
 				
 				self:Break()
-				net.Start( "tf_weapon_bottle_break" )
+				net.Start( "tf2weapons_bottle_break" )
 					
 					net.WriteEntity( self )
 					

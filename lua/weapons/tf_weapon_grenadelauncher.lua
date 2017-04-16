@@ -2,7 +2,7 @@ AddCSLuaFile()
 
 if SERVER then
 	
-	util.AddNetworkString( "tf_weapon_grenadelauncher_spinreset" )
+	util.AddNetworkString( "tf2weapons_grenadelauncher_spinreset" )
 	
 else
 	
@@ -24,7 +24,7 @@ SWEP.Author = "AwfulRanger"
 SWEP.Category = "Team Fortress 2"
 SWEP.Level = 1
 SWEP.Type = "Grenade Launcher"
-SWEP.Base = "tf2_base"
+SWEP.Base = "tf2weapons_base"
 SWEP.Classes = { TF2Weapons.Class.DEMOMAN }
 SWEP.Quality = TF2Weapons.Quality.NORMAL
 
@@ -52,7 +52,7 @@ SWEP.Attributes = {}
 SWEP.Primary.ClipSize = 4
 SWEP.Primary.DefaultClip = 20
 SWEP.Primary.Automatic = true
-SWEP.Primary.Ammo = "tf2_grenade"
+SWEP.Primary.Ammo = "tf2weapons_grenade"
 SWEP.Primary.ImpactDamage = 100
 SWEP.Primary.Damage = 60
 SWEP.Primary.Shots = 1

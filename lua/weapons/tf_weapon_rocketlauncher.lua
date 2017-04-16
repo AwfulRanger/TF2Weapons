@@ -21,7 +21,7 @@ SWEP.Author = "AwfulRanger"
 SWEP.Category = "Team Fortress 2"
 SWEP.Level = 1
 SWEP.Type = "Rocket Launcher"
-SWEP.Base = "tf2_base"
+SWEP.Base = "tf2weapons_base"
 SWEP.Classes = { TF2Weapons.Class.SOLDIER }
 SWEP.Quality = TF2Weapons.Quality.NORMAL
 
@@ -58,7 +58,7 @@ SWEP.Attributes = {}
 SWEP.Primary.ClipSize = 4
 SWEP.Primary.DefaultClip = 24
 SWEP.Primary.Automatic = true
-SWEP.Primary.Ammo = "tf2_rocket"
+SWEP.Primary.Ammo = "tf2weapons_rocket"
 SWEP.Primary.Damage = 90
 SWEP.Primary.Shots = 1
 SWEP.Primary.Spread = 0.005

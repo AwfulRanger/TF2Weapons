@@ -8,9 +8,9 @@ ENT.Author = "AwfulRanger"
 ENT.Spawnable = false
 ENT.AdminOnly = false
 
-function ENT:TF2OnAirblasted( weapon, ent )
+function ENT:TF2Weapons_OnAirblasted( weapon, ent )
 	
-	if weapon.OwnOnAirblast[ ent:GetClass() ] == true or ent.TF2OwnOnAirblast == true then ent:SetOwner( weapon:GetOwner() ) end
+	if weapon.OwnOnAirblast[ ent:GetClass() ] == true or ent.TF2Weapons_OwnOnAirblast == true then ent:SetOwner( weapon:GetOwner() ) end
 	
 	if IsValid( ent:GetPhysicsObject() ) == true then
 		

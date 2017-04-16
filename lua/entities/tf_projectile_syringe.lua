@@ -8,7 +8,7 @@ ENT.Author = "AwfulRanger"
 ENT.Spawnable = false
 ENT.AdminOnly = false
 
-ENT.TF2NoAirblast = true
+ENT.TF2Weapons_NoAirblast = true
 
 ENT.PhysModel = "models/weapons/w_models/w_drg_ball.mdl"
 ENT.Model = "models/weapons/w_models/w_syringe_proj.mdl"

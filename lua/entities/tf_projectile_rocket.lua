@@ -15,10 +15,10 @@ ENT.Author = "AwfulRanger"
 ENT.Spawnable = false
 ENT.AdminOnly = false
 
-ENT.TF2OwnOnAirblast = true
-function ENT:TF2OnAirblasted( weapon, ent )
+ENT.TF2Weapons_OwnOnAirblast = true
+function ENT:TF2Weapons_OnAirblasted( weapon, ent )
 	
-	if weapon.OwnOnAirblast[ ent:GetClass() ] == true or ent.TF2OwnOnAirblast == true then ent:SetOwner( weapon:GetOwner() ) end
+	if weapon.OwnOnAirblast[ ent:GetClass() ] == true or ent.TF2Weapons_OwnOnAirblast == true then ent:SetOwner( weapon:GetOwner() ) end
 	
 	if weapon:GetOwner():IsPlayer() == true then weapon:GetOwner():LagCompensation( true ) end
 	local trace = util.TraceLine( { start = weapon:GetOwner():GetShootPos(), endpos = weapon:GetOwner():GetShootPos() + ( weapon:GetOwner():EyeAngles():Forward() * 32768 ), filter = { ent, weapon:GetOwner() } } )

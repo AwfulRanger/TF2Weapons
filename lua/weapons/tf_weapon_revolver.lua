@@ -13,7 +13,7 @@ SWEP.Author = "AwfulRanger"
 SWEP.Category = "Team Fortress 2"
 SWEP.Level = 1
 SWEP.Type = "Revolver"
-SWEP.Base = "tf2_base"
+SWEP.Base = "tf2weapons_base"
 SWEP.Classes = { TF2Weapons.Class.SPY }
 SWEP.Quality = TF2Weapons.Quality.NORMAL
 
@@ -42,7 +42,7 @@ SWEP.Attributes = {}
 SWEP.Primary.ClipSize = 6
 SWEP.Primary.DefaultClip = 30
 SWEP.Primary.Automatic = true
-SWEP.Primary.Ammo = "tf2_pistol"
+SWEP.Primary.Ammo = "tf2weapons_pistol"
 SWEP.Primary.Damage = 40
 SWEP.Primary.Shots = 1
 SWEP.Primary.Spread = 0.025

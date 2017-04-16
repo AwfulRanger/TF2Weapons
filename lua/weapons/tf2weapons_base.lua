@@ -25,7 +25,7 @@ SWEP.KillIconY = 32
 SWEP.KillIconW = 96
 SWEP.KillIconH = 32
 
-SWEP.PrintName = "TF2 Base"
+SWEP.PrintName = "TF2Weapons Base"
 SWEP.HUDName = nil
 SWEP.Author = "AwfulRanger"
 SWEP.Purpose = ""
@@ -81,7 +81,7 @@ SWEP.DamageFalloff = 0.5 --Maximum damage falloff
 SWEP.Primary.ClipSize = 12
 SWEP.Primary.DefaultClip = 48
 SWEP.Primary.Automatic = true
-SWEP.Primary.Ammo = "tf2_pistol"
+SWEP.Primary.Ammo = "tf2weapons_pistol"
 SWEP.Primary.Damage = 15
 SWEP.Primary.Shots = 1
 SWEP.Primary.Spread = 0.025
@@ -1104,7 +1104,7 @@ function SWEP:AddParticle( particle, attachment, ent, pattach, options )
 		
 		if SERVER then
 			
-			net.Start( "tf_addparticle" )
+			net.Start( "tf2weapons_addparticle" )
 				
 				net.WriteEntity( self )
 				net.WriteEntity( ent )
@@ -1208,11 +1208,11 @@ function SWEP:Inspect()
 	
 	local hands, weapon = self:GetViewModels()
 	
-	if self:GetOwner().TF2InspectingWeapon == nil then
+	if self:GetOwner().TF2Weapons_Inspecting == nil then
 		
-		self:GetOwner().TF2InspectingWeapon = false
+		self:GetOwner().TF2Weapons_Inspecting = false
 		
-	elseif self:GetOwner().TF2InspectingWeapon == true or hands:GetSequence() == hands:LookupSequence( self:GetInspectAnim( "inspect_start" ) ) then
+	elseif self:GetOwner().TF2Weapons_Inspecting == true or hands:GetSequence() == hands:LookupSequence( self:GetInspectAnim( "inspect_start" ) ) then
 		
 		self:SetTFReloading( false )
 		
