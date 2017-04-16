@@ -552,6 +552,25 @@ TF2Weapons.Attributes = {
 		end,
 		
 	},
+	[ 72 ] = {
+		
+		name = "weapon burn dmg reduced",
+		desc = "%s1% afterburn damage penalty",
+		color = TF2Weapons.Color.NEGATIVE,
+		type = "percentage",
+		class = "mult_wpn_burndmg",
+		func = function( weapon, values )
+			
+			if values[ 1 ] == nil or IsValid( weapon ) != true then return values end
+			if weapon.Primary == nil then return values end
+			
+			if weapon.Primary.AfterburnDamage != nil then weapon.Primary.AfterburnDamage = weapon.Primary.AfterburnDamage * values[ 1 ] end
+			
+			return values
+			
+		end,
+		
+	},
 	[ 76 ] = {
 		
 		name = "maxammo primary increased",
@@ -673,6 +692,25 @@ TF2Weapons.Attributes = {
 		end,
 		
 	},
+	[ 170 ] = {
+		
+		name = "airblast cost increased",
+		desc = "+%s1% airblast cost",
+		color = TF2Weapons.Color.NEGATIVE,
+		type = "percentage",
+		class = "mult_airblast_cost",
+		func = function( weapon, values )
+			
+			if values[ 1 ] == nil or IsValid( weapon ) != true then return values end
+			if weapon.Secondary == nil then return values end
+			
+			if weapon.Secondary.TakeAmmo != nil then weapon.Secondary.TakeAmmo = weapon.Secondary.TakeAmmo * values[ 1 ] end
+			
+			return values
+			
+		end,
+		
+	},
 	[ 177 ] = {
 		
 		name = "deploy time increased",
@@ -709,6 +747,24 @@ TF2Weapons.Attributes = {
 		end,
 		
 	},
+	[ 199 ] = {
+		
+		name = "switch from wep deploy time decreased",
+		desc = "This weapon holsters %s1% faster",
+		color = TF2Weapons.Color.POSITIVE,
+		type = "inverted_percentage",
+		class = "mult_switch_from_wep_deploy_time",
+		func = function( weapon, values )
+			
+			if values[ 1 ] == nil or IsValid( weapon ) != true then return values end
+			
+			if weapon.NextDeploySpeed != nil then weapon.NextDeploySpeed = weapon.NextDeploySpeed * values[ 1 ] end
+			
+			return values
+			
+		end,
+		
+	},
 	[ 281 ] = {
 		
 		name = "energy weapon no ammo",
@@ -721,6 +777,42 @@ TF2Weapons.Attributes = {
 			if values[ 1 ] == nil or IsValid( weapon ) != true then return values end
 			
 			if values[ 1 ] >= 1 then weapon.ReloadTakeAmmo = 0 end
+			
+			return values
+			
+		end,
+		
+	},
+	[ 547 ] = {
+		
+		name = "single wep deploy time decreased",
+		desc = "This weapon deploys %s1% faster",
+		color = TF2Weapons.Color.POSITIVE,
+		type = "inverted_percentage",
+		class = "mult_single_wep_deploy_time",
+		func = function( weapon, values )
+			
+			if values[ 1 ] == nil or IsValid( weapon ) != true then return values end
+			
+			if weapon.DeployTime != nil then weapon.DeployTime = weapon.DeployTime * values[ 1 ] end
+			
+			return values
+			
+		end,
+		
+	},
+	[ 783 ] = {
+		
+		name = "extinguish restores health",
+		desc = "Extinguishing teammates restores %s1 health",
+		color = TF2Weapons.Color.POSITIVE,
+		type = "additive",
+		class = "extinguish_restores_health",
+		func = function( weapon, values )
+			
+			if values[ 1 ] == nil or IsValid( weapon ) != true then return values end
+			
+			if weapon.ExtinguishHealth != nil then weapon.ExtinguishHealth = weapon.ExtinguishHealth + values[ 1 ] end
 			
 			return values
 			
