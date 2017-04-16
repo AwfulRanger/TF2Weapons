@@ -33,6 +33,7 @@ SWEP.Instructions = ""
 SWEP.Description = ""
 SWEP.Category = "Team Fortress 2"
 SWEP.Level = 101
+SWEP.HUDLevel = nil
 SWEP.Type = "Weapon Base"
 SWEP.Base = "weapon_base"
 SWEP.Classes = { TF2Weapons.Class.NONE }
@@ -674,10 +675,13 @@ function SWEP:PrintWeaponInfo( x, y, a )
 	local prefix = TF2Weapons.QualityPrefix[ self.Quality ]
 	if prefix != nil and prefix != "" then name = prefix .. " " .. name end
 	
+	local level = self.Level
+	if self.HUDLevel != nil then level = self.HUDLevel end
+	
 	local markuptable = {
 		
 		self:Markup( name, TF2Weapons.QualityColor[ self.Quality ], "TF2Weapons_InfoPrimary" ),
-		self:Markup( "Level " .. self.Level .. " " .. self.Type, TF2Weapons.Color.LEVEL, "TF2Weapons_InfoSecondary" ),
+		self:Markup( "Level " .. level .. " " .. self.Type, TF2Weapons.Color.LEVEL, "TF2Weapons_InfoSecondary" ),
 		
 	}
 	
