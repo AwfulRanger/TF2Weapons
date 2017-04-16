@@ -20,15 +20,42 @@ else
 		
 		local sound = weapon.AirblastSound
 		
-		for _, v in pairs( entities ) do
+		for i = 1, #entities do
 			
-			if IsValid( v ) == true and v != weapon and v != weapon.Owner and weapon.NoAirblast[ v:GetClass() ] != true and v.TF2Weapons_NoAirblast != true then
+			local _ = i
+			local v = entities[ i ]
+			
+			if IsValid( v ) == true and v != weapon and v != weapon:GetOwner() and weapon.NoAirblast[ v:GetClass() ] != true and v.TF2Weapons_NoAirblast != true then
 				
 				if weapon.OwnOnAirblast[ v:GetClass() ] == true or v.TF2Weapons_OwnOnAirblast == true then sound = weapon.AirblastRedirectSound end
 				
 				if v:IsPlayer() == true then
 					
-					if IsValid( v:GetPhysicsObject() ) != false then v:SetVelocity( Vector( weapon.Owner:GetAimVector().x * ( weapon.Secondary.Force * 0.5 ), weapon.Owner:GetAimVector().y * ( weapon.Secondary.Force * 0.5 ), weapon.Secondary.UpForce ) ) end
+					if GetConVar( "tf2weapons_airblast_teammates" ):GetBool() == true then
+						
+						if hook.Call( "PlayerShouldTakeDamage", GAMEMODE, v, weapon:GetOwner() ) != true then
+							
+							if IsValid( v:GetPhysicsObject() ) != false then v:SetVelocity( Vector( weapon:GetOwner():GetAimVector().x * ( weapon.Secondary.Force * 0.5 ), weapon:GetOwner():GetAimVector().y * ( weapon.Secondary.Force * 0.5 ), weapon.	Secondary.UpForce ) ) end
+							
+						elseif v:IsOnFire() == true then
+							
+							weapon:PlaySound( weapon.AirblastExtinguishSound, nil, v )
+							
+						end
+						
+					else
+						
+						if hook.Call( "PlayerShouldTakeDamage", GAMEMODE, v, weapon:GetOwner() ) == true then
+							
+							if IsValid( v:GetPhysicsObject() ) != false then v:SetVelocity( Vector( weapon:GetOwner():GetAimVector().x * ( weapon.Secondary.Force * 0.5 ), weapon:GetOwner():GetAimVector().y * ( weapon.Secondary.Force * 0.5 ), weapon.Secondary.UpForce ) ) end
+							
+						elseif v:IsOnFire() == true then
+							
+							weapon:PlaySound( weapon.AirblastExtinguishSound, nil, v )
+							
+						end
+						
+					end
 					
 				elseif v.TF2Weapons_OnAirblasted != nil then
 					
@@ -41,10 +68,11 @@ else
 				elseif IsValid( v:GetPhysicsObject() ) != false then
 					
 					if weapon.NoAirblast[ v:GetClass() ] == true or v.TF2Weapons_NoAirblast == true then return end
-					if weapon.OwnOnAirblast[ v:GetClass() ] == true or v.TF2WeaponsOwnOnAirblast == true then v:SetOwner( weapon.Owner ) end
+					if weapon.OwnOnAirblast[ v:GetClass() ] == true or v.TF2Weapons_OwnOnAirblast == true then v:SetOwner( weapon:GetOwner() ) end
 					
 					local mult = v:GetVelocity():Length() + weapon.Secondary.Force
-					v:GetPhysicsObject():SetVelocity( Vector( weapon.Owner:GetAimVector().x * mult, weapon.Owner:GetAimVector().y * mult, weapon.Owner:GetAimVector().z * mult ) )
+					local zmult = v:GetVelocity():Length() + weapon.Secondary.UpForce
+					v:GetPhysicsObject():SetVelocity( Vector( weapon:GetOwner():GetAimVector().x * mult, weapon:GetOwner():GetAimVector().y * mult, weapon:GetOwner():GetAimVector().z * zmult ) )
 					
 				end
 				
@@ -97,7 +125,11 @@ function SWEP:GetInspect()
 end
 
 SWEP.SingleReload = false
-SWEP.Attributes = {}
+SWEP.Attributes = {
+	
+	[ 783 ] = { 20 },
+	
+}
 
 --Distance here is based on percentage of flame life passed
 --0 is the start of the flame's life, 1 is the end of the flame's life
@@ -133,6 +165,8 @@ SWEP.Secondary.Range = 128
 
 SWEP.CritStream = true
 
+SWEP.ExtinguishHealth = 0
+
 function SWEP:SetVariables()
 	
 	self.ShootStartSound = Sound( "weapons/flame_thrower_start.wav" )
@@ -141,6 +175,7 @@ function SWEP:SetVariables()
 	self.ShootEndSound = Sound( "weapons/flame_thrower_end.wav" )
 	self.AirblastSound = Sound( "weapons/flame_thrower_airblast.wav" )
 	self.AirblastRedirectSound = Sound( "weapons/flame_thrower_airblast_rocket_redirect.wav" )
+	self.AirblastExtinguishSound = Sound( "player/flame_out.wav" )
 	
 end
 
@@ -428,7 +463,7 @@ function SWEP:Think()
 	
 	local hands, weapon = self:GetViewModels()
 	
-	if self:GetOwner():KeyDown( IN_ATTACK ) == true and self:CanCreateFlame() == true and self:TooClose() != true then
+	if self:GetOwner():KeyDown( IN_ATTACK ) == true and self:CanCreateFlame() == true and self:TooClose() != true and CurTime() > self:GetNextSecondaryFire() then
 		
 		local crit = self:DoCrit()
 		
@@ -527,7 +562,6 @@ function SWEP:PrimaryAttack()
 	self:TakePrimaryAmmo( self.Primary.TakeAmmo )
 	
 	self:SetNextPrimaryFire( CurTime() + self.Primary.Delay )
-	self:SetNextSecondaryFire( CurTime() + self.Primary.Delay )
 	
 end
 
@@ -579,9 +613,24 @@ function SWEP:SecondaryAttack()
 							
 							if IsValid( v:GetPhysicsObject() ) != false then v:SetVelocity( Vector( self:GetOwner():GetAimVector().x * ( self.Secondary.Force * 0.5 ), self:GetOwner():GetAimVector().y * ( self.Secondary.Force * 0.5 ), self.Secondary.UpForce ) ) end
 							
-						else
+						elseif v:IsOnFire() == true then
 							
+							self:PlaySound( self.AirblastExtinguishSound, nil, v )
 							v:Extinguish()
+							
+							if self:GetOwner():Health() < self:GetOwner():GetMaxHealth() then
+								
+								if self:GetOwner():Health() + self.ExtinguishHealth > self:GetOwner():GetMaxHealth() then
+									
+									self:GetOwner():SetHealth( self:GetOwner():GetMaxHealth() )
+									
+								else
+									
+									self:GetOwner():SetHealth( self:GetOwner():Health() + self.ExtinguishHealth )
+									
+								end
+								
+							end
 							
 						end
 						
@@ -591,9 +640,24 @@ function SWEP:SecondaryAttack()
 							
 							if IsValid( v:GetPhysicsObject() ) != false then v:SetVelocity( Vector( self:GetOwner():GetAimVector().x * ( self.Secondary.Force * 0.5 ), self:GetOwner():GetAimVector().y * ( self.Secondary.Force * 0.5 ), self.Secondary.UpForce ) ) end
 							
-						else
+						elseif v:IsOnFire() == true then
 							
+							self:PlaySound( self.AirblastExtinguishSound, nil, v )
 							v:Extinguish()
+							
+							if self:GetOwner():Health() < self:GetOwner():GetMaxHealth() then
+								
+								if self:GetOwner():Health() + self.ExtinguishHealth > self:GetOwner():GetMaxHealth() then
+									
+									self:GetOwner():SetHealth( self:GetOwner():GetMaxHealth() )
+									
+								else
+									
+									self:GetOwner():SetHealth( self:GetOwner():Health() + self.ExtinguishHealth )
+									
+								end
+								
+							end
 							
 						end
 						
@@ -641,6 +705,7 @@ function SWEP:SecondaryAttack()
 	self:TakePrimaryAmmo( self.Secondary.TakeAmmo )
 	
 	self:SetNextPrimaryFire( CurTime() + self.Secondary.Delay )
+	self:SetNextSecondaryFire( CurTime() + self.Secondary.Delay )
 	
 end
 
