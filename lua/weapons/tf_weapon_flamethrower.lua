@@ -374,15 +374,15 @@ function SWEP:ManageFlames()
 						hit[ i ]:TakeDamageInfo( dmg )
 						
 						local valid = true
-						if trace.Entity:IsPlayer() == true then
+						if hit[ i ]:IsPlayer() == true then
 							
 							if GetConVar( "tf2weapons_ignite_teammates" ):GetBool() == true then
 								
-								if hook.Call( "PlayerShouldTakeDamage", GAMEMODE, trace.Entity, self:GetOwner() ) == true then valid = false end
+								if hook.Call( "PlayerShouldTakeDamage", GAMEMODE, hit[ i ], self:GetOwner() ) == true then valid = false end
 								
 							else
 								
-								if hook.Call( "PlayerShouldTakeDamage", GAMEMODE, trace.Entity, self:GetOwner() ) != true then valid = false end
+								if hook.Call( "PlayerShouldTakeDamage", GAMEMODE, hit[ i ], self:GetOwner() ) != true then valid = false end
 								
 							end
 							
