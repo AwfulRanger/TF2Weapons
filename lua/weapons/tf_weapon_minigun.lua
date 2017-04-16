@@ -96,6 +96,7 @@ SWEP.ViewModel = "models/weapons/c_models/c_minigun/c_minigun.mdl"
 SWEP.WorldModel = "models/weapons/c_models/c_minigun/c_minigun.mdl"
 SWEP.HandModel = "models/weapons/c_models/c_heavy_arms.mdl"
 SWEP.HoldType = "crossbow"
+SWEP.HoldTypeRevved = "ar2"
 function SWEP:GetAnimations()
 	
 	return "m"
@@ -274,6 +275,8 @@ function SWEP:Spool()
 		if self.SpinSpeed <= 0 then self.SpinSpeed = 1 end
 		self.SpinSpeed = self.SpinSpeed * self.SpinUpSpeed
 		
+		self:SetHoldType( self.HoldTypeRevved )
+		
 	elseif self:GetTFSpooled() == false then
 		
 		if self:GetTFMuzzleParticleActive() == true and CurTime() > self:GetTFMuzzleParticleRemove() then
@@ -304,6 +307,8 @@ function SWEP:Spool()
 			self.SpinSpeed = self.SpinSpeed * self.SpinDownSpeed
 			
 		end
+		
+		self:SetHoldType( self.HoldType )
 		
 	end
 	
