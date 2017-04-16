@@ -121,6 +121,7 @@ SWEP.Primary.Force = 10
 SWEP.Primary.TakeAmmo = 1
 SWEP.Primary.Delay = 0.08
 SWEP.Primary.FlameDelay = 0.044
+SWEP.Primary.AfterburnDamage = 3
 
 SWEP.Secondary.Automatic = true
 SWEP.Secondary.Force = 512
@@ -661,6 +662,8 @@ end
 function SWEP:Holster()
 	
 	self:StopFlames()
+	
+	if self:GetTFStartFire() != true then self:PlaySound( self.ShootEndSound ) end
 	
 	self:DoHolster()
 	
