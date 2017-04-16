@@ -728,7 +728,13 @@ function SWEP:Holster()
 	
 	self:StopFlames()
 	
-	if self:GetTFStartFire() != true then self:PlaySound( self.ShootEndSound ) end
+	if self:GetTFStartFire() != true then
+		
+		self:PlaySound( self.ShootEndSound )
+		
+		self:SetTFStartFire( true )
+		
+	end
 	
 	self:DoHolster()
 	
