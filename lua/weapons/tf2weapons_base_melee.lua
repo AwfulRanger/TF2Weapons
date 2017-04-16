@@ -294,6 +294,12 @@ function SWEP:DoHolster()
 	self:SetTFInspectLoop( false )
 	self:SetTFNextInspect( -1 )
 	
+	if IsValid( self:GetOwner() ) == true then
+		
+		self:GetOwner():SetNW2Float( "TF2Weapons_NextDeploySpeed", self.NextDeploySpeed )
+		
+	end
+	
 end
 
 --[[
