@@ -66,8 +66,10 @@ SWEP.SkinRED = 0
 SWEP.SkinBLU = 1
 
 SWEP.DeployTime = 0.5
+SWEP.NextDeploySpeed = 1
 SWEP.SingleReload = false
 SWEP.Attributes = {}
+SWEP.AttributesOrder = {}
 SWEP.AttributeClass = {}
 
 SWEP.MinDistance = 0 --Distance for maximum damage rampup
@@ -687,15 +689,39 @@ function SWEP:PrintWeaponInfo( x, y, a )
 		
 	end
 	
-	for _, v in pairs( self.Attributes ) do
+	if self.AttributesOrder[ 1 ] != nil then
 		
-		if isnumber( _ ) == true then
+		for i = 1, #self.AttributesOrder do
 			
-			local attribute = self:Markup( TF2Weapons.Attributes[ _ ].desc, TF2Weapons.Attributes[ _ ].color, "TF2Weapons_InfoSecondary" )
-			attribute = string.Replace( attribute, "%s1", self:GetAttribute( _, 1, true ) )
-			attribute = string.Replace( attribute, "%s2", self:GetAttribute( _, 2, true ) )
+			local num = self.AttributesOrder[ i ]
+			
+			local attribute = self:Markup( TF2Weapons.Attributes[ num ].desc, TF2Weapons.Attributes[ num ].color, "TF2Weapons_InfoSecondary" )
+			for i_ = 1, #self.Attributes[ num ] do
+				
+				attribute = string.Replace( attribute, "%s" .. i_, self:GetAttribute( num, i_, true ) )
+				
+			end
 			
 			text = text .. "\n" .. attribute
+			
+		end
+		
+	else
+		
+		for _, v in pairs( self.Attributes ) do
+			
+			if isnumber( _ ) == true then
+				
+				local attribute = self:Markup( TF2Weapons.Attributes[ _ ].desc, TF2Weapons.Attributes[ _ ].color, "TF2Weapons_InfoSecondary" )
+				for i = 1, #self.Attributes[ _ ] do
+					
+					attribute = string.Replace( attribute, "%s" .. i, self:GetAttribute( _, i, true ) )
+					
+				end
+				
+				text = text .. "\n" .. attribute
+				
+			end
 			
 		end
 		
@@ -1453,12 +1479,20 @@ function SWEP:DoDeploy()
 	
 	self:CheckHands()
 	
-	if CurTime() > self:GetNextPrimaryFire() - self.DeployTime then self:SetNextPrimaryFire( CurTime() + self.DeployTime ) end
-	if CurTime() > self:GetNextSecondaryFire() - self.DeployTime then self:SetNextSecondaryFire( CurTime() + self.DeployTime ) end
+	local deploytime = self.DeployTime
+	if IsValid( self:GetOwner() ) == true then
+		
+		deploytime = deploytime * self:GetOwner():GetNW2Float( "TF2Weapons_NextDeploySpeed", 1 )
+		self:GetOwner():SetNW2Float( "TF2Weapons_NextDeploySpeed", 1 )
+		
+	end
+	
+	if CurTime() > self:GetNextPrimaryFire() - deploytime then self:SetNextPrimaryFire( CurTime() + deploytime ) end
+	if CurTime() > self:GetNextSecondaryFire() - deploytime then self:SetNextSecondaryFire( CurTime() + deploytime ) end
 	
 	local draw = self:GetHandAnim( "draw" )
 	
-	self:SetVMAnimation( draw, 0.67 / self.DeployTime )
+	self:SetVMAnimation( draw, 0.67 / deploytime )
 	
 	self:TeamSet( self:GetTeam() )
 	
@@ -1494,6 +1528,12 @@ function SWEP:DoHolster()
 	self:SetTFInspecting( false )
 	self:SetTFInspectLoop( false )
 	self:SetTFPreventInspect( false )
+	
+	if IsValid( self:GetOwner() ) == true then
+		
+		self:GetOwner():SetNW2Float( "TF2Weapons_NextDeploySpeed", self.NextDeploySpeed )
+		
+	end
 	
 end
 
