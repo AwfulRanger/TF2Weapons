@@ -1487,7 +1487,6 @@ function SWEP:DoDeploy()
 	if IsValid( self:GetOwner() ) == true then
 		
 		deploytime = deploytime * self:GetOwner():GetNW2Float( "TF2Weapons_NextDeploySpeed", 1 )
-		self:GetOwner():SetNW2Float( "TF2Weapons_NextDeploySpeed", 1 )
 		
 	end
 	
@@ -1533,11 +1532,7 @@ function SWEP:DoHolster()
 	self:SetTFInspectLoop( false )
 	self:SetTFPreventInspect( false )
 	
-	if IsValid( self:GetOwner() ) == true then
-		
-		self:GetOwner():SetNW2Float( "TF2Weapons_NextDeploySpeed", self.NextDeploySpeed )
-		
-	end
+	if IsValid( self:GetOwner() ) == true then self:GetOwner():SetNW2Float( "TF2Weapons_NextDeploySpeed", self.NextDeploySpeed ) end
 	
 end
 
