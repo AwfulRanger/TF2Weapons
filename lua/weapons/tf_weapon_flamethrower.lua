@@ -557,7 +557,7 @@ end
 
 function SWEP:PrimaryAttack()
 	
-	if self:CanPrimaryAttack() == false or self:TooClose() == true then return end
+	if CurTime() < self:GetNextSecondaryFire() or self:CanPrimaryAttack() == false or self:TooClose() == true then return end
 	
 	self:TakePrimaryAmmo( self.Primary.TakeAmmo )
 	
@@ -567,7 +567,7 @@ end
 
 function SWEP:SecondaryAttack()
 	
-	if self:CanPrimaryAttack() == false then return end
+	if self:Ammo1() - self.Secondary.TakeAmmo < 0 then return end
 	
 	self:SetTFStartFire( true )
 	
