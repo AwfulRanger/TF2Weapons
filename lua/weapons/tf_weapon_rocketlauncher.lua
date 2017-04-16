@@ -67,8 +67,6 @@ SWEP.Primary.Force = 10
 SWEP.Primary.TakeAmmo = 1
 SWEP.Primary.Delay = 0.8
 
-SWEP.CritChance = 1
-
 function SWEP:SetVariables()
 	
 	self.ShootSound = Sound( "weapons/rocket_shoot.wav" )
