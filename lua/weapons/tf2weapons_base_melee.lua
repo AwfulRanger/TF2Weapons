@@ -124,7 +124,7 @@ function SWEP:Initialize()
 end
 
 --[[
-	Name:	SWEP:DoSwing()
+	Name:	SWEP:DoSwing( hit, damage, ent, keepcrit )
 	
 	Desc:	Called when the swing is over and it's time to hit something
 	
@@ -316,7 +316,7 @@ function SWEP:CanPrimaryAttack()
 end
 
 --[[
-	Name:	SWEP:DoPrimaryAttack()
+	Name:	SWEP:DoPrimaryAttack( anim, crit )
 	
 	Desc:	Effects for primary attacking
 	
@@ -390,7 +390,7 @@ function SWEP:Reload()
 end
 
 --[[
-	Name:	SWEP:GetDamageMods()
+	Name:	SWEP:GetDamageMods( damage, mod )
 	
 	Desc:	Returns damage amount with crits and other damage modifiers in effect
 	

@@ -132,7 +132,7 @@ SWEP.CreatedNetworkVars = {
 }
 
 --[[
-	Name:	SWEP:TFNetworkVar()
+	Name:	SWEP:TFNetworkVar( vartype, varname, default, slot, extended )
 	
 	Desc:	Helper function for creating NetworkVars
 	
@@ -257,9 +257,11 @@ function SWEP:SetupDataTables()
 end
 
 --[[
-	Name:	SWEP:GetViewModels()
+	Name:	SWEP:GetViewModels( owner )
 	
 	Desc:	Returns hands viewmodel and weapon viewmodel
+	
+	Arg1:	Player to get viewmodels from. If unspecified, will use self:GetOwner()
 	
 	Ret1:	Hands viewmodel
 	
@@ -276,7 +278,7 @@ function SWEP:GetViewModels( owner )
 end
 
 --[[
-	Name:	SWEP:AttributesMod()
+	Name:	SWEP:AttributesMod( attributes, attributeclass )
 	
 	Desc:	Modify the weapon based on attributes
 	
@@ -288,7 +290,7 @@ function SWEP:AttributesMod( attributes, attributeclass )
 end
 
 --[[
-	Name:	SWEP:DoAttributes()
+	Name:	SWEP:DoAttributes( attributes, attributeclass )
 	
 	Desc:	Modify the weapon based on attributes
 			Run SWEP:AttributesMod() here to include custom weapon modifications
@@ -350,7 +352,7 @@ function SWEP:DoAttributes( attributes, attributeclass )
 end
 
 --[[
-	Name:	SWEP:GetTeam()
+	Name:	SWEP:GetTeam( ply, color )
 	
 	Desc:	Returns team to use for the weapon based on a color
 	
@@ -382,7 +384,7 @@ function SWEP:GetTeam( ply, color )
 end
 
 --[[
-	Name:	SWEP:DoTeamSet()
+	Name:	SWEP:DoTeamSet( blu )
 	
 	Desc:	Default function to set team related values, like skins, models, particles, etc.
 	
@@ -415,7 +417,7 @@ function SWEP:DoTeamSet( blu )
 end
 
 --[[
-	Name:	SWEP:TeamSet()
+	Name:	SWEP:TeamSet( blu )
 	
 	Desc:	Basic function to set team related values, like skins, models, particles, etc.
 			Run SWEP:DoTeamSet() here to include the default team set
@@ -484,7 +486,7 @@ SWEP.Crosshairs = {
 }
 
 --[[
-	Name:	SWEP:DrawMeter()
+	Name:	SWEP:DrawMeter( percent, text, x, y, w, h, bg, fg )
 	
 	Desc:	Draws a meter
 	
@@ -526,7 +528,7 @@ function SWEP:DrawMeter( percent, text, x, y, w, h, bg, fg )
 end
 
 --[[
-	Name:	SWEP:OnDrawCrosshair()
+	Name:	SWEP:OnDrawCrosshair( x, y )
 	
 	Desc:	Default function for drawing the crosshair
 	
@@ -563,7 +565,7 @@ function SWEP:OnDrawCrosshair( x, y )
 end
 
 --[[
-	Name:	SWEP:DoDrawCrosshair()
+	Name:	SWEP:DoDrawCrosshair( x, y )
 	
 	Desc:	Draw the crosshair
 	
@@ -582,7 +584,7 @@ function SWEP:DoDrawCrosshair( x, y )
 end
 
 --[[
-	Name:	SWEP:GetAttribute()
+	Name:	SWEP:GetAttribute( id, slot, pretty )
 	
 	Desc:	Returns an attribute value
 	
@@ -629,15 +631,17 @@ function SWEP:GetAttribute( id, slot, pretty )
 end
 
 --[[
-	Name:	SWEP:Markup()
+	Name:	SWEP:Markup( text, color, font )
 	
 	Desc:	Returns text for markup
 	
 	Arg1:	Text to change
 	
-	Arg2:	Color value. If specified, will color Arg1
+	Arg2:	Color value. If specified, will color the text
 	
-	Arg3:	Font name. If specified, will change Arg1 font
+	Arg3:	Font name. If specified, will change the text's font
+	
+	Ret1:	Markup text
 ]]--
 function SWEP:Markup( text, color, font )
 	
@@ -650,9 +654,9 @@ function SWEP:Markup( text, color, font )
 end
 
 --[[
-	Name:	SWEP:PrintWeaponInfo()
+	Name:	SWEP:PrintWeaponInfo( x, y, a )
 	
-	Desc:	Draw the weapon info that appears when selecting this weapon through default weapon selection
+	Desc:	Draw the weapon info that appears when selecting this weapon
 	
 	Arg1:	X position to draw info at
 	
@@ -709,7 +713,7 @@ function SWEP:PrintWeaponInfo( x, y, a )
 end
 
 --[[
-	Name:	SWEP:AddKillIcon()
+	Name:	SWEP:AddKillIcon( icon, color, x, y, w, h )
 	
 	Desc:	Add a UV kill icon to the weapon
 	
@@ -741,7 +745,7 @@ function SWEP:AddKillIcon( icon, color, x, y, w, h )
 end
 
 --[[
-	Name:	SWEP:GetHandAnim()
+	Name:	SWEP:GetHandAnim( key )
 	
 	Desc:	Returns a sequence name based on the weapon animations and a keyword
 	
@@ -804,7 +808,7 @@ function SWEP:GetHandAnim( key )
 end
 
 --[[
-	Name:	SWEP:GetInspectAnim()
+	Name:	SWEP:GetInspectAnim( key )
 	
 	Desc:	Returns a sequence name based on the inspect animations and a keyword
 	
@@ -845,7 +849,7 @@ end
 SWEP.DefaultRate = 1
 
 --[[
-	Name:	SWEP:SetVMAnimation()
+	Name:	SWEP:SetVMAnimation( seq, rate )
 	
 	Desc:	Sets the animation of the viewmodel hands
 	
@@ -896,7 +900,7 @@ function SWEP:GetVMAnimation()
 end
 
 --[[
-	Name:	SWEP:AddHands()
+	Name:	SWEP:AddHands( owner )
 	
 	Desc:	Creates and initializes weapon and hands viewmodels
 	
@@ -934,7 +938,7 @@ function SWEP:AddHands( owner )
 end
 
 --[[
-	Name:	SWEP:RemoveHands()
+	Name:	SWEP:RemoveHands( owner )
 	
 	Desc:	Removes weapon and hands viewmodels
 	
@@ -964,9 +968,11 @@ function SWEP:RemoveHands( owner )
 end
 
 --[[
-	Name:	SWEP:CheckHands()
+	Name:	SWEP:CheckHands( owner )
 	
 	Desc:	Checks if viewmodels are not properly set up and if not, fixes them
+	
+	Arg1:	Player to check viewmodels for. If this is unspecified, this will be the owner
 ]]--
 function SWEP:CheckHands( owner )
 	
@@ -984,7 +990,7 @@ function SWEP:CheckHands( owner )
 end
 
 --[[
-	Name:	SWEP:PlaySound()
+	Name:	SWEP:PlaySound( sound, num, ent )
 	
 	Desc:	Plays a sound from the weapon
 	
@@ -1026,7 +1032,7 @@ function SWEP:PlaySound( sound, num, ent )
 end
 
 --[[
-	Name:	SWEP:PrecacheParticles()
+	Name:	SWEP:PrecacheParticles( particles )
 	
 	Desc:	Precaches particles
 	
@@ -1053,7 +1059,7 @@ end
 SWEP.CreatedParticles = {}
 
 --[[
-	Name:	SWEP:AddParticle()
+	Name:	SWEP:AddParticle( particle, attachment, ent, pattach, options )
 	
 	Desc:	Attaches particles to the weapon
 	
@@ -1617,7 +1623,7 @@ SWEP.HitDecals = {
 }
 
 --[[
-	Name:	SWEP:DoPrimaryAttack()
+	Name:	SWEP:DoPrimaryAttack( bullet, crit )
 	
 	Desc:	Effects for primary attacking
 	
@@ -1785,7 +1791,7 @@ function SWEP:Reload()
 end
 
 --[[
-	Name:	SWEP:PreDrawViewModel()
+	Name:	SWEP:PreDrawViewModel( vm, weapon, ply )
 	
 	Desc:	Called before the viewmodel is drawn
 	
@@ -1802,7 +1808,7 @@ function SWEP:PreDrawViewModel( vm, weapon, ply )
 end
 
 --[[
-	Name:	SWEP:DoBuildWorldModelBones()
+	Name:	SWEP:DoBuildWorldModelBones( ent, count )
 	
 	Desc:	Default function for building worldmodel bones
 	
@@ -1851,7 +1857,7 @@ function SWEP:DoBuildWorldModelBones( ent, count )
 end
 
 --[[
-	Name:	SWEP:BuildWorldModelBones()
+	Name:	SWEP:BuildWorldModelBones( ent, count )
 	
 	Desc:	Called when building worldmodel bones
 			Run SWEP:DoBuildWorldModelBones() here to include the default worldmodel bones
@@ -1880,7 +1886,7 @@ function SWEP:GetCritChance()
 end
 
 --[[
-	Name:	SWEP:ShouldCrit()
+	Name:	SWEP:ShouldCrit( chance, stream )
 	
 	Desc:	Returns if the weapon should crit or not
 	
@@ -1919,6 +1925,13 @@ function SWEP:OnCrit()
 	
 end
 
+--[[
+	Name:	SWEP:DoCrit()
+	
+	Desc:	Returns if both SWEP:ShouldCrit() and SWEP:OnCrit() are true
+	
+	Ret1:	If both SWEP:ShouldCrit() and SWEP:OnCrit() are true
+]]--
 function SWEP:DoCrit()
 	
 	local crit = self:ShouldCrit()
@@ -1934,7 +1947,7 @@ function SWEP:DoCrit()
 end
 
 --[[
-	Name:	SWEP:GetDamageMods()
+	Name:	SWEP:GetDamageMods( damage, mod )
 	
 	Desc:	Returns damage amount with crits and other damage modifiers in effect
 	
@@ -1965,7 +1978,7 @@ end
 SWEP.ViewModelParticles = false
 
 --[[
-	Name:	SWEP:ViewModelDrawn()
+	Name:	SWEP:ViewModelDrawn( vm )
 	
 	Desc:	Called after the viewmodel is drawn
 	
