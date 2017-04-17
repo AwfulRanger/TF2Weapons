@@ -127,7 +127,12 @@ end
 SWEP.SingleReload = false
 SWEP.Attributes = {
 	
-	[ 783 ] = { 20 },
+	[ "extinguish restores health" ] = { 20 },
+	
+}
+SWEP.AttributesOrder = {
+	
+	"extinguish restores health",
 	
 }
 

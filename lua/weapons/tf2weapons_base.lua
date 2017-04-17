@@ -105,6 +105,8 @@ SWEP.CritStream = false
 SWEP.CritStreamCheck = 1 --How often (in seconds) to check for crit streams
 SWEP.CritStreamTime = 2 --How long (in seconds) crit streams last
 
+SWEP.HealthOnHit = 0
+
 --[[
 	Name:	SWEP:SetVariables()
 	
@@ -313,7 +315,7 @@ function SWEP:DoAttributes( attributes, attributeclass )
 	
 	for _, v in pairs( attributes ) do
 		
-		local attribute = TF2Weapons.Attributes[ _ ]
+		local attribute = TF2Weapons:GetAttribute( _ )
 		local value
 		if attribute != nil and attribute.func != nil then
 			
@@ -608,7 +610,7 @@ function SWEP:GetAttribute( id, slot, pretty )
 	
 	if pretty == true then
 		
-		local attribute = TF2Weapons.Attributes[ id ]
+		local attribute = TF2Weapons:GetAttribute( id )
 		if attribute == nil then
 			
 			return value
@@ -697,12 +699,12 @@ function SWEP:PrintWeaponInfo( x, y, a )
 		
 		for i = 1, #self.AttributesOrder do
 			
-			local num = self.AttributesOrder[ i ]
+			local order = self.AttributesOrder[ i ]
 			
-			local attribute = self:Markup( TF2Weapons.Attributes[ num ].desc, TF2Weapons.Attributes[ num ].color, "TF2Weapons_InfoSecondary" )
-			for i_ = 1, #self.Attributes[ num ] do
+			local attribute = self:Markup( TF2Weapons:GetAttribute( order ).desc, TF2Weapons:GetAttribute( order ).color, "TF2Weapons_InfoSecondary" )
+			for i_ = 1, #self.Attributes[ order ] do
 				
-				attribute = string.Replace( attribute, "%s" .. i_, self:GetAttribute( num, i_, true ) )
+				attribute = string.Replace( attribute, "%s" .. i_, self:GetAttribute( order, i_, true ) )
 				
 			end
 			
@@ -716,7 +718,7 @@ function SWEP:PrintWeaponInfo( x, y, a )
 			
 			if isnumber( _ ) == true then
 				
-				local attribute = self:Markup( TF2Weapons.Attributes[ _ ].desc, TF2Weapons.Attributes[ _ ].color, "TF2Weapons_InfoSecondary" )
+				local attribute = self:Markup( TF2Weapons:GetAttribute( _ ).desc, TF2Weapons:GetAttribute( _ ).color, "TF2Weapons_InfoSecondary" )
 				for i = 1, #self.Attributes[ _ ] do
 					
 					attribute = string.Replace( attribute, "%s" .. i, self:GetAttribute( _, i, true ) )
@@ -1713,6 +1715,45 @@ end
 SWEP.BulletCallbacks = {}
 
 --[[
+	Name:	SWEP:AddBulletCallback( func )
+	
+	Desc:	Adds a callback for whenever a bullet is fired
+	
+	Arg1:	Function to run. Return true in this function to prevent other bullet callbacks
+]]--
+function SWEP:AddBulletCallback( func )
+	
+	table.insert( self.BulletCallbacks, func )
+	
+end
+
+--[[
+	Name:	SWEP:GiveHealth( hp, ply, max )
+	
+	Desc:	Gives a player health
+	
+	Arg1:	Health to give
+	
+	Arg2:	Player to give health to
+	
+	Arg3:	Max health. Set to -1 for unlimited. If unspecified, will use ply's max health
+]]--
+function SWEP:GiveHealth( hp, ply, max )
+	
+	if hp == 0 then return end
+	if ply == nil then ply = self:GetOwner() end
+	if max == nil then max = ply:GetMaxHealth() end
+	
+	if ply:Health() >= max then return end
+	
+	local health = ply:Health() + hp
+	if max != -1 and health > max then health = max end
+	
+	ply:SetHealth( health )
+	
+end
+
+--[[
 	Name:	SWEP:PrimaryAttack()
 	
 	Desc:	Called when the owner runs the +attack console command
@@ -1740,7 +1781,7 @@ function SWEP:PrimaryAttack()
 		
 		for i = 1, #self.BulletCallbacks do
 			
-			self.BulletCallback[ i ]( attacker, tr, dmg )
+			if self.BulletCallback[ i ]( attacker, tr, dmg ) == true then return end
 			
 		end
 		
@@ -1767,6 +1808,12 @@ function SWEP:PrimaryAttack()
 			end
 			
 			dmg:SetDamage( self:GetDamageMods( dmg:GetDamage(), math.ceil( dmg:GetDamage() - ( dmg:GetDamage() * modifier ) ) ) )
+			
+			if tr.Entity:IsPlayer() == true then
+				
+				self:GiveHealth( self.HealthOnHit )
+				
+			end
 			
 			tr.Entity:TakeDamageInfo( dmg )
 			dmg:SetAttacker( game.GetWorld() )
