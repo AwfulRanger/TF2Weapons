@@ -1988,7 +1988,7 @@ function SWEP:PrimaryAttack()
 			
 			dmg:SetDamage( self:GetDamageMods( dmg:GetDamage(), math.ceil( dmg:GetDamage() - ( dmg:GetDamage() * modifier ) ), tr.Entity ) )
 			
-			if tr.Entity:IsPlayer() == true then
+			if tr.Entity:IsPlayer() == true or tr.Entity:IsNPC() == true then
 				
 				if self:GetAttributeClass( "add_onhit_addhealth" ) != nil then self:GiveHealth( self:GetAttributeClass( "add_onhit_addhealth" ) ) end
 				
