@@ -105,8 +105,6 @@ SWEP.CritStream = false
 SWEP.CritStreamCheck = 1 --How often (in seconds) to check for crit streams
 SWEP.CritStreamTime = 2 --How long (in seconds) crit streams last
 
-SWEP.HealthOnHit = 0
-
 --[[
 	Name:	SWEP:SetVariables()
 	
@@ -325,10 +323,12 @@ function SWEP:DoAttributes( attributes, attributeclass )
 		
 		if attributeclass != nil and value != nil then
 			
-			local class = { 1 }
+			local class
 			if attributeclass[ attribute.class ] != nil then class = attributeclass[ attribute.class ] end
 			
 			if attribute.type == "percentage" or attribute.type == "inverted_percentage" then
+				
+				if class == nil then class = { 1 } end
 				
 				for i = 1, #class do
 					
@@ -336,7 +336,29 @@ function SWEP:DoAttributes( attributes, attributeclass )
 					
 				end
 				
+			elseif attribute.type == "additive" then
+				
+				if class == nil then class = { 0 } end
+				
+				for i = 1, #class do
+					
+					class[ i ] = class[ i ] + value[ i ]
+					
+				end
+				
+			elseif attribute.type == "or" then
+				
+				if class == nil then class = { 0 } end
+				
+				for i = 1, #class do
+					
+					class[ i ] = bit.bor( class[ i ], value[ i ] )
+					
+				end
+				
 			else
+				
+				if class == nil then class = { 1 } end
 				
 				for i = 1, #class do
 					
@@ -603,29 +625,100 @@ end
 ]]--
 function SWEP:GetAttribute( id, slot, pretty )
 	
-	local value = -1
+	local value
 	if slot == nil then slot = 1 end
-	if self.Attributes[ id ][ slot ] == nil then return value end
-	if self.Attributes[ id ] != nil then value = self.Attributes[ id ][ slot ] end
+	
+	local attribute = self.Attributes[ id ]
+	if attribute == nil and TF2Weapons:GetAttribute( id ) != nil then
+		
+		local a = TF2Weapons:GetAttribute( id )
+		
+		if self.Attributes[ a.id ] != nil then attribute = self.Attributes[ a.id ] end
+		if self.Attributes[ a.name ] != nil then attribute = self.Attributes[ a.name ] end
+		
+	end
+	
+	if attribute == nil then return end
+	if attribute[ slot ] == nil then return value end
+	value = attribute[ slot ]
 	
 	if pretty == true then
 		
-		local attribute = TF2Weapons:GetAttribute( id )
-		if attribute == nil then
+		local attribute_ = TF2Weapons:GetAttribute( id )
+		if attribute_ == nil then
 			
 			return value
 			
-		elseif attribute.type == "percentage" then
+		elseif attribute_.type == "percentage" then
 			
-			value = tostring( ( self.Attributes[ id ][ slot ] - 1 ) * 100 )
+			value = tostring( ( attribute[ slot ] - 1 ) * 100 )
 			
-		elseif attribute.type == "inverted_percentage" then
+		elseif attribute_.type == "inverted_percentage" then
 			
-			value = tostring( ( 1 - self.Attributes[ id ][ slot ] ) * 100 )
+			value = tostring( ( 1 - attribute[ slot ] ) * 100 )
 			
 		else
 			
-			value = tostring( self.Attributes[ id ][ slot ] )
+			value = tostring( attribute[ slot ] )
+			
+		end
+		
+	end
+	
+	return value
+	
+end
+
+--[[
+	Name:	SWEP:GetAttributeClass( id, slot, pretty )
+	
+	Desc:	Returns an attribute class value
+	
+	Arg1:	Attribute class ID to get
+	
+	Arg2:	Attribute class slot to get. If unspecified, will use slot 1
+	
+	Arg3:	If true, returns a percentage based string
+	
+	Ret1:	Attribute class value
+]]--
+function SWEP:GetAttributeClass( id, slot, pretty )
+	
+	local value
+	if slot == nil then slot = 1 end
+	
+	local class = self.AttributeClass[ id ]
+	if class == nil and TF2Weapons:GetAttribute( id ) != nil then
+		
+		local a = TF2Weapons:GetAttribute( id )
+		
+		if self.AttributeClass[ a.id ] != nil then class = self.AttributeClass[ a.id ] end
+		if self.AttributeClass[ a.name ] != nil then class = self.AttributeClass[ a.name ] end
+		
+	end
+	
+	if class == nil then return end
+	if class[ slot ] == nil then return value end
+	value = class[ slot ]
+	
+	if pretty == true then
+		
+		local class_ = TF2Weapons:GetAttribute( id )
+		if class_ == nil then
+			
+			return value
+			
+		elseif class_.type == "percentage" then
+			
+			value = tostring( ( class[ slot ] - 1 ) * 100 )
+			
+		elseif class_.type == "inverted_percentage" then
+			
+			value = tostring( ( 1 - class[ slot ] ) * 100 )
+			
+		else
+			
+			value = tostring( class[ slot ] )
 			
 		end
 		
@@ -673,6 +766,7 @@ function SWEP:PrintWeaponInfo( x, y, a )
 	
 	if self.DrawWeaponInfoBox == false then return end
 	
+	
 	local name = self.HUDName
 	local prefix = TF2Weapons.QualityPrefix[ self.Quality ]
 	if prefix != nil and prefix != "" then name = prefix .. " " .. name end
@@ -680,35 +774,29 @@ function SWEP:PrintWeaponInfo( x, y, a )
 	local level = self.Level
 	if self.HUDLevel != nil then level = self.HUDLevel end
 	
-	local markuptable = {
-		
-		self:Markup( name, TF2Weapons.QualityColor[ self.Quality ], "TF2Weapons_InfoPrimary" ),
-		self:Markup( "Level " .. level .. " " .. self.Type, TF2Weapons.Color.LEVEL, "TF2Weapons_InfoSecondary" ),
-		
-	}
+	--size
+	local width = 0
+	local height = 0
+	local w = 0
+	local h = 0
 	
-	local text = ""
+	surface.SetFont( "TF2Weapons_InfoPrimary" )
+	w, h = surface.GetTextSize( name )
+	if w > width then width = w end
+	height = height + h
 	
-	for i = 1, #markuptable do
-		
-		text = text .. "\n" .. markuptable[ i ]
-		
-	end
+	surface.SetFont( "TF2Weapons_InfoSecondary" )
+	w, h = surface.GetTextSize( "Level " .. level .. " " .. self.Type, "TF2Weapons_InfoSecondary" )
+	if w > width then width = w end
+	height = height + h
 	
 	if self.AttributesOrder[ 1 ] != nil then
 		
 		for i = 1, #self.AttributesOrder do
 			
-			local order = self.AttributesOrder[ i ]
-			
-			local attribute = self:Markup( TF2Weapons:GetAttribute( order ).desc, TF2Weapons:GetAttribute( order ).color, "TF2Weapons_InfoSecondary" )
-			for i_ = 1, #self.Attributes[ order ] do
-				
-				attribute = string.Replace( attribute, "%s" .. i_, self:GetAttribute( order, i_, true ) )
-				
-			end
-			
-			text = text .. "\n" .. attribute
+			w, h = surface.GetTextSize( TF2Weapons:GetAttribute( self.AttributesOrder[ i ] ).desc )
+			if w > width then width = w end
+			height = height + h
 			
 		end
 		
@@ -719,13 +807,10 @@ function SWEP:PrintWeaponInfo( x, y, a )
 			if isnumber( _ ) == true then
 				
 				local attribute = self:Markup( TF2Weapons:GetAttribute( _ ).desc, TF2Weapons:GetAttribute( _ ).color, "TF2Weapons_InfoSecondary" )
-				for i = 1, #self.Attributes[ _ ] do
-					
-					attribute = string.Replace( attribute, "%s" .. i, self:GetAttribute( _, i, true ) )
-					
-				end
 				
-				text = text .. "\n" .. attribute
+				w, h = surface.GetTextSize( TF2Weapons:GetAttribute( _ ).desc )
+				if w > width then width = w end
+				height = height + h
 				
 			end
 			
@@ -733,14 +818,108 @@ function SWEP:PrintWeaponInfo( x, y, a )
 		
 	end
 	
-	if self.Description != nil and self.Description != "" then text = text .. "\n\n" .. self:Markup( self.Description, TF2Weapons.Color.NEUTRAL, "TF2Weapons_InfoSecondary" ) end
-	
-	local parsed = markup.Parse( text, ScrW() )
+	--draw
 	
 	surface.SetDrawColor( 60, 54, 47, 255 )
-	surface.DrawRect( x, y, parsed:GetWidth() + ( 20 * ( ScrH() / 480 ) ), parsed:GetHeight() + ( 20 * ( ScrH() / 480 ) ) )
+	surface.DrawRect( x, y, width + ( 20 * ( ScrH() / 480 ) ), height + ( 20 * ( ScrH() / 480 ) ) )
 	
-	parsed:Draw( x + ( 10 * ( ScrH() / 480 ) ), y + ( 10 * ( ScrH() / 480 ) ), nil, nil, 255 )
+	local height_ = 0
+	
+	surface.SetFont( "TF2Weapons_InfoPrimary" )
+	w, h = surface.GetTextSize( name )
+	surface.SetTextColor( TF2Weapons.QualityColor[ self.Quality ] )
+	if width > w then
+		
+		surface.SetTextPos( x + ( 10 * ( ScrH() / 480 ) ) + ( ( width - w ) * 0.5 ), y + ( 10 * ( ScrH() / 480 ) ) + height_ )
+		
+	else
+		
+		surface.SetTextPos( x + ( 10 * ( ScrH() / 480 ) ), y + ( 10 * ( ScrH() / 480 ) ) + height_ )
+		
+	end
+	surface.DrawText( name )
+	height_ = height_ + h
+	
+	surface.SetFont( "TF2Weapons_InfoSecondary" )
+	w, h = surface.GetTextSize( "Level " .. level .. " " .. self.Type, "TF2Weapons_InfoSecondary" )
+	surface.SetTextColor( TF2Weapons.Color.LEVEL )
+	if width > w then
+		
+		surface.SetTextPos( x + ( 10 * ( ScrH() / 480 ) ) + ( ( width - w ) * 0.5 ), y + ( 10 * ( ScrH() / 480 ) ) + height_ )
+		
+	else
+		
+		surface.SetTextPos( x + ( 10 * ( ScrH() / 480 ) ), y + ( 10 * ( ScrH() / 480 ) ) + height_ )
+		
+	end
+	surface.DrawText( "Level " .. level .. " " .. self.Type, "TF2Weapons_InfoSecondary" )
+	height_ = height_ + h
+	
+	if self.AttributesOrder[ 1 ] != nil then
+		
+		for i = 1, #self.AttributesOrder do
+			
+			local order = self.AttributesOrder[ i ]
+			
+			local attribute = TF2Weapons:GetAttribute( order )
+			
+			local text = attribute.desc
+			for i_ = 1, #self.Attributes[ order ] do
+				
+				text = string.Replace( text, "%s" .. i_, self:GetAttribute( order, i_, true ) )
+				
+			end
+			
+			w, h = surface.GetTextSize( text )
+			surface.SetTextColor( attribute.color )
+			if width > w then
+				
+				surface.SetTextPos( x + ( 10 * ( ScrH() / 480 ) ) + ( ( width - w ) * 0.5 ), y + ( 10 * ( ScrH() / 480 ) ) + height_ )
+				
+			else
+				
+				surface.SetTextPos( x + ( 10 * ( ScrH() / 480 ) ), y + ( 10 * ( ScrH() / 480 ) ) + height_ )
+				
+			end
+			surface.DrawText( text )
+			height_ = height_ + h
+			
+		end
+		
+	else
+		
+		for _, v in pairs( self.Attributes ) do
+			
+			if isnumber( _ ) == true then
+				
+				local attribute = TF2Weapons:GetAttribute( self.AttributesOrder[ _ ] )
+				
+				local text = attribute.desc
+				for i = 1, #self.Attributes[ _ ] do
+					
+					text = string.Replace( text, "%s" .. i, self:GetAttribute( _, i, true ) )
+					
+				end
+				
+				w, h = surface.GetTextSize( text )
+				surface.SetTextColor( attribute.color )
+				if width > w then
+					
+					surface.SetTextPos( x + ( 10 * ( ScrH() / 480 ) ) + ( ( width - w ) * 0.5 ), y + ( 10 * ( ScrH() / 480 ) ) + height_ )
+					
+				else
+					
+					surface.SetTextPos( x + ( 10 * ( ScrH() / 480 ) ), y + ( 10 * ( ScrH() / 480 ) ) + height_ )
+					
+				end
+				surface.DrawText( text )
+				height_ = height_ + h
+				
+			end
+			
+		end
+		
+	end
 	
 end
 
@@ -1807,11 +1986,11 @@ function SWEP:PrimaryAttack()
 				
 			end
 			
-			dmg:SetDamage( self:GetDamageMods( dmg:GetDamage(), math.ceil( dmg:GetDamage() - ( dmg:GetDamage() * modifier ) ) ) )
+			dmg:SetDamage( self:GetDamageMods( dmg:GetDamage(), math.ceil( dmg:GetDamage() - ( dmg:GetDamage() * modifier ) ), tr.Entity ) )
 			
 			if tr.Entity:IsPlayer() == true then
 				
-				self:GiveHealth( self.HealthOnHit )
+				if self:GetAttributeClass( "add_onhit_addhealth" ) != nil then self:GiveHealth( self:GetAttributeClass( "add_onhit_addhealth" ) ) end
 				
 			end
 			
@@ -1972,7 +2151,31 @@ function SWEP:GetCritChance()
 end
 
 --[[
-	Name:	SWEP:ShouldCrit( chance, stream )
+	Name:	SWEP:ModCrit( target )
+	
+	Desc:	Returns if the weapon should crit based on attributes
+	
+	Arg1:	Target
+	
+	Ret1:	If the weapon should crit based on attributes
+]]--
+function SWEP:ModCrit( target )
+	
+	local crit
+	
+	if IsValid( target ) == true then
+		
+		if self:GetAttributeClass( "or_crit_vs_playercond" ) != nil and bit.band( 1, self:GetAttributeClass( "or_crit_vs_playercond" ) ) > 0 and target:IsOnFire() == true then crit = true end
+		if self:GetAttributeClass( "set_nocrit_vs_nonburning" ) != nil and self:GetAttributeClass( "set_nocrit_vs_nonburning" ) > 0 and target:IsOnFire() != true then crit = false end
+		
+	end
+	
+	return crit
+	
+end
+
+--[[
+	Name:	SWEP:ShouldCrit( chance, stream, target )
 	
 	Desc:	Returns if the weapon should crit or not
 	
@@ -1980,9 +2183,14 @@ end
 	
 	Arg2:	If this is being called to check if a stream should activate
 	
+	Arg3:	Target
+	
 	Ret1:	If the weapon should crit or not
 ]]--
-function SWEP:ShouldCrit( chance, stream )
+function SWEP:ShouldCrit( chance, stream, target )
+	
+	local mod = self:ModCrit( target )
+	if mod != nil then return mod end
 	
 	if GetConVar( "tf2weapons_criticals" ):GetBool() != true then return false end
 	
@@ -1994,7 +2202,7 @@ function SWEP:ShouldCrit( chance, stream )
 	
 	if chance == nil then chance = self:GetCritChance() end
 	
-	return TF2Weapons:ShouldCrit( self:GetOwner(), self, chance )
+	return TF2Weapons:ShouldCrit( self:GetOwner(), self, target, chance )
 	
 end
 
@@ -2003,9 +2211,11 @@ end
 	
 	Desc:	Runs when the weapon crits
 	
+	Arg1:	Target
+	
 	Ret1:	Return false to prevent the crit
 ]]--
-function SWEP:OnCrit()
+function SWEP:OnCrit( target )
 	
 	return TF2Weapons:OnCrit( self:GetOwner(), self )
 	
@@ -2016,14 +2226,20 @@ end
 	
 	Desc:	Returns if both SWEP:ShouldCrit() and SWEP:OnCrit() are true
 	
+	Arg1:	Crit chance
+	
+	Arg2:	If this is being called to check if a stream should activate
+	
+	Arg3:	Target
+	
 	Ret1:	If both SWEP:ShouldCrit() and SWEP:OnCrit() are true
 ]]--
-function SWEP:DoCrit()
+function SWEP:DoCrit( chance, stream, target )
 	
-	local crit = self:ShouldCrit()
+	local crit = self:ShouldCrit( chance, stream, target )
 	if crit == true then
 		
-		local oncrit = self:OnCrit()
+		local oncrit = self:OnCrit( target )
 		if oncrit == true then crit = oncrit end
 		
 	end
@@ -2033,29 +2249,36 @@ function SWEP:DoCrit()
 end
 
 --[[
-	Name:	SWEP:GetDamageMods( damage, mod )
+	Name:	SWEP:GetDamageMods( damage, mod, target )
 	
 	Desc:	Returns damage amount with crits and other damage modifiers in effect
 	
 	Arg1:	Base damage. If unspecified, will use SWEP.Primary.Damage
 	
-	Arg2:	Damage to return if not modified here
+	Arg2:	Damage to return if not a crit
+	
+	Arg3:	Target
 	
 	Ret1:	Modified damage
 ]]--
-function SWEP:GetDamageMods( damage, mod )
+function SWEP:GetDamageMods( damage, mod, target )
 	
 	if damage == nil then damage = self.Primary.Damage end
 	
-	if self:ShouldCrit() == true then
+	local crit = self:DoCrit( nil, nil, target )
+	if mod != nil and crit != true then damage = mod end
+	
+	if IsValid( target ) == true then
 		
-		damage = damage * self.CritMultiplier
-		
-	elseif mod != nil then
-		
-		damage = mod
+		if self:GetAttributeClass( "mult_dmg_vs_nonburning" ) != nil then
+			
+			if target:IsOnFire() != true then damage = damage * self:GetAttributeClass( "mult_dmg_vs_nonburning" ) end
+			
+		end
 		
 	end
+	
+	if crit == true then damage = damage * self.CritMultiplier end
 	
 	return damage
 	

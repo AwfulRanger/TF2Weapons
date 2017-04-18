@@ -419,11 +419,11 @@ function TF2Weapons:GetCritChance( ply, weapon )
 	
 end
 
-function TF2Weapons:ShouldCrit( ply, weapon, chance )
+function TF2Weapons:ShouldCrit( ply, weapon, target, chance )
 	
-	if chance == nil then chance = self:CritChance( ply, weapon ) end
+	if chance == nil then chance = self:GetCritChance( ply, weapon ) end
 	
-	local shouldcrit = hook.Call( "TF2Weapons_ShouldCrit", nil, ply, weapon, chance )
+	local shouldcrit = hook.Call( "TF2Weapons_ShouldCrit", nil, ply, weapon, target, chance )
 	if shouldcrit != nil then return shouldcrit end
 	
 	if chance < 0 then return false end
@@ -431,7 +431,7 @@ function TF2Weapons:ShouldCrit( ply, weapon, chance )
 	
 end
 
-function TF2Weapons:OnCrit( ply, weapon )
+function TF2Weapons:OnCrit( ply, weapon, target )
 	
 	local oncrit = hook.Call( "TF2Weapons_OnCrit", nil, ply, weapon )
 	if oncrit != nil then return oncrit end

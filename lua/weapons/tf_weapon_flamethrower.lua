@@ -170,8 +170,6 @@ SWEP.Secondary.Range = 128
 
 SWEP.CritStream = true
 
-SWEP.ExtinguishHealth = 0
-
 function SWEP:SetVariables()
 	
 	self.ShootStartSound = Sound( "weapons/flame_thrower_start.wav" )
@@ -409,7 +407,7 @@ function SWEP:ManageFlames()
 						dmg:SetDamagePosition( tr.HitPos )
 						dmg:SetDamageType( DMG_BURN )
 						
-						dmg:SetDamage( self:GetDamageMods( math.ceil( self.Primary.Damage - ( self.Primary.Damage * modifier ) ) ) )
+						dmg:SetDamage( self:GetDamageMods( math.ceil( self.Primary.Damage - ( self.Primary.Damage * modifier ) ), nil, hit[ i ] ) )
 						
 						hit[ i ]:TakeDamageInfo( dmg )
 						
@@ -572,6 +570,8 @@ end
 
 function SWEP:SecondaryAttack()
 	
+	if self:GetAttributeClass( "set_flamethrower_push_disabled" ) != nil and self:GetAttributeClass( "set_flamethrower_push_disabled" ) > 0 then return end
+	if self:GetAttributeClass( "airblast_disabled" ) != nil and self:GetAttributeClass( "airblast_disabled" ) > 0 then return end
 	if self:Ammo1() - self.Secondary.TakeAmmo < 0 then return end
 	
 	self:SetTFStartFire( true )
@@ -623,15 +623,15 @@ function SWEP:SecondaryAttack()
 							self:PlaySound( self.AirblastExtinguishSound, nil, v )
 							v:Extinguish()
 							
-							if self:GetOwner():Health() < self:GetOwner():GetMaxHealth() then
+							if self:GetOwner():Health() < self:GetOwner():GetMaxHealth() and self:GetAttributeClass( "extinguish_restores_health" ) != nil then
 								
-								if self:GetOwner():Health() + self.ExtinguishHealth > self:GetOwner():GetMaxHealth() then
+								if self:GetOwner():Health() + self:GetAttributeClass( "extinguish_restores_health" ) > self:GetOwner():GetMaxHealth() then
 									
 									self:GetOwner():SetHealth( self:GetOwner():GetMaxHealth() )
 									
 								else
 									
-									self:GetOwner():SetHealth( self:GetOwner():Health() + self.ExtinguishHealth )
+									self:GetOwner():SetHealth( self:GetOwner():Health() + self:GetAttributeClass( "extinguish_restores_health" ) )
 									
 								end
 								

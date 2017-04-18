@@ -1,3 +1,26 @@
+--[[
+--template
+TF2Weapons:AddAttribute( {
+	
+	id = ,
+	name = "",
+	desc = "",
+	color = TF2Weapons.Color.,
+	type = "",
+	class = "",
+	hidden = ,
+	func = function( weapon, values )
+		
+		if values[ 1 ] == nil or IsValid( weapon ) != true then return values end
+		
+		
+		
+		return values
+		
+	end,
+	
+} )
+]]--
 TF2Weapons:AddAttribute( {
 	
 	id = 1,
@@ -6,6 +29,7 @@ TF2Weapons:AddAttribute( {
 	color = TF2Weapons.Color.NEGATIVE,
 	type = "percentage",
 	class = "mult_dmg",
+	hidden = false,
 	func = function( weapon, values )
 		
 		if values[ 1 ] == nil or IsValid( weapon ) != true then return values end
@@ -26,6 +50,7 @@ TF2Weapons:AddAttribute( {
 	color = TF2Weapons.Color.POSITIVE,
 	type = "percentage",
 	class = "mult_dmg",
+	hidden = false,
 	func = function( weapon, values )
 		
 		if values[ 1 ] == nil or IsValid( weapon ) != true then return values end
@@ -46,6 +71,7 @@ TF2Weapons:AddAttribute( {
 	color = TF2Weapons.Color.NEGATIVE,
 	type = "percentage",
 	class = "mult_clipsize",
+	hidden = false,
 	func = function( weapon, values )
 		
 		if values[ 1 ] == nil or IsValid( weapon ) != true then return values end
@@ -67,6 +93,7 @@ TF2Weapons:AddAttribute( {
 	color = TF2Weapons.Color.POSITIVE,
 	type = "percentage",
 	class = "mult_clipsize",
+	hidden = false,
 	func = function( weapon, values )
 		
 		if values[ 1 ] == nil or IsValid( weapon ) != true then return values end
@@ -92,6 +119,7 @@ TF2Weapons:AddAttribute( {
 	color = TF2Weapons.Color.NEGATIVE,
 	type = "inverted_percentage",
 	class = "mult_postfiredelay",
+	hidden = false,
 	func = function( weapon, values )
 		
 		if values[ 1 ] == nil or IsValid( weapon ) != true then return values end
@@ -113,6 +141,7 @@ TF2Weapons:AddAttribute( {
 	color = TF2Weapons.Color.POSITIVE,
 	type = "inverted_percentage",
 	class = "mult_postfiredelay",
+	hidden = false,
 	func = function( weapon, values )
 		
 		if values[ 1 ] == nil or IsValid( weapon ) != true then return values end
@@ -134,6 +163,7 @@ TF2Weapons:AddAttribute( {
 	color = TF2Weapons.Color.NEGATIVE,
 	type = "percentage",
 	class = "mult_medigun_healrate",
+	hidden = false,
 	func = function( weapon, values )
 		
 		if values[ 1 ] == nil or IsValid( weapon ) != true then return values end
@@ -155,6 +185,7 @@ TF2Weapons:AddAttribute( {
 	color = TF2Weapons.Color.POSITIVE,
 	type = "percentage",
 	class = "mult_medigun_healrate",
+	hidden = false,
 	func = function( weapon, values )
 		
 		if values[ 1 ] == nil or IsValid( weapon ) != true then return values end
@@ -176,6 +207,7 @@ TF2Weapons:AddAttribute( {
 	color = TF2Weapons.Color.NEGATIVE,
 	type = "percentage",
 	class = "mult_medigun_uberchargerate",
+	hidden = false,
 	func = function( weapon, values )
 		
 		if values[ 1 ] == nil or IsValid( weapon ) != true then return values end
@@ -197,6 +229,7 @@ TF2Weapons:AddAttribute( {
 	color = TF2Weapons.Color.POSITIVE,
 	type = "percentage",
 	class = "mult_medigun_uberchargerate",
+	hidden = false,
 	func = function( weapon, values )
 		
 		if values[ 1 ] == nil or IsValid( weapon ) != true then return values end
@@ -218,6 +251,7 @@ TF2Weapons:AddAttribute( {
 	color = TF2Weapons.Color.POSITIVE,
 	type = "percentage",
 	class = "mult_medigun_overheal_amount",
+	hidden = false,
 	func = function( weapon, values )
 		
 		if values[ 1 ] == nil or IsValid( weapon ) != true then return values end
@@ -238,6 +272,7 @@ TF2Weapons:AddAttribute( {
 	color = TF2Weapons.Color.NEGATIVE,
 	type = "percentage",
 	class = "mult_crit_chance",
+	hidden = false,
 	func = function( weapon, values )
 		
 		if values[ 1 ] == nil or IsValid( weapon ) != true then return values end
@@ -257,11 +292,72 @@ TF2Weapons:AddAttribute( {
 	color = TF2Weapons.Color.POSITIVE,
 	type = "additive",
 	class = "add_onhit_addhealth",
+	hidden = false,
 	func = function( weapon, values )
 		
-		if values[ 1 ] == nil or IsValid( weapon ) != true then return values end
+		return values
 		
-		if weapon.HealthOnHit != nil then weapon.HealthOnHit = weapon.HealthOnHit + values[ 1 ] end
+	end,
+	
+} )
+TF2Weapons:AddAttribute( {
+	
+	id = 20,
+	name = "crit vs burning players",
+	desc = "100% critical hit vs burning players",
+	color = TF2Weapons.Color.POSITIVE,
+	type = "or",
+	class = "or_crit_vs_playercond",
+	hidden = false,
+	func = function( weapon, values )
+		
+		return values
+		
+	end,
+	
+} )
+TF2Weapons:AddAttribute( {
+	
+	id = 21,
+	name = "dmg penalty vs nonburning",
+	desc = "%s1% damage vs non-burning players",
+	color = TF2Weapons.Color.NEGATIVE,
+	type = "percentage",
+	class = "mult_dmg_vs_nonburning",
+	hidden = false,
+	func = function( weapon, values )
+		
+		return values
+		
+	end,
+	
+} )
+TF2Weapons:AddAttribute( {
+	
+	id = 22,
+	name = "no crit vs nonburning",
+	desc = "No critical hits vs non-burning players",
+	color = TF2Weapons.Color.NEGATIVE,
+	type = "additive",
+	class = "set_nocrit_vs_nonburning",
+	hidden = false,
+	func = function( weapon, values )
+		
+		return values
+		
+	end,
+	
+} )
+TF2Weapons:AddAttribute( {
+	
+	id = 23,
+	name = "mod flamethrower push",
+	desc = "No compression blast",
+	color = TF2Weapons.Color.NEGATIVE,
+	type = "additive",
+	class = "set_flamethrower_push_disabled",
+	hidden = false,
+	func = function( weapon, values )
 		
 		return values
 		
@@ -276,6 +372,7 @@ TF2Weapons:AddAttribute( {
 	color = TF2Weapons.Color.NEGATIVE,
 	type = "percentage",
 	class = "mult_spread_scale",
+	hidden = false,
 	func = function( weapon, values )
 		
 		if values[ 1 ] == nil or IsValid( weapon ) != true then return values end
@@ -296,6 +393,7 @@ TF2Weapons:AddAttribute( {
 	color = TF2Weapons.Color.POSITIVE,
 	type = "percentage",
 	class = "mult_bullets_per_shot",
+	hidden = false,
 	func = function( weapon, values )
 		
 		if values[ 1 ] == nil or IsValid( weapon ) != true then return values end
@@ -316,6 +414,7 @@ TF2Weapons:AddAttribute( {
 	color = TF2Weapons.Color.NEGATIVE,
 	type = "percentage",
 	class = "mult_wpn_burndmg",
+	hidden = false,
 	func = function( weapon, values )
 		
 		if values[ 1 ] == nil or IsValid( weapon ) != true then return values end
@@ -336,6 +435,7 @@ TF2Weapons:AddAttribute( {
 	color = TF2Weapons.Color.POSITIVE,
 	type = "percentage",
 	class = "mult_maxammo_primary",
+	hidden = false,
 	func = function( weapon, values )
 		
 		if values[ 1 ] == nil or IsValid( weapon ) != true then return values end
@@ -371,6 +471,7 @@ TF2Weapons:AddAttribute( {
 	color = TF2Weapons.Color.NEGATIVE,
 	type = "percentage",
 	class = "mult_maxammo_primary",
+	hidden = false,
 	func = function( weapon, values )
 		
 		if values[ 1 ] == nil or IsValid( weapon ) != true then return values end
@@ -406,6 +507,7 @@ TF2Weapons:AddAttribute( {
 	color = TF2Weapons.Color.NEGATIVE,
 	type = "percentage",
 	class = "mult_reload_time",
+	hidden = false,
 	func = function( weapon, values )
 		
 		if values[ 1 ] == nil or IsValid( weapon ) != true then return values end
@@ -424,6 +526,7 @@ TF2Weapons:AddAttribute( {
 	color = TF2Weapons.Color.POSITIVE,
 	type = "inverted_percentage",
 	class = "mult_reload_time",
+	hidden = false,
 	func = function( weapon, values )
 		
 		if values[ 1 ] == nil or IsValid( weapon ) != true then return values end
@@ -442,6 +545,7 @@ TF2Weapons:AddAttribute( {
 	color = TF2Weapons.Color.POSITIVE,
 	type = "inverted_percentage",
 	class = "mult_spread_scale",
+	hidden = false,
 	func = function( weapon, values )
 		
 		if values[ 1 ] == nil or IsValid( weapon ) != true then return values end
@@ -456,12 +560,29 @@ TF2Weapons:AddAttribute( {
 } )
 TF2Weapons:AddAttribute( {
 	
+	id = 128,
+	name = "provide on active",
+	desc = "When weapon is active:",
+	color = TF2Weapons.Color.NEUTRAL,
+	type = "additive",
+	class = "provide_on_active",
+	hidden = false,
+	func = function( weapon, values )
+		
+		return values
+		
+	end,
+	
+} )
+TF2Weapons:AddAttribute( {
+	
 	id = 170,
 	name = "airblast cost increased",
 	desc = "+%s1% airblast cost",
 	color = TF2Weapons.Color.NEGATIVE,
 	type = "percentage",
 	class = "mult_airblast_cost",
+	hidden = false,
 	func = function( weapon, values )
 		
 		if values[ 1 ] == nil or IsValid( weapon ) != true then return values end
@@ -482,6 +603,7 @@ TF2Weapons:AddAttribute( {
 	color = TF2Weapons.Color.NEGATIVE,
 	type = "percentage",
 	class = "mult_deploy_time",
+	hidden = false,
 	func = function( weapon, values )
 		
 		if values[ 1 ] == nil or IsValid( weapon ) != true then return values end
@@ -501,6 +623,7 @@ TF2Weapons:AddAttribute( {
 	color = TF2Weapons.Color.POSITIVE,
 	type = "inverted_percentage",
 	class = "mult_deploy_time",
+	hidden = false,
 	func = function( weapon, values )
 		
 		if values[ 1 ] == nil or IsValid( weapon ) != true then return values end
@@ -520,6 +643,7 @@ TF2Weapons:AddAttribute( {
 	color = TF2Weapons.Color.POSITIVE,
 	type = "inverted_percentage",
 	class = "mult_switch_from_wep_deploy_time",
+	hidden = false,
 	func = function( weapon, values )
 		
 		if values[ 1 ] == nil or IsValid( weapon ) != true then return values end
@@ -539,11 +663,28 @@ TF2Weapons:AddAttribute( {
 	color = TF2Weapons.Color.POSITIVE,
 	type = "additive",
 	class = "energy_weapon_no_ammo",
+	hidden = false,
 	func = function( weapon, values )
 		
 		if values[ 1 ] == nil or IsValid( weapon ) != true then return values end
 		
 		if values[ 1 ] >= 1 then weapon.ReloadTakeAmmo = 0 end
+		
+		return values
+		
+	end,
+	
+} )
+TF2Weapons:AddAttribute( {
+	
+	id = 356,
+	name = "airblast disabled",
+	desc = "No airblast",
+	color = TF2Weapons.Color.NEGATIVE,
+	type = "additive",
+	class = "airblast_disabled",
+	hidden = false,
+	func = function( weapon, values )
 		
 		return values
 		
@@ -558,6 +699,7 @@ TF2Weapons:AddAttribute( {
 	color = TF2Weapons.Color.POSITIVE,
 	type = "inverted_percentage",
 	class = "mult_single_wep_deploy_time",
+	hidden = false,
 	func = function( weapon, values )
 		
 		if values[ 1 ] == nil or IsValid( weapon ) != true then return values end
@@ -577,6 +719,7 @@ TF2Weapons:AddAttribute( {
 	color = TF2Weapons.Color.POSITIVE,
 	type = "additive",
 	class = "extinguish_restores_health",
+	hidden = false,
 	func = function( weapon, values )
 		
 		if values[ 1 ] == nil or IsValid( weapon ) != true then return values end
