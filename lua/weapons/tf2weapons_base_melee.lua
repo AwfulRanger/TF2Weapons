@@ -1,7 +1,5 @@
 AddCSLuaFile()
 
-DEFINE_BASECLASS( "tf2weapons_base" )
-
 SWEP.Slot = 0
 SWEP.SlotPos = 0
 
