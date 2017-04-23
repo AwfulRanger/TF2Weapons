@@ -131,6 +131,7 @@ function SWEP:SetVariables()
 	
 	self.ShootSound = Sound( "weapons/minigun_shoot.wav" )
 	self.ShootSoundCrit = Sound( "weapons/minigun_shoot_crit.wav" )
+	self.ShootSoundEnd = nil
 	self.EmptySound = Sound( "weapons/minigun_empty.wav" )
 	self.SpoolUpSound = Sound( "weapons/minigun_wind_up.wav" )
 	self.SpoolIdleSound = Sound( "weapons/minigun_spin.wav" )
@@ -172,7 +173,7 @@ function SWEP:SpoolUp()
 	self:SetTFNextSpoolFire( CurTime() + self.SpoolTime )
 	
 	self:PlaySound( self.SpoolUpSound )
-	self:SetVMAnimation( self:GetHandAnim( "spool_up" ) )
+	self:SetVMAnimation( self:GetHandAnim( "spool_up" ), 0.87 / self.SpoolTime )
 	
 end
 
@@ -210,6 +211,12 @@ SWEP.SpinDownSpeed = 0.96
 function SWEP:Spool()
 	
 	local hands, weapon = self:GetViewModels()
+	
+	if self:GetOwner():KeyDown( IN_ATTACK ) != true and ( self.TF2Weapons_SoundPlaying == self.ShootSound or self.TF2Weapons_SoundPlaying == self.ShootSoundCrit ) then
+		
+		self:PlaySound( self.ShootSoundEnd )
+		
+	end
 	
 	if self:GetTFSpooled() == true then
 		
@@ -339,12 +346,12 @@ function SWEP:Spool()
 		if IsValid( self:GetOwner() ) == true and IsValid( hands ) == true and IsValid( weapon ) == true then
 			
 			local bone = weapon:LookupBone( "barrel" )
-			weapon:ManipulateBoneAngles( bone, Angle( 0, self.SpinAngle, 0 ) )
+			if bone != nil then weapon:ManipulateBoneAngles( bone, Angle( 0, self.SpinAngle, 0 ) ) end
 			
 		end
 		
 		local bone = self:LookupBone( "barrel" )
-		self:ManipulateBoneAngles( bone, Angle( 0, self.SpinAngle, 0 ) )
+		if bone != nil then self:ManipulateBoneAngles( bone, Angle( 0, self.SpinAngle, 0 ) ) end
 		
 	end
 	
@@ -456,7 +463,7 @@ function SWEP:Deploy()
 	if IsValid( self:GetOwner() ) == true and IsValid( weapon ) == true then
 		
 		self.LastBarrelBone = weapon:LookupBone( "barrel" )
-		self.LastBarrelAngle = weapon:GetManipulateBoneAngles( self.LastBarrelBone )
+		if self.LastBarrelBone != nil then self.LastBarrelAngle = weapon:GetManipulateBoneAngles( self.LastBarrelBone ) end
 		
 	end
 	if isangle( self.LastBarrelAngle ) == false then self.LastBarrelAngle = Angle( 0, 0, 0 ) end
