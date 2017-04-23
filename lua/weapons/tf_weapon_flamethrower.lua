@@ -407,7 +407,7 @@ function SWEP:ManageFlames()
 						dmg:SetDamagePosition( tr.HitPos )
 						dmg:SetDamageType( DMG_BURN )
 						
-						dmg:SetDamage( self:GetDamageMods( math.ceil( self.Primary.Damage - ( self.Primary.Damage * modifier ) ), nil, hit[ i ] ) )
+						dmg:SetDamage( self:GetFlameMods( math.ceil( self.Primary.Damage - ( self.Primary.Damage * modifier ) ), nil, hit[ i ], flame ) )
 						
 						hit[ i ]:TakeDamageInfo( dmg )
 						
@@ -744,5 +744,29 @@ function SWEP:Holster()
 	self:DoHolster()
 	
 	return true
+	
+end
+
+function SWEP:GetFlameMods( dmg, mod, target, flame )
+	
+	local basedmg, basecrit = self:GetDamageMods( dmg, mod, target )
+	
+	if basecrit != true then
+		
+		if IsValid( target ) == true and flame != nil then
+			
+			if self:GetAttributeClass( "set_flamethrower_back_crit" ) != nil and self:GetAttributeClass( "set_flamethrower_back_crit" ) != 0 then
+				
+				if target:GetAimVector():Angle().y - 45 < flame.ang.y and target:GetAimVector():Angle().y + 45 > flame.ang.y then basecrit = true end
+				
+			end
+			
+		end
+		
+		if basecrit == true then basedmg = basedmg * self.CritMultiplier end
+		
+	end
+	
+	return basedmg, basecrit
 	
 end
