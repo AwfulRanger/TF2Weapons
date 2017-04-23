@@ -382,6 +382,42 @@ TF2Weapons:AddAttribute( {
 } )
 TF2Weapons:AddAttribute( {
 	
+	id = 25,
+	name = "hidden secondary max ammo penalty",
+	desc = "",
+	color = TF2Weapons.Color.NEUTRAL,
+	type = "percentage",
+	class = "mult_maxammo_secondary",
+	hidden = false,
+	func = function( weapon, values )
+		
+		if values[ 1 ] == nil or IsValid( weapon ) != true then return values end
+		if weapon.Secondary == nil then return values end
+		
+		if weapon.Secondary.DefaultClip != nil and weapon.Secondary.ClipSize != nil then
+			
+			timer.Simple( 0, function()
+				
+				if IsValid( weapon ) == true and weapon.Secondary != nil then
+					
+					local defaultclipsize = weapon.Secondary.DefaultClipSize or weapon.Secondary.ClipSize
+					
+					if SERVER and IsValid( weapon:GetOwner() ) == true and weapon.Secondary.Ammo != nil then weapon:GetOwner():RemoveAmmo( weapon.Secondary.DefaultClip - ( ( weapon.Secondary.DefaultClip - defaultclipsize ) * values[ 1 ] ) - defaultclipsize, weapon.Secondary.Ammo, true ) end
+					weapon.Secondary.DefaultClip = weapon.Secondary.DefaultClip - ( ( weapon.Secondary.DefaultClip - defaultclipsize ) * ( values[ 1 ] - 1 ) )
+					
+				end
+				
+			end )
+			
+		end
+		
+		return values
+		
+	end,
+	
+} )
+TF2Weapons:AddAttribute( {
+	
 	id = 26,
 	name = "max health additive bonus",
 	desc = "+%s1 max health on wearer",
@@ -553,6 +589,46 @@ TF2Weapons:AddAttribute( {
 } )
 TF2Weapons:AddAttribute( {
 	
+	id = 86,
+	name = "minigun spinup time increased",
+	desc = "%s1% slower spin up time",
+	color = TF2Weapons.Color.NEGATIVE,
+	type = "percentage",
+	class = "mult_minigun_spinup_time",
+	hidden = false,
+	func = function( weapon, values )
+		
+		if values[ 1 ] == nil or IsValid( weapon ) != true then return values end
+		
+		if weapon.SpoolTime != nil then weapon.SpoolTime = weapon.SpoolTime * values[ 1 ] end
+		
+		return values
+		
+	end,
+	
+} )
+TF2Weapons:AddAttribute( {
+	
+	id = 87,
+	name = "minigun spinup time decreased",
+	desc = "%s1% faster spin up time",
+	color = TF2Weapons.Color.POSITIVE,
+	type = "inverted_percentage",
+	class = "mult_minigun_spinup_time",
+	hidden = false,
+	func = function( weapon, values )
+		
+		if values[ 1 ] == nil or IsValid( weapon ) != true then return values end
+		
+		if weapon.SpoolTime != nil then weapon.SpoolTime = weapon.SpoolTime * values[ 1 ] end
+		
+		return values
+		
+	end,
+	
+} )
+TF2Weapons:AddAttribute( {
+	
 	id = 96,
 	name = "Reload time increased",
 	desc = "%s1% slower reload time",
@@ -563,6 +639,7 @@ TF2Weapons:AddAttribute( {
 	func = function( weapon, values )
 		
 		if values[ 1 ] == nil or IsValid( weapon ) != true then return values end
+		
 		if weapon.ReloadSpeed != nil then weapon.ReloadSpeed = weapon.ReloadSpeed * values[ 1 ] end
 		
 		return values
@@ -582,6 +659,7 @@ TF2Weapons:AddAttribute( {
 	func = function( weapon, values )
 		
 		if values[ 1 ] == nil or IsValid( weapon ) != true then return values end
+		
 		if weapon.ReloadSpeed != nil then weapon.ReloadSpeed = weapon.ReloadSpeed / values[ 1 ] end
 		
 		return values
@@ -604,6 +682,22 @@ TF2Weapons:AddAttribute( {
 		if weapon.Primary == nil then return values end
 		
 		if weapon.Primary.Spread != nil then weapon.Primary.Spread = weapon.Primary.Spread * values[ 1 ] end
+		
+		return values
+		
+	end,
+	
+} )
+TF2Weapons:AddAttribute( {
+	
+	id = 107,
+	name = "move speed bonus",
+	desc = "+%s1% faster move speed on wearer",
+	color = TF2Weapons.Color.POSITIVE,
+	type = "percentage",
+	class = "mult_player_movespeed",
+	hidden = false,
+	func = function( weapon, values )
 		
 		return values
 		
@@ -689,6 +783,22 @@ TF2Weapons:AddAttribute( {
 } )
 TF2Weapons:AddAttribute( {
 	
+	id = 180,
+	name = "heal on kill",
+	desc = "+%s1 health restored on kill",
+	color = TF2Weapons.Color.POSITIVE,
+	type = "additive",
+	class = "heal_on_kill",
+	hidden = false,
+	func = function( weapon, values )
+		
+		return values
+		
+	end,
+	
+} )
+TF2Weapons:AddAttribute( {
+	
 	id = 199,
 	name = "switch from wep deploy time decreased",
 	desc = "This weapon holsters %s1% faster",
@@ -701,6 +811,38 @@ TF2Weapons:AddAttribute( {
 		if values[ 1 ] == nil or IsValid( weapon ) != true then return values end
 		
 		if weapon.NextDeploySpeed != nil then weapon.NextDeploySpeed = weapon.NextDeploySpeed * values[ 1 ] end
+		
+		return values
+		
+	end,
+	
+} )
+TF2Weapons:AddAttribute( {
+	
+	id = 238,
+	name = "minigun no spin sounds",
+	desc = "Silent Killer: No barrel spin sound",
+	color = TF2Weapons.Color.POSITIVE,
+	type = "additive",
+	class = "minigun_no_spin_sounds",
+	hidden = false,
+	func = function( weapon, values )
+		
+		return values
+		
+	end,
+	
+} )
+TF2Weapons:AddAttribute( {
+	
+	id = 275,
+	name = "cancel falling damage",
+	desc = "Wearer never takes falling damage",
+	color = TF2Weapons.Color.POSITIVE,
+	type = "additive",
+	class = "cancel_falling_damage",
+	hidden = false,
+	func = function( weapon, values )
 		
 		return values
 		
@@ -735,6 +877,22 @@ TF2Weapons:AddAttribute( {
 	color = TF2Weapons.Color.NEGATIVE,
 	type = "additive",
 	class = "airblast_disabled",
+	hidden = false,
+	func = function( weapon, values )
+		
+		return values
+		
+	end,
+	
+} )
+TF2Weapons:AddAttribute( {
+	
+	id = 412,
+	name = "dmg taken increased",
+	desc = "%s1% damage vulnerability on wearer",
+	color = TF2Weapons.Color.NEGATIVE,
+	type = "percentage",
+	class = "mult_dmgtaken",
 	hidden = false,
 	func = function( weapon, values )
 		
