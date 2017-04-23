@@ -3,6 +3,8 @@ AddCSLuaFile()
 AddCSLuaFile( "tf2weapons.lua" )
 include( "tf2weapons.lua" )
 
+SWEP.TF2Weapon = true
+
 SWEP.Weight = 5
 
 SWEP.AutoSwitchTo = true
@@ -1195,6 +1197,8 @@ function SWEP:CheckHands( owner )
 	
 end
 
+SWEP.TF2Weapons_SoundPlaying = nil
+
 --[[
 	Name:	SWEP:PlaySound( sound, num, ent )
 	
@@ -1213,7 +1217,13 @@ end
 ]]--
 function SWEP:PlaySound( sound, num, ent )
 	
-	if sound == nil then return end
+	if sound == nil then
+		
+		if IsValid( ent ) == true then ent.TF2Weapons_SoundPlaying = nil end
+		
+		return
+		
+	end
 	local _sound
 	
 	if istable( sound ) == true then
@@ -1233,6 +1243,9 @@ function SWEP:PlaySound( sound, num, ent )
 	if ent == nil then ent = self end
 	
 	ent:EmitSound( _sound )
+	
+	ent.TF2Weapons_SoundPlaying = _sound
+	
 	return _sound, dur
 	
 end
