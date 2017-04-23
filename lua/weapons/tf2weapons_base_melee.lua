@@ -1,5 +1,7 @@
 AddCSLuaFile()
 
+DEFINE_BASECLASS( "tf2weapons_base" )
+
 SWEP.Slot = 0
 SWEP.SlotPos = 0
 
@@ -142,9 +144,6 @@ function SWEP:DoSwing( hit, damage, ent, keepcrit )
 	
 	local trace
 	
-	if damage == nil then damage = self.Primary.Damage end
-	damage = self:GetDamageMods( damage )
-	
 	if self:GetOwner():IsPlayer() == true then self:GetOwner():LagCompensation( true ) end
 	trace = util.TraceLine( { start = self:GetOwner():GetShootPos(), endpos = self:GetOwner():GetShootPos() + self:GetOwner():GetAimVector() * self.Primary.Range, filter = self:GetOwner(), mask = MASK_SHOT } )
 	if self:GetOwner():IsPlayer() == true then self:GetOwner():LagCompensation( false ) end
@@ -158,6 +157,9 @@ function SWEP:DoSwing( hit, damage, ent, keepcrit )
 	end
 	
 	if IsValid( ent ) == false then ent = trace.Entity end
+	
+	if damage == nil then damage = self.Primary.Damage end
+	damage = self:GetDamageMods( damage, nil, ent, self:GetTFNextHitCrit() )
 	
 	if hit != false then
 		
@@ -396,33 +398,4 @@ end
 	Desc:	Called when the owner runs the +reload console command
 ]]--
 function SWEP:Reload()
-end
-
---[[
-	Name:	SWEP:GetDamageMods( damage, mod )
-	
-	Desc:	Returns damage amount with crits and other damage modifiers in effect
-	
-	Arg1:	Base damage. If unspecified, will use SWEP.Primary.Damage
-	
-	Arg2:	Damage to return if not modified here
-	
-	Ret1:	Modified damage
-]]--
-function SWEP:GetDamageMods( damage, mod )
-	
-	if damage == nil then damage = self.Primary.Damage end
-	
-	if self:GetTFNextHitCrit() == true then
-		
-		damage = damage * self.CritMultiplier
-		
-	elseif mod != nil then
-		
-		damage = mod
-		
-	end
-	
-	return damage
-	
 end

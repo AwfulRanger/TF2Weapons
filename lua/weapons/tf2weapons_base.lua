@@ -2319,7 +2319,7 @@ function SWEP:DoCrit( chance, stream, target )
 end
 
 --[[
-	Name:	SWEP:GetDamageMods( damage, mod, target )
+	Name:	SWEP:GetDamageMods( damage, mod, target, crit )
 	
 	Desc:	Returns damage amount with crits and other damage modifiers in effect
 	
@@ -2329,24 +2329,24 @@ end
 	
 	Arg3:	Target
 	
+	Arg4:	Should crit or not. If unspecified, will use SWEP:DoCrit()
+	
 	Ret1:	Modified damage
 	
 	Ret2:	If the damage was critical
 ]]--
-function SWEP:GetDamageMods( damage, mod, target )
+function SWEP:GetDamageMods( damage, mod, target, crit )
 	
 	if damage == nil then damage = self.Primary.Damage end
 	
-	local crit = self:DoCrit( nil, nil, target )
+	if crit == nil then crit = self:DoCrit( nil, nil, target ) end
 	if mod != nil and crit != true then damage = mod end
 	
 	if IsValid( target ) == true then
 		
-		if self:GetAttributeClass( "mult_dmg_vs_nonburning" ) != nil then
-			
-			if target:IsOnFire() != true then damage = damage * self:GetAttributeClass( "mult_dmg_vs_nonburning" ) end
-			
-		end
+		if self:GetAttributeClass( "mult_dmg_vs_nonburning" ) != nil and target:IsOnFire() != true then damage = damage * self:GetAttributeClass( "mult_dmg_vs_nonburning" ) end
+		if self:GetAttributeClass( "mult_dmg_bonus_while_half_dead" ) != nil and self:GetOwner():Health() < self:GetOwner():GetMaxHealth() * 0.5 then damage = damage * self:GetAttributeClass( "mult_dmg_bonus_while_half_dead" ) end
+		if self:GetAttributeClass( "mult_dmg_penalty_while_half_alive" ) != nil and self:GetOwner():Health() >= self:GetOwner():GetMaxHealth() * 0.5 then damage = damage * self:GetAttributeClass( "mult_dmg_penalty_while_half_alive" ) end
 		
 	end
 	

@@ -819,6 +819,38 @@ TF2Weapons:AddAttribute( {
 } )
 TF2Weapons:AddAttribute( {
 	
+	id = 224,
+	name = "dmg bonus while half dead",
+	desc = "%s1% increase in damage when health <50% of max",
+	color = TF2Weapons.Color.POSITIVE,
+	type = "percentage",
+	class = "mult_dmg_bonus_while_half_dead",
+	hidden = false,
+	func = function( weapon, values )
+		
+		return values
+		
+	end,
+	
+} )
+TF2Weapons:AddAttribute( {
+	
+	id = 225,
+	name = "dmg penalty while half alive",
+	desc = "%s1% decrease in damage when health >50% of max",
+	color = TF2Weapons.Color.NEGATIVE,
+	type = "percentage",
+	class = "mult_dmg_penalty_while_half_alive",
+	hidden = false,
+	func = function( weapon, values )
+		
+		return values
+		
+	end,
+	
+} )
+TF2Weapons:AddAttribute( {
+	
 	id = 238,
 	name = "minigun no spin sounds",
 	desc = "Silent Killer: No barrel spin sound",
