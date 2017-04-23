@@ -96,11 +96,15 @@ SWEP.RocketParticles = {
 SWEP.RocketSpeed = 1100
 SWEP.RocketRadius = 146
 
+SWEP.RocketClass = "tf_projectile_rocket"
+
 SWEP.BackBlastParticle = "rocketbackblast"
 
 function SWEP:Initialize()
 	
 	self:DoInitialize()
+	
+	if CLIENT then self:AddKillIcon( self.KillIcon, self.KillIconColor, self.KillIconX, self.KillIconY, self.KillIconW, self.KillIconH, self.RocketClass ) end
 	
 	self:PrecacheParticles( self.RocketParticles )
 	self:PrecacheParticles( self.BackBlastParticle )
@@ -189,7 +193,7 @@ function SWEP:PrimaryAttack()
 		
 		for i = 1, self.Primary.Shots do
 			
-			local rocket = ents.Create( "tf_projectile_rocket" )
+			local rocket = ents.Create( self.RocketClass )
 			if IsValid( rocket ) == true then
 				
 				local tracefilter = function( ent ) if ent == rocket or ent == self:GetOwner() or ent:GetClass() == rocket:GetClass() then return false end return true end

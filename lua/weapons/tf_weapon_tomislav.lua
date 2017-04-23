@@ -4,8 +4,8 @@ SWEP.Slot = 0
 SWEP.SlotPos = 0
 
 SWEP.CrosshairType = TF2Weapons.Crosshair.BIGCIRCLE
-SWEP.KillIconX = 0
-SWEP.KillIconY = 384
+SWEP.KillIconX = 384
+SWEP.KillIconY = 352
 
 if CLIENT then SWEP.WepSelectIcon = surface.GetTextureID( "backpack/weapons/c_models/c_tomislav/c_tomislav_large" ) end
 SWEP.PrintName = "Tomislav"

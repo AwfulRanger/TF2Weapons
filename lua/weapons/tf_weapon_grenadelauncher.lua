@@ -16,7 +16,7 @@ SWEP.SlotPos = 0
 
 SWEP.CrosshairType = TF2Weapons.Crosshair.CIRCLE
 SWEP.KillIconX = 0
-SWEP.KillIconY = 224
+SWEP.KillIconY = 288
 
 if CLIENT then SWEP.WepSelectIcon = surface.GetTextureID( "backpack/weapons/w_models/w_grenadelauncher_large" ) end
 SWEP.PrintName = "Grenade Launcher"
@@ -92,9 +92,13 @@ SWEP.GrenadeRadius = 146
 SWEP.GrenadeTime = 2.3
 SWEP.GrenadeSpeed = 1200
 
+SWEP.GrenadeClass = "tf_projectile_grenade"
+
 function SWEP:Initialize()
 	
 	self:DoInitialize()
+	
+	if CLIENT then self:AddKillIcon( self.KillIcon, self.KillIconColor, self.KillIconX, self.KillIconY, self.KillIconW, self.KillIconH, self.GrenadeClass ) end
 	
 	self:PrecacheParticles( self.GrenadeParticles )
 	self:PrecacheParticles( self.MuzzleParticle )
@@ -222,7 +226,7 @@ function SWEP:PrimaryAttack()
 		
 		for i = 1, self.Primary.Shots do
 			
-			local grenade = ents.Create( "tf_projectile_grenade" )
+			local grenade = ents.Create( self.GrenadeClass )
 			if IsValid( grenade ) == true then
 				
 				local tracefilter = function( ent ) if ent == grenade or ent == self:GetOwner() or ent:GetClass() == grenade:GetClass() then return false end return true end

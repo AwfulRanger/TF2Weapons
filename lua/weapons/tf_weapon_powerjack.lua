@@ -5,7 +5,7 @@ SWEP.SlotPos = 0
 
 SWEP.CrosshairType = TF2Weapons.Crosshair.PLUS
 SWEP.KillIconX = 0
-SWEP.KillIconY = 480
+SWEP.KillIconY = 928
 
 if CLIENT then SWEP.WepSelectIcon = surface.GetTextureID( "backpack/weapons/c_models/c_powerjack/c_powerjack_large" ) end
 SWEP.PrintName = "Powerjack"

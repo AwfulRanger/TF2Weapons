@@ -5,7 +5,7 @@ SWEP.SlotPos = 0
 
 SWEP.CrosshairType = TF2Weapons.Crosshair.DEFAULT
 SWEP.KillIconX = 0
-SWEP.KillIconY = 224
+SWEP.KillIconY = 352
 
 if CLIENT then SWEP.WepSelectIcon = surface.GetTextureID( "backpack/weapons/w_models/w_syringegun_large" ) end
 SWEP.PrintName = "Syringe Gun"
@@ -68,6 +68,16 @@ function SWEP:GetSyringeModel()
 end
 SWEP.SyringeSpeed = 1000
 
+SWEP.SyringeClass = "tf_projectile_syringe"
+
+function SWEP:Initialize()
+	
+	self:DoInitialize()
+	
+	if CLIENT then self:AddKillIcon( self.KillIcon, self.KillIconColor, self.KillIconX, self.KillIconY, self.KillIconW, self.KillIconH, self.SyringeClass ) end
+	
+end
+
 SWEP.SyringeSkinRED = 0
 SWEP.SyringeSkinBLU = 1
 
@@ -105,7 +115,7 @@ function SWEP:PrimaryAttack()
 		
 		for i = 1, self.Primary.Shots do
 			
-			local syringe = ents.Create( "tf_projectile_syringe" )
+			local syringe = ents.Create( self.SyringeClass )
 			if IsValid( syringe ) == true then
 				
 				local tracefilter = function( ent ) if ent == syringe or ent == self:GetOwner() or ent:GetClass() == syringe:GetClass() then return false end return true end

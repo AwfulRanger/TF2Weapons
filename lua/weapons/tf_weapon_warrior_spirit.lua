@@ -4,9 +4,9 @@ SWEP.Slot = 2
 SWEP.SlotPos = 0
 
 SWEP.CrosshairType = TF2Weapons.Crosshair.CIRCLE
-SWEP.KillIconX = 192
-SWEP.KillIconY = 416
-SWEP.KillIconW = 64
+SWEP.KillIconX = 256
+SWEP.KillIconY = 832
+SWEP.KillIconW = 128
 
 if CLIENT then SWEP.WepSelectIcon = surface.GetTextureID( "backpack/weapons/c_models/c_bear_claw/c_bear_claw_large" ) end
 SWEP.PrintName = "Warrior's Spirit"

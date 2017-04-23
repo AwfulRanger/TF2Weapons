@@ -23,7 +23,7 @@ SWEP.Slot = 0
 SWEP.SlotPos = 0
 
 SWEP.CrosshairType = TF2Weapons.Crosshair.CIRCLE
-SWEP.KillIconX = 0
+SWEP.KillIconX = 96
 SWEP.KillIconY = 224
 
 if CLIENT then SWEP.WepSelectIcon = surface.GetTextureID( "backpack/weapons/w_models/w_stickybomb_launcher_large" ) end
@@ -139,9 +139,13 @@ SWEP.PipebombSpeed = 900
 SWEP.PipebombSpeedCharged = 2400
 SWEP.PipebombTime = 0.7
 
+SWEP.PipebombClass = "tf_projectile_pipebomb"
+
 function SWEP:Initialize()
 	
 	self:DoInitialize()
+	
+	if CLIENT then self:AddKillIcon( self.KillIcon, self.KillIconColor, self.KillIconX, self.KillIconY, self.KillIconW, self.KillIconH, self.PipebombClass ) end
 	
 	self:PrecacheParticles( self.PipebombParticles )
 	self:PrecacheParticles( self.MuzzleParticle )
@@ -306,7 +310,7 @@ function SWEP:PrimaryAttack( charged, charge )
 		
 		for i = 1, self.Primary.Shots do
 			
-			local pipebomb = ents.Create( "tf_projectile_pipebomb" )
+			local pipebomb = ents.Create( self.PipebombClass )
 			if IsValid( pipebomb ) == true then
 				
 				local tracefilter = function( ent ) if ent == pipebomb or ent == self:GetOwner() or ent:GetClass() == pipebomb:GetClass() then return false end return true end

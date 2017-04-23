@@ -4,8 +4,8 @@ SWEP.Slot = 0
 SWEP.SlotPos = 0
 
 SWEP.CrosshairType = TF2Weapons.Crosshair.CIRCLE
-SWEP.KillIconX = 0
-SWEP.KillIconY = 416
+SWEP.KillIconX = 256
+SWEP.KillIconY = 448
 
 if CLIENT then SWEP.WepSelectIcon = surface.GetTextureID( "backpack/weapons/c_models/c_backburner/c_backburner_large" ) end
 SWEP.PrintName = "Backburner"

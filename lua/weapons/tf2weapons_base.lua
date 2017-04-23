@@ -921,7 +921,7 @@ function SWEP:PrintWeaponInfo( x, y, a )
 end
 
 --[[
-	Name:	SWEP:AddKillIcon( icon, color, x, y, w, h )
+	Name:	SWEP:AddKillIcon( icon, color, x, y, w, h, class )
 	
 	Desc:	Add a UV kill icon to the weapon
 	
@@ -936,10 +936,14 @@ end
 	Arg5:	Width of the UV
 	
 	Arg6:	Height of the UV
+	
+	Arg7:	Entity class to add killicon for
 ]]--
-function SWEP:AddKillIcon( icon, color, x, y, w, h )
+function SWEP:AddKillIcon( icon, color, x, y, w, h, class )
 	
 	if killicon.AddUV == nil then return end
+	
+	if class == nil then class = self.ClassName end
 	
 	local tw, th = surface.GetTextureSize( surface.GetTextureID( icon:GetName() ) )
 	
@@ -948,7 +952,7 @@ function SWEP:AddKillIcon( icon, color, x, y, w, h )
 	w = x + ( w / tw )
 	h = y + ( h / th )
 	
-	killicon.AddUV( self.ClassName, icon, color, x, y, w, h )
+	killicon.AddUV( class, icon, color, x, y, w, h )
 	
 end
 

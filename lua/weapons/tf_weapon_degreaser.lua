@@ -5,7 +5,7 @@ SWEP.SlotPos = 0
 
 SWEP.CrosshairType = TF2Weapons.Crosshair.CIRCLE
 SWEP.KillIconX = 0
-SWEP.KillIconY = 416
+SWEP.KillIconY = 896
 
 if CLIENT then SWEP.WepSelectIcon = surface.GetTextureID( "backpack/weapons/c_models/c_degreaser/c_degreaser_large" ) end
 SWEP.PrintName = "Degreaser"

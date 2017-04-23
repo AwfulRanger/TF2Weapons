@@ -4,8 +4,9 @@ SWEP.Slot = 1
 SWEP.SlotPos = 0
 
 SWEP.CrosshairType = TF2Weapons.Crosshair.DEFAULT
+SWEP.KillIcon = Material( "hud/dneg_images_v3" )
 SWEP.KillIconX = 0
-SWEP.KillIconY = 32
+SWEP.KillIconY = 736
 
 if CLIENT then SWEP.WepSelectIcon = surface.GetTextureID( "backpack/weapons/c_models/c_pep_pistol/c_pep_pistol_large" ) end
 SWEP.PrintName = "Pretty Boy's Pocket Pistol"
