@@ -366,6 +366,58 @@ TF2Weapons:AddAttribute( {
 } )
 TF2Weapons:AddAttribute( {
 	
+	id = 24,
+	name = "mod flamethrower back crit",
+	desc = "100% critical hits from behind",
+	color = TF2Weapons.Color.POSITIVE,
+	type = "additive",
+	class = "set_flamethrower_back_crit",
+	hidden = false,
+	func = function( weapon, values )
+		
+		return values
+		
+	end,
+	
+} )
+TF2Weapons:AddAttribute( {
+	
+	id = 26,
+	name = "max health additive bonus",
+	desc = "+%s1 max health on wearer",
+	color = TF2Weapons.Color.POSITIVE,
+	type = "additive",
+	class = "add_maxhealth",
+	hidden = false,
+	func = function( weapon, values )
+		
+		return values
+		
+	end,
+	
+} )
+TF2Weapons:AddAttribute( {
+	
+	id = 28,
+	name = "crit mod disabled hidden",
+	desc = "No random critical hits",
+	color = TF2Weapons.Color.NEGATIVE,
+	type = "percentage",
+	class = "mult_crit_chance",
+	hidden = true,
+	func = function( weapon, values )
+		
+		if values[ 1 ] == nil or IsValid( weapon ) != true then return values end
+		
+		if weapon.CritChance != nil then weapon.CritChance = weapon.CritChance * values[ 1 ] end
+		
+		return values
+		
+	end,
+	
+} )
+TF2Weapons:AddAttribute( {
+	
 	id = 36,
 	name = "spread penalty",
 	desc = "%s1% less accurate",
