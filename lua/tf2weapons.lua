@@ -96,6 +96,87 @@ else
 	
 end
 
+local meta = FindMetaTable( "Entity" )
+function meta:TF2Weapons_SetAttribute( attribute, value, t, float )
+	
+	if t == nil then t = TypeID( value ) end
+	
+	if t == TYPE_ANGLE then
+		
+		self:SetNW2Angle( "TF2Weapons_Attribute_" .. attribute, value )
+		
+	elseif t == TYPE_BOOL then
+		
+		self:SetNW2Bool( "TF2Weapons_Attribute_" .. attribute, value )
+		
+	elseif t == TYPE_ENTITY then
+		
+		self:SetNW2Entity( "TF2Weapons_Attribute_" .. attribute, value )
+		
+	elseif t == TYPE_NUMBER then
+		
+		if float != true then
+			
+			self:SetNW2Int( "TF2Weapons_Attribute_" .. attribute, value )
+			
+		else
+			
+			self:SetNW2Float( "TF2Weapons_Attribute_" .. attribute, value )
+			
+		end
+		
+	elseif t == TYPE_STRING then
+		
+		self:SetNW2String( "TF2Weapons_Attribute_" .. attribute, value )
+		
+	elseif t == TYPE_VECTOR then
+		
+		self:SetNW2Vector( "TF2Weapons_Attribute_" .. attribute, value )
+		
+	end
+	
+end
+function meta:TF2Weapons_GetAttribute( attribute, value, t, float )
+	
+	if t == nil then t = TypeID( value ) end
+	
+	if t == TYPE_ANGLE then
+		
+		return self:GetNW2Angle( "TF2Weapons_Attribute_" .. attribute, value )
+		
+	elseif t == TYPE_BOOL then
+		
+		return self:GetNW2Bool( "TF2Weapons_Attribute_" .. attribute, value )
+		
+	elseif t == TYPE_ENTITY then
+		
+		return self:GetNW2Entity( "TF2Weapons_Attribute_" .. attribute, value )
+		
+	elseif t == TYPE_NUMBER then
+		
+		if float != true then
+			
+			return self:GetNW2Int( "TF2Weapons_Attribute_" .. attribute, value )
+			
+		else
+			
+			return self:GetNW2Float( "TF2Weapons_Attribute_" .. attribute, value )
+			
+		end
+		
+	elseif t == TYPE_STRING then
+		
+		return self:GetNW2String( "TF2Weapons_Attribute_" .. attribute, value )
+		
+	elseif t == TYPE_VECTOR then
+		
+		return self:GetNW2Vector( "TF2Weapons_Attribute_" .. attribute, value )
+		
+	end
+	
+end
+
+
 concommand.Add( "+tf2weapons_inspect", function( ply )
 	
 	if IsValid( ply ) == false then return end
@@ -220,6 +301,63 @@ end )
 hook.Add( "EntityTakeDamage", "TF2Weapons_EntityTakeDamage", function( ent, dmg )
 	
 	ent:SetNW2Float( "TF2Weapons_LastDamage", CurTime() )
+	
+end )
+
+hook.Add( "ScalePlayerDamage", "TF2Weapons_ScalePlayerDamage", function( ply, hitgroup, dmg )
+	
+	local weapon = ply:GetActiveWeapon()
+	
+	if IsValid( weapon ) != true or weapon.TF2Weapon != true then return end
+	
+	if weapon:GetAttributeClass( "mult_dmgtaken" ) != nil then dmg:ScaleDamage( weapon:GetAttributeClass( "mult_dmgtaken" ) ) end
+	
+end )
+
+hook.Add( "GetFallDamage", "TF2Weapons_GetFallDamage", function( ply, speed )
+	
+	local weapon = ply:GetActiveWeapon()
+	
+	if IsValid( weapon ) != true or weapon.TF2Weapon != true then return end
+	
+	if weapon:GetAttributeClass( "cancel_falling_damage" ) != nil and weapon:GetAttributeClass( "cancel_falling_damage" ) > 0 then return 0 end
+	
+end )
+
+hook.Add( "DoPlayerDeath", "TF2Weapons_DoPlayerDeath", function( ply, attacker, dmg )
+	
+	if attacker:IsPlayer() != true then return end
+	
+	local weapon = attacker:GetActiveWeapon()
+	
+	if IsValid( weapon ) != true or weapon.TF2Weapon != true then return end
+	
+	if weapon:GetAttributeClass( "heal_on_kill" ) != nil then
+		
+		if attacker:Health() < attacker:GetMaxHealth() then
+			
+			local health = attacker:Health() + weapon:GetAttributeClass( "heal_on_kill" )
+			if health > attacker:GetMaxHealth() then health = attacker:GetMaxHealth() end
+			attacker:SetHealth( health )
+			
+		end
+		
+	end
+	
+end )
+
+hook.Add( "Move", "TF2Weapons_Move", function( ply, mv )
+	
+	local weapon = ply:GetActiveWeapon()
+	
+	if IsValid( weapon ) != true or weapon.TF2Weapon != true then return end
+	
+	if weapon:GetAttributeClass( "mult_player_movespeed" ) != nil then
+		
+		mv:SetMaxClientSpeed( mv:GetMaxClientSpeed() * weapon:GetAttributeClass( "mult_player_movespeed" ) )
+		mv:SetMaxSpeed( mv:GetMaxSpeed() * weapon:GetAttributeClass( "mult_player_movespeed" ) )
+		
+	end
 	
 end )
 
