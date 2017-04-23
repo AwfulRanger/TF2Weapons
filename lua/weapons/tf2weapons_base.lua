@@ -729,29 +729,6 @@ function SWEP:GetAttributeClass( id, slot, pretty )
 end
 
 --[[
-	Name:	SWEP:Markup( text, color, font )
-	
-	Desc:	Returns text for markup
-	
-	Arg1:	Text to change
-	
-	Arg2:	Color value. If specified, will color the text
-	
-	Arg3:	Font name. If specified, will change the text's font
-	
-	Ret1:	Markup text
-]]--
-function SWEP:Markup( text, color, font )
-	
-	if text == nil then text = "" end
-	if color != nil then text = "<color=" .. color.r .. "," .. color.g .. "," .. color.b .. "," .. color.a .. ">" .. text .. "</color>" end
-	if font != nil then text = "<font=" .. font .. ">" .. text .. "</font>" end
-	
-	return text
-	
-end
-
---[[
 	Name:	SWEP:PrintWeaponInfo( x, y, a )
 	
 	Desc:	Draw the weapon info that appears when selecting this weapon
@@ -794,9 +771,15 @@ function SWEP:PrintWeaponInfo( x, y, a )
 		
 		for i = 1, #self.AttributesOrder do
 			
-			w, h = surface.GetTextSize( TF2Weapons:GetAttribute( self.AttributesOrder[ i ] ).desc )
-			if w > width then width = w end
-			height = height + h
+			local attribute = TF2Weapons:GetAttribute( self.AttributesOrder[ i ] )
+			
+			if attribute.hidden != true then
+				
+				w, h = surface.GetTextSize( attribute.desc )
+				if w > width then width = w end
+				height = height + h
+				
+			end
 			
 		end
 		
@@ -806,11 +789,15 @@ function SWEP:PrintWeaponInfo( x, y, a )
 			
 			if isnumber( _ ) == true then
 				
-				local attribute = self:Markup( TF2Weapons:GetAttribute( _ ).desc, TF2Weapons:GetAttribute( _ ).color, "TF2Weapons_InfoSecondary" )
+				local attribute = TF2Weapons:GetAttribute( _ )
 				
-				w, h = surface.GetTextSize( TF2Weapons:GetAttribute( _ ).desc )
-				if w > width then width = w end
-				height = height + h
+				if attribute.hidden != true then
+					
+					w, h = surface.GetTextSize( attribute.desc )
+					if w > width then width = w end
+					height = height + h
+					
+				end
 				
 			end
 			
@@ -863,41 +850,12 @@ function SWEP:PrintWeaponInfo( x, y, a )
 			
 			local attribute = TF2Weapons:GetAttribute( order )
 			
-			local text = attribute.desc
-			for i_ = 1, #self.Attributes[ order ] do
-				
-				text = string.Replace( text, "%s" .. i_, self:GetAttribute( order, i_, true ) )
-				
-			end
-			
-			w, h = surface.GetTextSize( text )
-			surface.SetTextColor( attribute.color )
-			if width > w then
-				
-				surface.SetTextPos( x + ( 10 * ( ScrH() / 480 ) ) + ( ( width - w ) * 0.5 ), y + ( 10 * ( ScrH() / 480 ) ) + height_ )
-				
-			else
-				
-				surface.SetTextPos( x + ( 10 * ( ScrH() / 480 ) ), y + ( 10 * ( ScrH() / 480 ) ) + height_ )
-				
-			end
-			surface.DrawText( text )
-			height_ = height_ + h
-			
-		end
-		
-	else
-		
-		for _, v in pairs( self.Attributes ) do
-			
-			if isnumber( _ ) == true then
-				
-				local attribute = TF2Weapons:GetAttribute( self.AttributesOrder[ _ ] )
+			if attribute.hidden != true then
 				
 				local text = attribute.desc
-				for i = 1, #self.Attributes[ _ ] do
+				for i_ = 1, #self.Attributes[ order ] do
 					
-					text = string.Replace( text, "%s" .. i, self:GetAttribute( _, i, true ) )
+					text = string.Replace( text, "%s" .. i_, self:GetAttribute( order, i_, true ) )
 					
 				end
 				
@@ -914,6 +872,43 @@ function SWEP:PrintWeaponInfo( x, y, a )
 				end
 				surface.DrawText( text )
 				height_ = height_ + h
+				
+			end
+			
+		end
+		
+	else
+		
+		for _, v in pairs( self.Attributes ) do
+			
+			if isnumber( _ ) == true then
+				
+				local attribute = TF2Weapons:GetAttribute( self.AttributesOrder[ _ ] )
+				
+				if attribute.hidden != true then
+					
+					local text = attribute.desc
+					for i = 1, #self.Attributes[ _ ] do
+						
+						text = string.Replace( text, "%s" .. i, self:GetAttribute( _, i, true ) )
+						
+					end
+					
+					w, h = surface.GetTextSize( text )
+					surface.SetTextColor( attribute.color )
+					if width > w then
+						
+						surface.SetTextPos( x + ( 10 * ( ScrH() / 480 ) ) + ( ( width - w ) * 0.5 ), y + ( 10 * ( ScrH() / 480 ) ) + height_ )
+						
+					else
+						
+						surface.SetTextPos( x + ( 10 * ( ScrH() / 480 ) ), y + ( 10 * ( ScrH() / 480 ) ) + height_ )
+						
+					end
+					surface.DrawText( text )
+					height_ = height_ + h
+					
+				end
 				
 			end
 			
@@ -1711,6 +1706,7 @@ function SWEP:DoHolster()
 	self:SetTFReloading( false )
 	self:SetTFInspecting( false )
 	self:SetTFInspectLoop( false )
+	self:SetTFNextInspect( -1 )
 	self:SetTFPreventInspect( false )
 	
 	if IsValid( self:GetOwner() ) == true then self:GetOwner():SetNW2Float( "TF2Weapons_NextDeploySpeed", self.NextDeploySpeed ) end
@@ -1734,14 +1730,71 @@ function SWEP:Holster()
 end
 
 --[[
+	Name:	SWEP:AddAttributes()
+	
+	Desc:	Add attribute values
+]]--
+function SWEP:AddAttributes()
+	
+	if IsValid( self:GetOwner() ) == true then
+		
+		if self:GetAttributeClass( "add_maxhealth" ) != nil then
+			
+			self:GetOwner():SetMaxHealth( self:GetOwner():GetMaxHealth() + self:GetAttributeClass( "add_maxhealth" ) )
+			self:GetOwner():SetHealth( self:GetOwner():Health() + self:GetAttributeClass( "add_maxhealth" ) )
+			
+		end
+		
+	end
+	
+end
+
+--[[
+	Name:	SWEP:RemoveAttributes()
+	
+	Desc:	Remove attribute values
+]]--
+function SWEP:RemoveAttributes()
+	
+	if IsValid( self:GetTFLastOwner() ) == true then
+		
+		if self:GetAttributeClass( "add_maxhealth" ) != nil then
+			
+			self:GetTFLastOwner():SetMaxHealth( self:GetTFLastOwner():GetMaxHealth() - self:GetAttributeClass( "add_maxhealth" ) )
+			self:GetTFLastOwner():SetHealth( self:GetTFLastOwner():Health() - self:GetAttributeClass( "add_maxhealth" ) )
+			
+		end
+		
+	end
+	
+end
+
+--[[
+	Name:	SWEP:Equip( ent )
+	
+	Desc:	Called when the weapon is equipped
+	
+	Arg1:	Entity equipping the weapon
+]]--
+function SWEP:Equip( ent )
+	
+	if ent:IsPlayer() != true then return end
+	
+	self:AddAttributes()
+	
+end
+
+--[[
 	Name:	SWEP:OnDrop()
 	
 	Desc:	Called when the weapon is dropped
 ]]--
 function SWEP:OnDrop()
 	
+	self:RemoveAttributes()
+	
 	self:Holster()
-	self:RemoveHands( self.LastOwner )
+	self:RemoveHands( self:GetTFLastOwner() )
 	
 end
 
@@ -1753,7 +1806,7 @@ end
 function SWEP:OnRemove()
 	
 	self:Holster()
-	self:RemoveHands( self.LastOwner )
+	self:RemoveHands( self:GetTFLastOwner() )
 	
 end
 
@@ -1765,7 +1818,7 @@ end
 function SWEP:OwnerChanged()
 	
 	self:Holster()
-	self:RemoveHands( self.LastOwner )
+	self:RemoveHands( self:GetTFLastOwner() )
 	
 end
 
@@ -2260,6 +2313,8 @@ end
 	Arg3:	Target
 	
 	Ret1:	Modified damage
+	
+	Ret2:	If the damage was critical
 ]]--
 function SWEP:GetDamageMods( damage, mod, target )
 	
@@ -2280,7 +2335,7 @@ function SWEP:GetDamageMods( damage, mod, target )
 	
 	if crit == true then damage = damage * self.CritMultiplier end
 	
-	return damage
+	return damage, crit
 	
 end
 
