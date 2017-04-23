@@ -250,6 +250,7 @@ function SWEP:DoSwing( hit, damage, ent, keepcrit )
 		end
 		
 		self:SetTFSwinging( false )
+		self:SetTFPreventInspect( false )
 		if keepcrit != true then self:SetTFNextHitCrit( false ) end
 		
 	end
@@ -293,6 +294,7 @@ function SWEP:DoHolster()
 	self:SetTFInspecting( false )
 	self:SetTFInspectLoop( false )
 	self:SetTFNextInspect( -1 )
+	self:SetTFPreventInspect( false )
 	
 	if IsValid( self:GetOwner() ) == true then
 		
@@ -337,6 +339,7 @@ function SWEP:DoPrimaryAttack( anim, crit )
 	self:SetTFNextInspect( -1 )
 	
 	self:SetTFSwinging( true )
+	self:SetTFPreventInspect( true )
 	self:SetTFNextHit( CurTime() + self.Primary.HitDelay )
 	
 	local crit = self:DoCrit()
