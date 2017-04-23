@@ -568,11 +568,19 @@ function SWEP:PrimaryAttack()
 	
 end
 
+function SWEP:CanSecondaryAttack()
+	
+	if self:GetAttributeClass( "set_flamethrower_push_disabled" ) != nil and self:GetAttributeClass( "set_flamethrower_push_disabled" ) > 0 then return false end
+	if self:GetAttributeClass( "airblast_disabled" ) != nil and self:GetAttributeClass( "airblast_disabled" ) > 0 then return false end
+	if self:Ammo1() - self.Secondary.TakeAmmo < 0 then return false end
+	
+	return true
+	
+end
+
 function SWEP:SecondaryAttack()
 	
-	if self:GetAttributeClass( "set_flamethrower_push_disabled" ) != nil and self:GetAttributeClass( "set_flamethrower_push_disabled" ) > 0 then return end
-	if self:GetAttributeClass( "airblast_disabled" ) != nil and self:GetAttributeClass( "airblast_disabled" ) > 0 then return end
-	if self:Ammo1() - self.Secondary.TakeAmmo < 0 then return end
+	if self:CanSecondaryAttack() != true then return end
 	
 	self:SetTFStartFire( true )
 	
