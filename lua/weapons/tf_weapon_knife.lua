@@ -147,6 +147,12 @@ function SWEP:Think()
 	
 end
 
+function SWEP:OnBackstab( ent, damage )
+	
+	if self:GetAttributeClass( "sanguisuge" ) != nil and self:GetAttributeClass( "sanguisuge" ) > 0 then self:GiveHealth( ent:Health() ) end
+	
+end
+
 function SWEP:PrimaryAttack()
 	
 	if self:CanPrimaryAttack() == false then return end
@@ -159,9 +165,11 @@ function SWEP:PrimaryAttack()
 	local damageent = trace.Entity
 	if IsValid( self:GetTFBackstabEnt() ) == true then
 		
-		damage = self:GetTFBackstabEnt():Health() * 3
-		if self:OnCrit() then damage = damage * self.CritMultiplier end
+		damage = ( self:GetTFBackstabEnt():Health() * 3 ) * self.CritMultiplier
 		damageent = self:GetTFBackstabEnt()
+		
+		self:OnBackstab( damageent, damage )
+		
 		self:SetVMAnimation( self:GetHandAnim( "backstab" ) )
 		self:SetTFBackstabHit( true )
 		
