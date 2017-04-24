@@ -706,6 +706,22 @@ TF2Weapons:AddAttribute( {
 } )
 TF2Weapons:AddAttribute( {
 	
+	id = 125,
+	name = "max health additive penalty",
+	desc = "%s1 max health on wearer",
+	color = TF2Weapons.Color.NEGATIVE,
+	type = "additive",
+	class = "add_maxhealth",
+	hidden = false,
+	func = function( weapon, values )
+		
+		return values
+		
+	end,
+	
+} )
+TF2Weapons:AddAttribute( {
+	
 	id = 128,
 	name = "provide on active",
 	desc = "When weapon is active:",
@@ -811,6 +827,22 @@ TF2Weapons:AddAttribute( {
 		if values[ 1 ] == nil or IsValid( weapon ) != true then return values end
 		
 		if weapon.NextDeploySpeed != nil then weapon.NextDeploySpeed = weapon.NextDeploySpeed * values[ 1 ] end
+		
+		return values
+		
+	end,
+	
+} )
+TF2Weapons:AddAttribute( {
+	
+	id = 217,
+	name = "sanguisuge",
+	desc = "On Backstab: Absorbs the health from your victim.",
+	color = TF2Weapons.Color.POSITIVE,
+	type = "additive",
+	class = "sanguisuge",
+	hidden = false,
+	func = function( weapon, values )
 		
 		return values
 		
@@ -925,6 +957,22 @@ TF2Weapons:AddAttribute( {
 	color = TF2Weapons.Color.NEGATIVE,
 	type = "percentage",
 	class = "mult_dmgtaken",
+	hidden = false,
+	func = function( weapon, values )
+		
+		return values
+		
+	end,
+	
+} )
+TF2Weapons:AddAttribute( {
+	
+	id = 524,
+	name = "increased jump height from weapon",
+	desc = "+%s1% greater jump height when active",
+	color = TF2Weapons.Color.POSITIVE,
+	type = "percentage",
+	class = "mod_jump_height_from_weapon",
 	hidden = false,
 	func = function( weapon, values )
 		

@@ -332,17 +332,7 @@ hook.Add( "DoPlayerDeath", "TF2Weapons_DoPlayerDeath", function( ply, attacker, 
 	
 	if IsValid( weapon ) != true or weapon.TF2Weapon != true then return end
 	
-	if weapon:GetAttributeClass( "heal_on_kill" ) != nil then
-		
-		if attacker:Health() < attacker:GetMaxHealth() then
-			
-			local health = attacker:Health() + weapon:GetAttributeClass( "heal_on_kill" )
-			if health > attacker:GetMaxHealth() then health = attacker:GetMaxHealth() end
-			attacker:SetHealth( health )
-			
-		end
-		
-	end
+	if weapon:GetAttributeClass( "heal_on_kill" ) != nil then weapon:GiveHealth( weapon:GetAttributeClass( "heal_on_kill" ), attacker, attacker:GetMaxHealth() ) end
 	
 end )
 

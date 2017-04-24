@@ -745,7 +745,6 @@ function SWEP:PrintWeaponInfo( x, y, a )
 	
 	if self.DrawWeaponInfoBox == false then return end
 	
-	
 	local name = self.HUDName
 	local prefix = TF2Weapons.QualityPrefix[ self.Quality ]
 	if prefix != nil and prefix != "" then name = prefix .. " " .. name end
@@ -768,6 +767,19 @@ function SWEP:PrintWeaponInfo( x, y, a )
 	w, h = surface.GetTextSize( "Level " .. level .. " " .. self.Type, "TF2Weapons_InfoSecondary" )
 	if w > width then width = w end
 	height = height + h
+	
+	if self.Description != nil and self.Description != "" then
+		
+		local explode = string.Explode( "\n", self.Description )
+		for i = 1, #explode do
+			
+			w, h = surface.GetTextSize( explode[ i ] )
+			if w > width then width = w end
+			height = height + h
+			
+		end
+		
+	end
 	
 	if self.AttributesOrder[ 1 ] != nil then
 		
@@ -913,6 +925,29 @@ function SWEP:PrintWeaponInfo( x, y, a )
 				end
 				
 			end
+			
+		end
+		
+	end
+	
+	if self.Description != nil and self.Description != "" then
+		
+		local explode = string.Explode( "\n", self.Description )
+		for i = 1, #explode do
+			
+			w, h = surface.GetTextSize( explode[ i ] )
+			surface.SetTextColor( TF2Weapons.Color.NEUTRAL )
+			if width > w then
+				
+				surface.SetTextPos( x + ( 10 * ( ScrH() / 480 ) ) + ( ( width - w ) * 0.5 ), y + ( 10 * ( ScrH() / 480 ) ) + height_ )
+				
+			else
+				
+				surface.SetTextPos( x + ( 10 * ( ScrH() / 480 ) ), y + ( 10 * ( ScrH() / 480 ) ) + height_ )
+				
+			end
+			surface.DrawText( explode[ i ] )
+			height_ = height_ + h
 			
 		end
 		
@@ -1660,6 +1695,8 @@ end
 ]]--
 function SWEP:DoDeploy()
 	
+	self:AddActiveAttributes()
+	
 	if IsValid( self:GetOwner() ) == false then return end
 	
 	self:SetTFLastOwner( self:GetOwner() )
@@ -1719,6 +1756,8 @@ end
 ]]--
 function SWEP:DoHolster()
 	
+	self:RemoveActiveAttributes()
+	
 	self:RemoveHands()
 	self:SetTFReloading( false )
 	self:SetTFInspecting( false )
@@ -1746,6 +1785,8 @@ function SWEP:Holster()
 	
 end
 
+SWEP.AttributesAdded = false
+
 --[[
 	Name:	SWEP:AddAttributes()
 	
@@ -1753,12 +1794,18 @@ end
 ]]--
 function SWEP:AddAttributes()
 	
-	if IsValid( self:GetOwner() ) == true then
+	if self.AttributesAdded == true then return end
+	
+	self.AttributesAdded = true
+	
+	local owner = self:GetOwner()
+	
+	if IsValid( owner ) == true and owner:IsPlayer() == true then
 		
 		if self:GetAttributeClass( "add_maxhealth" ) != nil then
 			
-			self:GetOwner():SetMaxHealth( self:GetOwner():GetMaxHealth() + self:GetAttributeClass( "add_maxhealth" ) )
-			self:GetOwner():SetHealth( self:GetOwner():Health() + self:GetAttributeClass( "add_maxhealth" ) )
+			owner:SetMaxHealth( owner:GetMaxHealth() + self:GetAttributeClass( "add_maxhealth" ) )
+			owner:SetHealth( owner:Health() + self:GetAttributeClass( "add_maxhealth" ) )
 			
 		end
 		
@@ -1773,14 +1820,64 @@ end
 ]]--
 function SWEP:RemoveAttributes()
 	
-	if IsValid( self:GetTFLastOwner() ) == true then
+	if self.AttributesAdded == false then return end
+	
+	self.AttributesAdded = false
+	
+	local owner = self:GetTFLastOwner()
+	
+	if IsValid( owner ) == true and owner:IsPlayer() == true then
 		
 		if self:GetAttributeClass( "add_maxhealth" ) != nil then
 			
-			self:GetTFLastOwner():SetMaxHealth( self:GetTFLastOwner():GetMaxHealth() - self:GetAttributeClass( "add_maxhealth" ) )
-			self:GetTFLastOwner():SetHealth( self:GetTFLastOwner():Health() - self:GetAttributeClass( "add_maxhealth" ) )
+			owner:SetMaxHealth( owner:GetMaxHealth() - self:GetAttributeClass( "add_maxhealth" ) )
+			owner:SetHealth( owner:Health() - self:GetAttributeClass( "add_maxhealth" ) )
 			
 		end
+		
+	end
+	
+end
+
+SWEP.ActiveAttributesAdded = false
+
+--[[
+	Name:	SWEP:AddActiveAttributes()
+	
+	Desc:	Add active attribute values
+]]--
+function SWEP:AddActiveAttributes()
+	
+	if self.ActiveAttributesAdded == true then return end
+	
+	self.ActiveAttributesAdded = true
+	
+	local owner = self:GetOwner()
+	
+	if IsValid( owner ) == true and owner:IsPlayer() == true then
+		
+		if self:GetAttributeClass( "mod_jump_height_from_weapon" ) != nil then owner:SetJumpPower( owner:GetJumpPower() * self:GetAttributeClass( "mod_jump_height_from_weapon" ) ) end
+		
+	end
+	
+end
+
+--[[
+	Name:	SWEP:RemoveActiveAttributes()
+	
+	Desc:	Remove active attribute values
+]]--
+function SWEP:RemoveActiveAttributes()
+	
+	if self.ActiveAttributesAdded == false then return end
+	
+	self.ActiveAttributesAdded = false
+	
+	local owner = self:GetTFLastOwner()
+	
+	if IsValid( owner ) == true and owner:IsPlayer() == true then
+		
+		if self:GetAttributeClass( "mod_jump_height_from_weapon" ) != nil then owner:SetJumpPower( owner:GetJumpPower() / self:GetAttributeClass( "mod_jump_height_from_weapon" ) ) end
 		
 	end
 	
@@ -1794,8 +1891,6 @@ end
 	Arg1:	Entity equipping the weapon
 ]]--
 function SWEP:Equip( ent )
-	
-	if ent:IsPlayer() != true then return end
 	
 	self:AddAttributes()
 	
@@ -1985,15 +2080,20 @@ end
 	
 	Arg2:	Player to give health to
 	
-	Arg3:	Max health. Set to -1 for unlimited. If unspecified, will use ply's max health
+	Arg3:	Max health. Set to -1 for unlimited
 ]]--
 function SWEP:GiveHealth( hp, ply, max )
 	
 	if hp == 0 then return end
 	if ply == nil then ply = self:GetOwner() end
-	if max == nil then max = ply:GetMaxHealth() end
+	if max == nil then
+		
+		max = ply:GetMaxHealth()
+		if GetConVar( "tf2weapons_overheal" ):GetBool() == true then max = -1 end
+		
+	end
 	
-	if ply:Health() >= max then return end
+	if max != -1 and ply:Health() >= max then return end
 	
 	local health = ply:Health() + hp
 	if max != -1 and health > max then health = max end
