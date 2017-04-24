@@ -34,7 +34,7 @@ SWEP.AdminOnly = false
 SWEP.ViewModel = "models/weapons/c_models/c_grenadelauncher/c_grenadelauncher.mdl"
 SWEP.WorldModel = "models/weapons/c_models/c_grenadelauncher/c_grenadelauncher.mdl"
 SWEP.HandModel = "models/weapons/c_models/c_demo_arms.mdl"
-SWEP.HoldType = "crossbow"
+SWEP.HoldType = "shotgun"
 function SWEP:GetAnimations()
 	
 	return "g"
