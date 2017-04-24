@@ -435,13 +435,9 @@ function SWEP:DoTeamSet( blu )
 		
 	end
 	
-	if IsValid( self:GetOwner() ) == true then
-		
-		self:SetSkin( skin )
-		hands:SetSkin( skin )
-		weapon:SetSkin( skin )
-		
-	end
+	self:SetSkin( skin )
+	if IsValid( hands ) == true then hands:SetSkin( skin ) end
+	if IsValid( weapon ) == true then weapon:SetSkin( skin ) end
 	
 end
 
