@@ -82,6 +82,8 @@ SWEP.Primary.Force = 10
 SWEP.Primary.TakeAmmo = 1
 SWEP.Primary.Delay = 1.5
 
+SWEP.CritChance = 0
+
 SWEP.MaxScopeTime = 3.3
 SWEP.ChargeDelay = 1
 SWEP.HeadshotDelay = 0.2
