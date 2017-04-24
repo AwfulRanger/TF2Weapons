@@ -4,8 +4,8 @@ SWEP.Slot = 2
 SWEP.SlotPos = 0
 
 SWEP.CrosshairType = TF2Weapons.Crosshair.PLUS
-SWEP.KillIconX = 96
-SWEP.KillIconY = 0
+SWEP.KillIconX = 388
+SWEP.KillIconY = 64
 
 if CLIENT then SWEP.WepSelectIcon = surface.GetTextureID( "backpack/weapons/c_models/c_shogun_kunai/c_shogun_kunai_large" ) end
 SWEP.PrintName = "Conniver's Kunai"
