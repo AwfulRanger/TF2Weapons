@@ -1462,13 +1462,32 @@ function SWEP:AddParticle( particle, attachment, ent, pattach, options )
 end
 
 --[[
+	Name:	SWEP:CanInspect()
+	
+	Desc:	Returns if the weapon can be inspected
+	
+	Ret1:	If the weapon can be inspected
+]]--
+function SWEP:CanInspect()
+	
+	if self:GetTFPreventInspect() == true then return false end
+	if IsValid( self:GetOwner() ) == false then return false end
+	if self:GetInspect() == nil then return false end
+	if self:GetInspect() == "" then return false end
+	if CurTime() < self:GetNextPrimaryFire() then return false end
+	
+	return true
+	
+end
+
+--[[
 	Name:	SWEP:Inspect()
 	
 	Desc:	Weapon inspection
 ]]--
 function SWEP:Inspect()
 	
-	if self:GetTFPreventInspect() == true or IsValid( self:GetOwner() ) == false or self:GetInspect() == nil or self:GetInspect() == "" then return end
+	if self:CanInspect() != true then return end
 	
 	local hands, weapon = self:GetViewModels()
 	
