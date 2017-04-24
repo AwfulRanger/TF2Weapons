@@ -60,7 +60,7 @@ function SWEP:SetVariables()
 	self.ShootSound = Sound( "weapons/tomislav_shoot.wav" )
 	self.ShootSoundCrit = Sound( "weapons/tomislav_shoot_crit.wav" )
 	self.ShootSoundEnd = Sound( "weapons/tomislav_wind_down.wav" )
-	self.EmptySound = Sound( "weapons/minigun_empty.wav" )
+	self.EmptySound = Sound( "weapons/shotgun_empty.wav" )
 	self.SpoolUpSound = Sound( "weapons/tomislav_wind_up.wav" )
 	self.SpoolIdleSound = nil
 	self.SpoolDownSound = nil
