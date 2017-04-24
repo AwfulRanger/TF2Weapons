@@ -2089,7 +2089,7 @@ function SWEP:GiveHealth( hp, ply, max )
 	if max == nil then
 		
 		max = ply:GetMaxHealth()
-		if GetConVar( "tf2weapons_overheal" ):GetBool() == true then max = -1 end
+		if GetConVar( "tf2weapons_overheal" ):GetBool() == true then max = ply:GetMaxHealth() * 1.5 end
 		
 	end
 	
@@ -2160,7 +2160,7 @@ function SWEP:PrimaryAttack()
 			
 			if tr.Entity:IsPlayer() == true or tr.Entity:IsNPC() == true then
 				
-				if self:GetAttributeClass( "add_onhit_addhealth" ) != nil then self:GiveHealth( self:GetAttributeClass( "add_onhit_addhealth" ) ) end
+				if self:GetAttributeClass( "add_onhit_addhealth" ) != nil then self:GiveHealth( self:GetAttributeClass( "add_onhit_addhealth" ), self:GetOwner(), self:GetOwner():GetMaxHealth() ) end
 				
 			end
 			
