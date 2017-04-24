@@ -4,8 +4,8 @@ SWEP.Slot = 2
 SWEP.SlotPos = 0
 
 SWEP.CrosshairType = TF2Weapons.Crosshair.CIRCLE
-SWEP.KillIconX = 0
-SWEP.KillIconY = 160
+SWEP.KillIconX = 384
+SWEP.KillIconY = 736
 
 if CLIENT then SWEP.WepSelectIcon = surface.GetTextureID( "backpack/weapons/c_models/c_scimitar/c_scimitar_large" ) end
 SWEP.PrintName = "Shahanshah"
