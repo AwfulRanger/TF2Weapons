@@ -324,18 +324,6 @@ hook.Add( "GetFallDamage", "TF2Weapons_GetFallDamage", function( ply, speed )
 	
 end )
 
-hook.Add( "DoPlayerDeath", "TF2Weapons_DoPlayerDeath", function( ply, attacker, dmg )
-	
-	if attacker:IsPlayer() != true then return end
-	
-	local weapon = attacker:GetActiveWeapon()
-	
-	if IsValid( weapon ) != true or weapon.TF2Weapon != true then return end
-	
-	if weapon:GetAttributeClass( "heal_on_kill" ) != nil then weapon:GiveHealth( weapon:GetAttributeClass( "heal_on_kill" ), attacker, attacker:GetMaxHealth() ) end
-	
-end )
-
 hook.Add( "Move", "TF2Weapons_Move", function( ply, mv )
 	
 	local weapon = ply:GetActiveWeapon()
@@ -567,3 +555,28 @@ function TF2Weapons:OnCrit( ply, weapon, target )
 	if GetConVar( "tf2weapons_criticals" ):GetBool() != true then return false end
 	
 end
+
+function TF2Weapons:EntityKilled( ent, attacker, inflictor )
+	
+	if attacker:IsPlayer() != true then return end
+	
+	local weapon = attacker:GetActiveWeapon()
+	
+	if IsValid( weapon ) != true or weapon.TF2Weapon != true then return end
+	
+	if weapon:GetAttributeClass( "heal_on_kill" ) != nil then weapon:GiveHealth( weapon:GetAttributeClass( "heal_on_kill" ), attacker, attacker:GetMaxHealth() ) end
+	
+	
+end
+
+hook.Add( "DoPlayerDeath", "TF2Weapons_DoPlayerDeath", function( ply, attacker, dmg )
+	
+	TF2Weapons:EntityKilled( ply, attacker, dmg:GetInflictor() )
+	
+end )
+
+hook.Add( "OnNPCKilled", "TF2Weapons_OnNPCKilled", function( npc, attacker, inflictor )
+	
+	TF2Weapons:EntityKilled( npc, attacker, inflictor )
+	
+end )
