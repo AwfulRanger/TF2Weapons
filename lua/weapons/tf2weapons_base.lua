@@ -1235,7 +1235,7 @@ end
 SWEP.TF2Weapons_SoundPlaying = nil
 
 --[[
-	Name:	SWEP:PlaySound( sound, num, ent )
+	Name:	SWEP:PlaySound( sound, num, ent, channel )
 	
 	Desc:	Plays a sound from the weapon
 	
@@ -1246,11 +1246,13 @@ SWEP.TF2Weapons_SoundPlaying = nil
 	
 	Arg3:	Entity to play the sound from. If unspecified, this will be self
 	
+	Arg4:	Channel to play the sound in
+	
 	Ret1:	Sound name
 	
 	Ret2:	Sound duration
 ]]--
-function SWEP:PlaySound( sound, num, ent )
+function SWEP:PlaySound( sound, num, ent, channel )
 	
 	if sound == nil then
 		
@@ -1277,7 +1279,7 @@ function SWEP:PlaySound( sound, num, ent )
 	
 	if ent == nil then ent = self end
 	
-	ent:EmitSound( _sound )
+	ent:EmitSound( _sound, nil, nil, nil, channel )
 	
 	ent.TF2Weapons_SoundPlaying = _sound
 	
@@ -1341,7 +1343,6 @@ SWEP.CreatedParticles = {}
 				--Create more tables in here for each control point
 				
 			}
-			
 ]]--
 function SWEP:AddParticle( particle, attachment, ent, pattach, options )
 	

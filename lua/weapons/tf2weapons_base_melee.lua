@@ -163,42 +163,7 @@ function SWEP:DoSwing( hit, damage, ent, keepcrit )
 		
 		if ent != nil and ent != NULL then
 			
-			if game.SinglePlayer() == true then
-				
-				local dmg = DamageInfo()
-				dmg:SetInflictor( self )
-				dmg:SetAttacker( self:GetOwner() )
-				dmg:SetReportedPosition( self:GetOwner():GetPos() )
-				dmg:SetDamagePosition( trace.HitPos )
-				dmg:SetDamageForce( ( trace.Normal * 1000 ) * self.Primary.Force )
-				dmg:SetDamage( damage )
-				dmg:SetDamageType( DMG_CLUB )
-				ent:TakeDamageInfo( dmg )
-				--if IsValid( ent:GetPhysicsObjectNum( trace.PhysicsBone ) ) == true then ent:GetPhysicsObjectNum( trace.PhysicsBone ):ApplyForceOffset( ( trace.Normal * 1000 ) * self.Primary.Force, trace.HitPos ) end
-				
-				local sound
-				
-				if ent:IsPlayer() == true or ent:IsNPC() == true then
-					
-					sound = self.HitFleshSound
-					
-				else
-					
-					sound = self.HitWorldSound
-					
-				end
-				
-				if istable( sound ) == true then
-					
-					self:EmitSound( sound[ math.random( #sound ) ] )
-					
-				else
-					
-					self:EmitSound( sound )
-					
-				end
-				
-			elseif SERVER and ent:IsWorld() != true then
+			if SERVER and ent:IsWorld() != true then
 				
 				local dmg = DamageInfo()
 				dmg:SetInflictor( self )
@@ -209,9 +174,12 @@ function SWEP:DoSwing( hit, damage, ent, keepcrit )
 				dmg:SetDamage( damage )
 				dmg:SetDamageType( DMG_CLUB )
 				ent:TakeDamageInfo( dmg )
-				if IsValid( ent:GetPhysicsObjectNum( trace.PhysicsBone ) ) == true then ent:GetPhysicsObjectNum( trace.PhysicsBone ):ApplyForceOffset( ( trace.Normal * 1000 ) * self.Primary.Force, trace.HitPos ) end
 				
-			elseif CLIENT and IsFirstTimePredicted() == true then
+				if ent:IsRagdoll() == true and IsValid( ent:GetPhysicsObjectNum( trace.PhysicsBone ) ) == true then ent:GetPhysicsObjectNum( trace.PhysicsBone ):ApplyForceOffset( ( trace.Normal * 1000 ) * self.Primary.Force, trace.HitPos ) end
+				
+			end
+			
+			if ( game.SinglePlayer() == true or CLIENT ) and IsFirstTimePredicted() == true then
 				
 				local sound
 				
@@ -225,15 +193,7 @@ function SWEP:DoSwing( hit, damage, ent, keepcrit )
 					
 				end
 				
-				if istable( sound ) == true then
-					
-					EmitSound( sound[ math.random( #sound ) ], trace.HitPos, self:EntIndex() )
-					
-				else
-					
-					EmitSound( sound, trace.HitPos, self:EntIndex() )
-					
-				end
+				self:PlaySound( sound, nil, nil, CHAN_AUTO )
 				
 			end
 			
