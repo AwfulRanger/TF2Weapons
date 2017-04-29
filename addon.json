@@ -6,7 +6,6 @@
 	"ignore" : [
 		
 		".git/*",
-		"changelist.md",
 		"LICENSE",
 		"README.md",
 		"tf2weapons.jpg"
