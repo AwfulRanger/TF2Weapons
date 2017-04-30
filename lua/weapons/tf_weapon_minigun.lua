@@ -27,7 +27,7 @@ end
 CreateConVar( "tf2weapons_minigun_revspeed", 110 / 230, { FCVAR_SERVER_CAN_EXECUTE, FCVAR_REPLICATED }, "What to multiply a revved up player's speed by (speed * value)" )
 SWEP.TF2Weapons_MinigunRev = true
 
-hook.Add( "SetupMove", "tf2weapons_minigun_revspeed", function( ply, mv, cmd )
+hook.Add( "SetupMove", "TF2Weapons_Minigun_RevSpeed", function( ply, mv, cmd )
 	
 	if IsValid( ply:GetActiveWeapon() ) == true and ply:GetActiveWeapon().TF2Weapons_MinigunRev == true and ply:GetActiveWeapon():GetTFSpooled() == true then
 		
