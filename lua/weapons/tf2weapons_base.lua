@@ -1921,7 +1921,7 @@ function SWEP:OnDrop()
 	
 	self:RemoveAttributes()
 	
-	self:Holster()
+	self:DoHolster()
 	self:RemoveHands( self:GetTFLastOwner() )
 	
 end
@@ -1933,7 +1933,7 @@ end
 ]]--
 function SWEP:OnRemove()
 	
-	self:Holster()
+	self:DoHolster()
 	self:RemoveHands( self:GetTFLastOwner() )
 	
 end
@@ -1945,7 +1945,7 @@ end
 ]]--
 function SWEP:OwnerChanged()
 	
-	self:Holster()
+	self:DoHolster()
 	self:RemoveHands( self:GetTFLastOwner() )
 	
 end
