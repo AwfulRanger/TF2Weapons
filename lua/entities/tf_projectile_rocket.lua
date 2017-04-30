@@ -43,6 +43,7 @@ ENT.Damage = 90
 --ENT.Speed = 1024
 ENT.Speed = 1100
 ENT.Radius = 146
+ENT.Force = 5
 
 ENT.CritMultiplier = 3
 
@@ -101,7 +102,6 @@ end
 
 function ENT:SetRocketAngles( angles )
 	
-	--self.Angles = angles
 	self:SetNW2Angle( "angles", angles )
 	self:SetAngles( angles )
 	
@@ -116,43 +116,49 @@ end
 
 function ENT:SetRocketDamage( damage )
 	
-	--self.Damage = damage
 	self:SetNW2Float( "damage", damage )
 	
 end
 
 function ENT:GetRocketDamage()
 	
-	--return self.Damage
 	return self:GetNW2Float( "damage", self.Damage )
 	
 end
 
 function ENT:SetRocketSpeed( speed )
 	
-	--self.Speed = speed
 	self:SetNW2Float( "speed", speed )
 	
 end
 
 function ENT:GetRocketSpeed()
 	
-	--return self.Speed
 	return self:GetNW2Float( "speed", self.Speed )
 	
 end
 
 function ENT:SetRocketRadius( radius )
 	
-	--self.Radius = radius
 	self:SetNW2Float( "radius", radius )
 	
 end
 
 function ENT:GetRocketRadius()
 	
-	--return self.Radius
 	return self:GetNW2Float( "radius", self.Radius )
+	
+end
+
+function ENT:SetRocketForce( force )
+	
+	self:SetNW2Float( "force", force )
+	
+end
+
+function ENT:GetRocketForce()
+	
+	return self:GetNW2Float( "force", self.Force )
 	
 end
 
@@ -357,7 +363,7 @@ function ENT:Explode( remove, damage )
 			local hitpos = hit[ i ]:GetPos() + hit[ i ]:OBBCenter()
 			local dir = ( hitpos - self:GetPos() ):Angle()
 			
-			local vel = ( self:GetRocketRadius() - distance ) * 5
+			local vel = ( self:GetRocketRadius() - distance ) * self:GetRocketForce()
 			
 			if hit[ i ]:IsPlayer() == true then
 				

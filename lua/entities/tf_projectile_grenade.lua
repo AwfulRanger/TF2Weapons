@@ -23,6 +23,7 @@ ENT.Particles = {
 ENT.ImpactDamage = 100
 ENT.Damage = 60
 ENT.Radius = 146
+ENT.Force = 5
 ENT.Time = 2.3
 
 ENT.CritMultiplier = 3
@@ -113,6 +114,18 @@ end
 function ENT:GetGrenadeRadius()
 	
 	return self:GetNW2Float( "radius", self.Radius )
+	
+end
+
+function ENT:SetGrenadeForce( force )
+	
+	self:SetNW2Float( "force", force )
+	
+end
+
+function ENT:GetGrenadeForce()
+	
+	return self:GetNW2Float( "force", self.Force )
 	
 end
 
@@ -360,7 +373,7 @@ function ENT:Explode( remove, damage )
 			local hitpos = hit[ i ]:GetPos() + hit[ i ]:OBBCenter()
 			local dir = ( hitpos - self:GetPos() ):Angle()
 			
-			local vel = ( self:GetGrenadeRadius() - distance ) * 5
+			local vel = ( self:GetGrenadeRadius() - distance ) * self:GetGrenadeForce()
 			
 			if hit[ i ]:IsPlayer() == true then
 				

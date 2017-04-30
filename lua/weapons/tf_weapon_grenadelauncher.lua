@@ -58,7 +58,7 @@ SWEP.Primary.Damage = 60
 SWEP.Primary.Shots = 1
 SWEP.Primary.Spread = 0.005
 SWEP.Primary.SpreadRecovery = -1
-SWEP.Primary.Force = 10
+SWEP.Primary.Force = 5
 SWEP.Primary.TakeAmmo = 1
 SWEP.Primary.Delay = 0.6
 
@@ -247,6 +247,7 @@ function SWEP:PrimaryAttack()
 				grenade:SetGrenadeCrit( self:DoCrit() )
 				grenade:SetGrenadeCritMultiplier( self.CritMultiplier )
 				grenade:SetGrenadeRadius( self.GrenadeRadius )
+				grenade:SetGrenadeForce( self.Primary.Force )
 				grenade:SetGrenadeTime( self.GrenadeTime )
 				grenade:Spawn()
 				grenade:PhysWake()

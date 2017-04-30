@@ -65,7 +65,7 @@ SWEP.Primary.Damage = 60
 SWEP.Primary.Shots = 1
 SWEP.Primary.Spread = 0.005
 SWEP.Primary.SpreadRecovery = -1
-SWEP.Primary.Force = 10
+SWEP.Primary.Force = 5
 SWEP.Primary.TakeAmmo = 1
 SWEP.Primary.Delay = 0.6
 
@@ -330,6 +330,7 @@ function SWEP:PrimaryAttack( charged, charge )
 				pipebomb:SetPipebombCrit( self:DoCrit() )
 				pipebomb:SetPipebombCritMultiplier( self.CritMultiplier )
 				pipebomb:SetPipebombRadius( self.PipebombRadius )
+				pipebomb:SetPipebombForce( self.Primary.Force )
 				pipebomb:SetPipebombTime( CurTime() + self.PipebombTime )
 				pipebomb:Spawn()
 				pipebomb:PhysWake()

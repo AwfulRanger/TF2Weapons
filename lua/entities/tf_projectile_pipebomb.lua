@@ -37,6 +37,7 @@ ENT.Particles = {
 }
 ENT.Damage = 120
 ENT.Radius = 146
+ENT.Force = 5
 ENT.Time = 0
 
 ENT.CritMultiplier = 3
@@ -115,6 +116,18 @@ end
 function ENT:GetPipebombRadius()
 	
 	return self:GetNW2Float( "radius", self.Radius )
+	
+end
+
+function ENT:SetPipebombForce( force )
+	
+	self:SetNW2Float( "force", force )
+	
+end
+
+function ENT:GetPipebombForce()
+	
+	return self:GetNW2Float( "force", self.Force )
 	
 end
 
@@ -317,7 +330,7 @@ function ENT:Explode( remove, damage )
 			local hitpos = hit[ i ]:GetPos() + hit[ i ]:OBBCenter()
 			local dir = ( hitpos - self:GetPos() ):Angle()
 			
-			local vel = ( self:GetPipebombRadius() - distance ) * 5
+			local vel = ( self:GetPipebombRadius() - distance ) * self:GetPipebombForce()
 			
 			if hit[ i ]:IsPlayer() == true then
 				
@@ -360,7 +373,7 @@ function ENT:Explode( remove, damage )
 		local hitpos = self:GetOwner():GetPos() + self:GetOwner():OBBCenter()
 		local dir = ( hitpos - self:GetPos() ):Angle()
 		
-		local vel = ( self:GetPipebombRadius() - distance ) * 4
+		local vel = ( self:GetPipebombRadius() - distance ) * self:GetPipebombForce()
 		
 		if self:GetOwner():IsPlayer() == true then
 			
