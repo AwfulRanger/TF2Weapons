@@ -2,13 +2,19 @@ AddCSLuaFile()
 
 local sniperrifles = {}
 
+SWEP.TF2Weapons_SniperRifleDot = true
+
 hook.Add( "OnEntityCreated", "TF2Weapons_SniperRifle_OnCreated", function( ent )
+	
+	if ent.TF2Weapons_SniperRifleDot != true then return end
 	
 	table.insert( sniperrifles, ent )
 	
 end )
 
 hook.Add( "EntityRemoved", "TF2Weapons_SniperRifle_OnRemoved", function( ent )
+	
+	if ent.TF2Weapons_SniperRifleDot != true then return end
 	
 	if table.HasValue( sniperrifles, ent ) == true then
 		
