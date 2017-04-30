@@ -19,7 +19,7 @@ else
 	
 end
 
-SWEP.Slot = 0
+SWEP.Slot = 1
 SWEP.SlotPos = 0
 
 SWEP.CrosshairType = TF2Weapons.Crosshair.CIRCLE
