@@ -84,8 +84,10 @@ SWEP.SlotPos = 0
 
 SWEP.DrawAmmo = false
 SWEP.CrosshairType = TF2Weapons.Crosshair.BIGPLUS
-SWEP.KillIconX = 256
-SWEP.KillIconY = 384
+SWEP.KillIconX = 0
+SWEP.KillIconY = 0
+SWEP.KillIconW = 0
+SWEP.KillIconH = 0
 
 if CLIENT then SWEP.WepSelectIcon = surface.GetTextureID( "backpack/weapons/c_models/c_medigun/c_medigun" ) end
 SWEP.PrintName = "Medi Gun"
