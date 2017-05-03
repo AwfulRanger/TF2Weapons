@@ -163,16 +163,27 @@ function SWEP:DoSwing( hit, damage, ent, keepcrit )
 		
 		if ent != nil and ent != NULL then
 			
-			if SERVER and ent:IsWorld() != true then
+			local dmg = DamageInfo()
+			dmg:SetInflictor( self )
+			dmg:SetAttacker( self:GetOwner() )
+			dmg:SetReportedPosition( self:GetOwner():GetPos() )
+			dmg:SetDamagePosition( trace.HitPos )
+			dmg:SetDamageForce( ( self:GetOwner():GetForward() * 2000 ) * self.Primary.Force )
+			dmg:SetDamage( damage )
+			dmg:SetDamageType( DMG_CLUB )
+			
+			local tool = false
+			local friendly = false
+			local upgraded = false
+			if self.TF2Weapons_BuildTool == true and ent.TF2Weapons_Building == true then
 				
-				local dmg = DamageInfo()
-				dmg:SetInflictor( self )
-				dmg:SetAttacker( self:GetOwner() )
-				dmg:SetReportedPosition( self:GetOwner():GetPos() )
-				dmg:SetDamagePosition( trace.HitPos )
-				dmg:SetDamageForce( ( self:GetOwner():GetForward() * 2000 ) * self.Primary.Force )
-				dmg:SetDamage( damage )
-				dmg:SetDamageType( DMG_CLUB )
+				tool = true
+				friendly, upgraded = ent:OnHit( dmg )
+				
+			end
+			
+			if SERVER and ent:IsWorld() != true and friendly != true then
+				
 				ent:TakeDamageInfo( dmg )
 				
 				if ent:IsRagdoll() == true and IsValid( ent:GetPhysicsObjectNum( trace.PhysicsBone ) ) == true then ent:GetPhysicsObjectNum( trace.PhysicsBone ):ApplyForceOffset( ( trace.Normal * 1000 ) * self.Primary.Force, trace.HitPos ) end
@@ -193,17 +204,35 @@ function SWEP:DoSwing( hit, damage, ent, keepcrit )
 					
 				end
 				
+				if friendly == true then
+					
+					if upgraded == true then
+						
+						if self.HitBuildingSuccessSound != nil then sound = self.HitBuildingSuccessSound end
+						
+					else
+						
+						if self.HitBuildingFailSound != nil then sound = self.HitBuildingFailSound end
+						
+					end
+					
+				end
+				
 				self:PlaySound( sound, nil, nil, CHAN_AUTO )
 				
 			end
 			
-			if self.HitDecals[ trace.MatType ] != nil then
+			if friendly != true then
 				
-				util.Decal( self.HitDecals[ trace.MatType ], self:GetOwner():GetShootPos(), trace.HitPos + trace.Normal * 10 )
-				
-			else
-				
-				util.Decal( "impact.concrete", self:GetOwner():GetShootPos(), trace.HitPos + trace.Normal * 10 )
+				if self.HitDecals[ trace.MatType ] != nil then
+					
+					util.Decal( self.HitDecals[ trace.MatType ], self:GetOwner():GetShootPos(), trace.HitPos + trace.Normal * 10 )
+					
+				else
+					
+					util.Decal( "impact.concrete", self:GetOwner():GetShootPos(), trace.HitPos + trace.Normal * 10 )
+					
+				end
 				
 			end
 			

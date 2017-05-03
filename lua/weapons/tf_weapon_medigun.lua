@@ -572,7 +572,7 @@ function SWEP:Heal( target )
 		
 	end
 	
-	if healthfloor > 0 then target:SetHealth( target:Health() + healthfloor ) end
+	if healthfloor >= 1 then target:SetHealth( target:Health() + healthfloor ) end
 	
 	
 	--ubercharge

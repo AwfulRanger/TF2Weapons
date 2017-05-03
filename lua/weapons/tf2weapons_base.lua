@@ -159,16 +159,14 @@ function SWEP:TFNetworkVar( vartype, varname, default, slot, extended )
 		
 		self.CreatedNetworkVars[ vartype ] = 0
 		
-	else
-		
-		self.CreatedNetworkVars[ vartype ] = self.CreatedNetworkVars[ vartype ] + 1
-		
 	end
 	if slot != nil then self.CreatedNetworkVars[ vartype ] = slot end
 	slot = self.CreatedNetworkVars[ vartype ]
 	
 	self:NetworkVar( vartype, slot, "TF" .. varname, extended )
 	if default != nil then self[ "SetTF" .. varname ]( self, default ) end
+	
+	self.CreatedNetworkVars[ vartype ] = self.CreatedNetworkVars[ vartype ] + 1
 	
 	return self[ "GetTF" .. varname ]( self )
 	
@@ -2042,7 +2040,7 @@ function SWEP:DoPrimaryAttack( bullet, crit )
 	self:SetTFPrimaryLastShot( CurTime() )
 	
 	local crit = self:DoCrit()
-		
+	
 	if bullet != nil then self:GetOwner():FireBullets( bullet ) end
 	
 	local fire = self:GetHandAnim( "fire" )
@@ -2172,6 +2170,8 @@ function SWEP:PrimaryAttack()
 				
 			end
 			
+			dmg:SetAttacker( self:GetOwner() )
+			dmg:SetInflictor( self )
 			dmg:SetDamage( self:GetDamageMods( dmg:GetDamage(), math.ceil( dmg:GetDamage() - ( dmg:GetDamage() * modifier ) ), tr.Entity ) )
 			
 			if tr.Entity:IsPlayer() == true or tr.Entity:IsNPC() == true then
@@ -2180,9 +2180,16 @@ function SWEP:PrimaryAttack()
 				
 			end
 			
+			if self.TF2Weapons_BuildTool == true and tr.Entity.TF2Weapons_Building == true then
+				
+				tr.Entity:OnHit( dmg )
+				
+			end
+			
 			tr.Entity:TakeDamageInfo( dmg )
-			dmg:SetAttacker( game.GetWorld() )
-			dmg:SetInflictor( game.GetWorld() )
+			
+			--dmg:SetAttacker( game.GetWorld() )
+			--dmg:SetInflictor( game.GetWorld() )
 			dmg:SetDamage( 0 )
 			
 		end

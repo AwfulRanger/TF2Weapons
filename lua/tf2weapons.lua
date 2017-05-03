@@ -14,6 +14,56 @@ else
 	
 	game.AddParticles( "particles/muzzle_flash.pcf" )
 	
+	surface.CreateFont( "TF2Weapons_HudFontGiantBold", {
+		
+		font = "TF2 Build",
+		size = 44 * ( ScrH() / 480 ),
+		weight = 500,
+		additive = false,
+		antialias = true,
+		
+	} )
+	
+	surface.CreateFont( "TF2Weapons_SpectatorKeyHints", {
+		
+		font = "Verdana",
+		size = 8 * ( ScrH() / 480 ),
+		weight = 500,
+		additive = false,
+		antialias = true,
+		
+	} )
+	
+	/*
+	surface.CreateFont( "TF2Weapons_Default", {
+		
+		font = "Verdana",
+		size = 12 * ( ScrH() / 480 ),
+		weight = 900,
+		extended = true,
+		
+	} )
+	*/
+	
+	surface.CreateFont( "TF2Weapons_Default", {
+		
+		font = "Verdana",
+		size = 9 * ( ScrH() / 480 ),
+		weight = 900,
+		extended = true,
+		
+	} )
+	
+	surface.CreateFont( "TF2Weapons_HudFontSmall", {
+		
+		font = "TF2 Secondary",
+		size = 14 * ( ScrH() / 480 ),
+		weight = 500,
+		additive = false,
+		antialias = true,
+		
+	} )
+	
 	surface.CreateFont( "TF2Weapons_InfoPrimary", {
 		
 		font = "TF2 Build",
@@ -339,15 +389,16 @@ hook.Add( "Move", "TF2Weapons_Move", function( ply, mv )
 	
 end )
 
-game.AddAmmoType( { name = "tf2weapons_shotgun" } )
-game.AddAmmoType( { name = "tf2weapons_pistol" } )
-game.AddAmmoType( { name = "tf2weapons_rifle" } )
-game.AddAmmoType( { name = "tf2weapons_rocket" } )
-game.AddAmmoType( { name = "tf2weapons_minigun" } )
-game.AddAmmoType( { name = "tf2weapons_flamethrower" } )
-game.AddAmmoType( { name = "tf2weapons_syringe" } )
-game.AddAmmoType( { name = "tf2weapons_grenade" } )
-game.AddAmmoType( { name = "tf2weapons_pipebomb" } )
+game.AddAmmoType( { name = "tf2weapons_shotgun", maxcarry = 200 } )
+game.AddAmmoType( { name = "tf2weapons_pistol", maxcarry = 200 } )
+game.AddAmmoType( { name = "tf2weapons_rifle", maxcarry = 200 } )
+game.AddAmmoType( { name = "tf2weapons_rocket", maxcarry = 200 } )
+game.AddAmmoType( { name = "tf2weapons_minigun", maxcarry = 200 } )
+game.AddAmmoType( { name = "tf2weapons_flamethrower", maxcarry = 200 } )
+game.AddAmmoType( { name = "tf2weapons_syringe", maxcarry = 200 } )
+game.AddAmmoType( { name = "tf2weapons_grenade", maxcarry = 200 } )
+game.AddAmmoType( { name = "tf2weapons_pipebomb", maxcarry = 200 } )
+game.AddAmmoType( { name = "tf2weapons_metal", maxcarry = 200 } )
 
 concommand.Add( "tf2weapons_printanims", function( ply )
 	
@@ -517,6 +568,16 @@ TF2Weapons.Crosshair = {
 	BIGCIRCLE = 3,
 	PLUS = 4,
 	BIGPLUS = 5,
+	
+}
+
+TF2Weapons.Building = {
+	
+	NONE = 0,
+	SENTRY = 1,
+	DISPENSER = 2,
+	ENTRANCE = 3,
+	EXIT = 4,
 	
 }
 
