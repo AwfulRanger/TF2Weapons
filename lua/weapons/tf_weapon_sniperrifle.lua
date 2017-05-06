@@ -1,34 +1,38 @@
 AddCSLuaFile()
 
-local sniperrifles = {}
-
 SWEP.TF2Weapons_SniperRifleDot = true
 
 hook.Add( "OnEntityCreated", "TF2Weapons_SniperRifle_OnCreated", function( ent )
 	
 	if ent.TF2Weapons_SniperRifleDot != true then return end
+	if TF2Weapons == nil then return end
 	
-	table.insert( sniperrifles, ent )
+	if TF2Weapons.SniperRifles == nil then TF2Weapons.SniperRifles = {} end
+	
+	table.insert( TF2Weapons.SniperRifles, ent )
 	
 end )
 
 hook.Add( "EntityRemoved", "TF2Weapons_SniperRifle_OnRemoved", function( ent )
 	
 	if ent.TF2Weapons_SniperRifleDot != true then return end
+	if TF2Weapons == nil then return end
 	
-	if table.HasValue( sniperrifles, ent ) == true then
-		
-		table.RemoveByValue( sniperrifles, ent )
-		
-	end
+	if TF2Weapons.SniperRifles == nil then TF2Weapons.SniperRifles = {} end
+	
+	table.RemoveByValue( TF2Weapons.SniperRifles, ent )
 	
 end )
 
 hook.Add( "PostDrawOpaqueRenderables", "TF2Weapons_SniperRifle_DrawDot", function( depth, skybox )
 	
-	for i = 1, #sniperrifles do
+	if TF2Weapons == nil then return end
+	
+	if TF2Weapons.SniperRifles == nil then TF2Weapons.SniperRifles = {} end
+	
+	for i = 1, #TF2Weapons.SniperRifles do
 		
-		local rifle = sniperrifles[ i ]
+		local rifle = TF2Weapons.SniperRifles[ i ]
 		
 		if rifle.GetTFScoped != nil and rifle:GetTFScoped() == true and rifle.DrawSniperDot != nil then rifle:DrawSniperDot() end
 		

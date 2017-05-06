@@ -3,15 +3,14 @@ AddCSLuaFile()
 local ammotypes = 27 + #game.BuildAmmoTypes()
 local metaltype = "tf2weapons_metal"
 
-if TF2Weapons == nil then TF2Weapons = {} end
-if TF2Weapons.DispenserTargets == nil then TF2Weapons.DispenserTargets = {} end
-
 hook.Add( "OnEntityCreated", "TF2Weapons_Dispenser_InsertTargets", function( ent )
 	
 	timer.Simple( 0, function()
 		
 		if IsValid( ent ) != true then return end
-		if TF2Weapons == nil or TF2Weapons.DispenserTargets == nil then return end
+		if TF2Weapons == nil then return end
+		
+		if TF2Weapons.DispenserTargets == nil then TF2Weapons.DispenserTargets = {} end
 		
 		if ( ent:Health() > 0 or ent:GetMaxHealth() > 0 ) and string.Left( ent:GetClass(), 5 ) != "prop_" then
 			
@@ -25,7 +24,9 @@ end )
 
 hook.Add( "EntityRemoved", "TF2Weapons_Dispenser_RemoveTargets", function( ent )
 	
-	if TF2Weapons == nil or TF2Weapons.DispenserTargets == nil then return end
+	if TF2Weapons == nil then return end
+	
+	if TF2Weapons.DispenserTargets == nil then TF2Weapons.DispenserTargets = {} end
 	
 	if ( ent:Health() > 0 or ent:GetMaxHealth() > 0 ) and string.Left( ent:GetClass(), 5 ) != "prop_" then
 		
