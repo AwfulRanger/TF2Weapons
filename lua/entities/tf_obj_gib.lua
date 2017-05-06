@@ -9,6 +9,7 @@ ENT.Spawnable = false
 ENT.AdminOnly = false
 
 ENT.Model = Model( "models/buildables/gibs/sentry1_gib1.mdl" )
+ENT.Skin = 0
 ENT.Scrap = 16
 
 function ENT:SetGibModel( model )
@@ -21,6 +22,19 @@ end
 function ENT:GetGibModel()
 	
 	return self:GetNW2String( "model", self.Model )
+	
+end
+
+function ENT:SetGibSkin( skin )
+	
+	self:SetNW2Int( "skin", skin )
+	self:SetSkin( skin )
+	
+end
+
+function ENT:GetGibSkin()
+	
+	return self:GetNW2Int( "skin", self.Skin )
 	
 end
 

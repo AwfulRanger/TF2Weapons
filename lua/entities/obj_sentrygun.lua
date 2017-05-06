@@ -74,6 +74,9 @@ ENT.Levels = {
 		BuildAnim = "build",
 		BuildTime = 10,
 		
+		SkinRED = 0,
+		SkinBLU = 1,
+		
 		Idle = "idle_off",
 		
 		Bodygroups = "000",
@@ -85,6 +88,8 @@ ENT.Levels = {
 				
 				Model = Model( "models/buildables/gibs/sentry1_gib1.mdl" ),
 				Scrap = 16,
+				SkinRED = 0,
+				SkinBLU = 1,
 				
 			},
 			
@@ -92,6 +97,8 @@ ENT.Levels = {
 				
 				Model = Model( "models/buildables/gibs/sentry1_gib2.mdl" ),
 				Scrap = 16,
+				SkinRED = 0,
+				SkinBLU = 1,
 				
 			},
 			
@@ -99,6 +106,8 @@ ENT.Levels = {
 				
 				Model = Model( "models/buildables/gibs/sentry1_gib3.mdl" ),
 				Scrap = 16,
+				SkinRED = 0,
+				SkinBLU = 1,
 				
 			},
 			
@@ -106,6 +115,8 @@ ENT.Levels = {
 				
 				Model = Model( "models/buildables/gibs/sentry1_gib4.mdl" ),
 				Scrap = 17,
+				SkinRED = 0,
+				SkinBLU = 1,
 				
 			},
 			
@@ -155,6 +166,9 @@ ENT.Levels = {
 		BuildAnim = "upgrade",
 		BuildTime = 1.5,
 		
+		SkinRED = 0,
+		SkinBLU = 1,
+		
 		Idle = "idle_off",
 		
 		Bodygroups = "000",
@@ -166,6 +180,8 @@ ENT.Levels = {
 				
 				Model = Model( "models/buildables/gibs/sentry2_gib1.mdl" ),
 				Scrap = 16,
+				SkinRED = 0,
+				SkinBLU = 1,
 				
 			},
 			
@@ -173,6 +189,8 @@ ENT.Levels = {
 				
 				Model = Model( "models/buildables/gibs/sentry2_gib2.mdl" ),
 				Scrap = 16,
+				SkinRED = 0,
+				SkinBLU = 1,
 				
 			},
 			
@@ -180,6 +198,8 @@ ENT.Levels = {
 				
 				Model = Model( "models/buildables/gibs/sentry2_gib3.mdl" ),
 				Scrap = 16,
+				SkinRED = 0,
+				SkinBLU = 1,
 				
 			},
 			
@@ -187,6 +207,8 @@ ENT.Levels = {
 				
 				Model = Model( "models/buildables/gibs/sentry2_gib4.mdl" ),
 				Scrap = 17,
+				SkinRED = 0,
+				SkinBLU = 1,
 				
 			},
 			
@@ -244,6 +266,9 @@ ENT.Levels = {
 		BuildAnim = "upgrade",
 		BuildTime = 1.5,
 		
+		SkinRED = 0,
+		SkinBLU = 1,
+		
 		Idle = "idle_off",
 		
 		Bodygroups = "000",
@@ -255,6 +280,8 @@ ENT.Levels = {
 				
 				Model = Model( "models/buildables/gibs/sentry3_gib1.mdl" ),
 				Scrap = 16,
+				SkinRED = 0,
+				SkinBLU = 1,
 				
 			},
 			
@@ -262,6 +289,8 @@ ENT.Levels = {
 				
 				Model = Model( "models/buildables/gibs/sentry2_gib2.mdl" ),
 				Scrap = 16,
+				SkinRED = 0,
+				SkinBLU = 1,
 				
 			},
 			
@@ -269,6 +298,8 @@ ENT.Levels = {
 				
 				Model = Model( "models/buildables/gibs/sentry2_gib3.mdl" ),
 				Scrap = 16,
+				SkinRED = 0,
+				SkinBLU = 1,
 				
 			},
 			
@@ -276,6 +307,8 @@ ENT.Levels = {
 				
 				Model = Model( "models/buildables/gibs/sentry2_gib4.mdl" ),
 				Scrap = 17,
+				SkinRED = 0,
+				SkinBLU = 1,
 				
 			},
 			
@@ -412,6 +445,20 @@ function ENT:SetLevelModel( level, building )
 		
 		if stats.Model != nil then self:SetModel( stats.Model ) end
 		if stats.Bodygroups != nil then self:SetBodyGroups( stats.Bodygroups ) end
+		
+	end
+	
+	if SERVER then
+		
+		if self:GetTFBLU() != true then
+			
+			if stats.SkinRED != nil then self:SetSkin( stats.SkinRED ) end
+			
+		else
+			
+			if stats.SkinBLU != nil then self:SetSkin( stats.SkinBLU ) end
+			
+		end
 		
 	end
 	

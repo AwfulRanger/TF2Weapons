@@ -161,7 +161,7 @@ function SWEP:TFNetworkVar( vartype, varname, default, slot, extended )
 	slot = self.CreatedNetworkVars[ vartype ]
 	
 	self:NetworkVar( vartype, slot, "TF" .. varname, extended )
-	if default != nil then self[ "SetTF" .. varname ]( self, default ) end
+	if SERVER and default != nil then self[ "SetTF" .. varname ]( self, default ) end
 	
 	self.CreatedNetworkVars[ vartype ] = self.CreatedNetworkVars[ vartype ] + 1
 	
@@ -387,8 +387,6 @@ end
 	Ret1:	False if RED team, true if BLU team
 ]]--
 function SWEP:GetTeam( ply, color )
-	
-	//if true then return true end
 	
 	if ply == nil then ply = self:GetOwner() end
 	

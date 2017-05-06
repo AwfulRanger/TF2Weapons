@@ -39,6 +39,9 @@ ENT.Levels = {
 		BuildAnim = "build",
 		BuildTime = 20,
 		
+		SkinRED = 0,
+		SkinBLU = 1,
+		
 		Idle = "ref",
 		
 		Bodygroups = "000",
@@ -50,6 +53,8 @@ ENT.Levels = {
 				
 				Model = Model( "models/buildables/gibs/teleporter_gib1.mdl" ),
 				Scrap = 6,
+				SkinRED = 0,
+				SkinBLU = 1,
 				
 			},
 			
@@ -57,6 +62,8 @@ ENT.Levels = {
 				
 				Model = Model( "models/buildables/gibs/teleporter_gib2.mdl" ),
 				Scrap = 6,
+				SkinRED = 0,
+				SkinBLU = 1,
 				
 			},
 			
@@ -64,6 +71,8 @@ ENT.Levels = {
 				
 				Model = Model( "models/buildables/gibs/teleporter_gib3.mdl" ),
 				Scrap = 6,
+				SkinRED = 0,
+				SkinBLU = 1,
 				
 			},
 			
@@ -71,6 +80,8 @@ ENT.Levels = {
 				
 				Model = Model( "models/buildables/gibs/teleporter_gib4.mdl" ),
 				Scrap = 7,
+				SkinRED = 0,
+				SkinBLU = 1,
 				
 			},
 			
@@ -82,9 +93,13 @@ ENT.Levels = {
 		
 		ReadyAnim = "running",
 		
-		ChargedParticle = "teleporter_red_charged_level1",
-		EntranceParticle = "teleporter_red_entrance_level1",
-		ExitParticle = "teleporter_red_exit_level1",
+		ChargedParticleRED = "teleporter_red_charged_level1",
+		EntranceParticleRED = "teleporter_red_entrance_level1",
+		ExitParticleRED = "teleporter_red_exit_level1",
+		
+		ChargedParticleBLU = "teleporter_blue_charged_level1",
+		EntranceParticleBLU = "teleporter_blue_entrance_level1",
+		ExitParticleBLU = "teleporter_blue_exit_level1",
 		
 	},
 	
@@ -98,6 +113,9 @@ ENT.Levels = {
 		BuildAnim = "upgrade",
 		BuildTime = 2,
 		
+		SkinRED = 0,
+		SkinBLU = 1,
+		
 		Idle = "ref",
 		
 		Bodygroups = "000",
@@ -109,6 +127,8 @@ ENT.Levels = {
 				
 				Model = Model( "models/buildables/gibs/teleporter_gib1.mdl" ),
 				Scrap = 6,
+				SkinRED = 0,
+				SkinBLU = 1,
 				
 			},
 			
@@ -116,6 +136,8 @@ ENT.Levels = {
 				
 				Model = Model( "models/buildables/gibs/teleporter_gib2.mdl" ),
 				Scrap = 6,
+				SkinRED = 0,
+				SkinBLU = 1,
 				
 			},
 			
@@ -123,6 +145,8 @@ ENT.Levels = {
 				
 				Model = Model( "models/buildables/gibs/teleporter_gib3.mdl" ),
 				Scrap = 6,
+				SkinRED = 0,
+				SkinBLU = 1,
 				
 			},
 			
@@ -130,6 +154,8 @@ ENT.Levels = {
 				
 				Model = Model( "models/buildables/gibs/teleporter_gib4.mdl" ),
 				Scrap = 7,
+				SkinRED = 0,
+				SkinBLU = 1,
 				
 			},
 			
@@ -141,9 +167,13 @@ ENT.Levels = {
 		
 		ReadyAnim = "running",
 		
-		ChargedParticle = "teleporter_red_charged_level2",
-		EntranceParticle = "teleporter_red_entrance_level2",
-		ExitParticle = "teleporter_red_exit_level2",
+		ChargedParticleRED = "teleporter_red_charged_level2",
+		EntranceParticleRED = "teleporter_red_entrance_level2",
+		ExitParticleRED = "teleporter_red_exit_level2",
+		
+		ChargedParticleBLU = "teleporter_blue_charged_level2",
+		EntranceParticleBLU = "teleporter_blue_entrance_level2",
+		ExitParticleBLU = "teleporter_blue_exit_level2",
 		
 	},
 	
@@ -157,6 +187,9 @@ ENT.Levels = {
 		BuildAnim = "upgrade",
 		BuildTime = 2,
 		
+		SkinRED = 0,
+		SkinBLU = 1,
+		
 		Idle = "ref",
 		
 		Bodygroups = "000",
@@ -168,6 +201,8 @@ ENT.Levels = {
 				
 				Model = Model( "models/buildables/gibs/teleporter_gib1.mdl" ),
 				Scrap = 6,
+				SkinRED = 0,
+				SkinBLU = 1,
 				
 			},
 			
@@ -175,6 +210,8 @@ ENT.Levels = {
 				
 				Model = Model( "models/buildables/gibs/teleporter_gib2.mdl" ),
 				Scrap = 6,
+				SkinRED = 0,
+				SkinBLU = 1,
 				
 			},
 			
@@ -182,6 +219,8 @@ ENT.Levels = {
 				
 				Model = Model( "models/buildables/gibs/teleporter_gib3.mdl" ),
 				Scrap = 6,
+				SkinRED = 0,
+				SkinBLU = 1,
 				
 			},
 			
@@ -189,6 +228,8 @@ ENT.Levels = {
 				
 				Model = Model( "models/buildables/gibs/teleporter_gib4.mdl" ),
 				Scrap = 7,
+				SkinRED = 0,
+				SkinBLU = 1,
 				
 			},
 			
@@ -200,9 +241,13 @@ ENT.Levels = {
 		
 		ReadyAnim = "running",
 		
-		ChargedParticle = "teleporter_red_charged_level3",
-		EntranceParticle = "teleporter_red_entrance_level3",
-		ExitParticle = "teleporter_red_exit_level3",
+		ChargedParticleRED = "teleporter_red_charged_level3",
+		EntranceParticleRED = "teleporter_red_entrance_level3",
+		ExitParticleRED = "teleporter_red_exit_level3",
+		
+		ChargedParticleBLU = "teleporter_blue_charged_level3",
+		EntranceParticleBLU = "teleporter_blue_entrance_level3",
+		ExitParticleBLU = "teleporter_blue_exit_level3",
 		
 	},
 	
@@ -248,9 +293,13 @@ function ENT:Initialize()
 	for i = 1, #self.Levels do
 		
 		local level = self.Levels[ i ]
-		if level.ChargedParticle != nil then PrecacheParticleSystem( level.ChargedParticle ) end
-		if level.EntranceParticle != nil then PrecacheParticleSystem( level.EntranceParticle ) end
-		if level.ExitParticle != nil then PrecacheParticleSystem( level.ExitParticle ) end
+		if level.ChargedParticleRED != nil then PrecacheParticleSystem( level.ChargedParticleRED ) end
+		if level.EntranceParticleRED != nil then PrecacheParticleSystem( level.EntranceParticleRED ) end
+		if level.ExitParticleRED != nil then PrecacheParticleSystem( level.ExitParticleRED ) end
+		
+		if level.ChargedParticleBLU != nil then PrecacheParticleSystem( level.ChargedParticleBLU ) end
+		if level.EntranceParticleBLU != nil then PrecacheParticleSystem( level.EntranceParticleBLU ) end
+		if level.ExitParticleBLU != nil then PrecacheParticleSystem( level.ExitParticleBLU ) end
 		
 	end
 	
@@ -491,15 +540,37 @@ function ENT:HandleAnim()
 			self:EmitSound( self.ReadySound )
 			self:EmitSound( stats.SpinSound, nil, nil, nil, CHAN_WEAPON )
 			
-			ParticleEffectAttach( stats.ChargedParticle, PATTACH_ABSORIGIN_FOLLOW , self, -1 )
-			
-			if self:GetTFExit() == true then
+			if SERVER then
 				
-				ParticleEffectAttach( stats.ExitParticle, PATTACH_ABSORIGIN_FOLLOW , self, -1 )
-				
-			else
-				
-				ParticleEffectAttach( stats.EntranceParticle, PATTACH_ABSORIGIN_FOLLOW , self, -1 )
+				if self:GetTFBLU() != true then
+					
+					if stats.ChargedParticleRED != nil then ParticleEffectAttach( stats.ChargedParticleRED, PATTACH_ABSORIGIN_FOLLOW , self, -1 ) end
+					
+					if self:GetTFExit() == true then
+						
+						if stats.ExitParticleRED != nil then ParticleEffectAttach( stats.ExitParticleRED, PATTACH_ABSORIGIN_FOLLOW , self, -1 ) end
+						
+					else
+						
+						if stats.EntranceParticleRED != nil then ParticleEffectAttach( stats.EntranceParticleRED, PATTACH_ABSORIGIN_FOLLOW , self, -1 ) end
+						
+					end
+					
+				else
+					
+					if stats.ChargedParticleBLU != nil then ParticleEffectAttach( stats.ChargedParticleBLU, PATTACH_ABSORIGIN_FOLLOW , self, -1 ) end
+					
+					if self:GetTFExit() == true then
+						
+						if stats.ExitParticleBLU != nil then ParticleEffectAttach( stats.ExitParticleBLU, PATTACH_ABSORIGIN_FOLLOW , self, -1 ) end
+						
+					else
+						
+						if stats.EntranceParticleBLU != nil then ParticleEffectAttach( stats.EntranceParticleBLU, PATTACH_ABSORIGIN_FOLLOW , self, -1 ) end
+						
+					end
+					
+				end
 				
 			end
 			

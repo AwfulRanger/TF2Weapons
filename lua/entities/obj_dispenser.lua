@@ -72,6 +72,9 @@ ENT.Levels = {
 		BuildAnim = "build",
 		BuildTime = 15,
 		
+		SkinRED = 0,
+		SkinBLU = 1,
+		
 		Idle = "ref",
 		
 		Bodygroups = "000",
@@ -83,6 +86,8 @@ ENT.Levels = {
 				
 				Model = Model( "models/buildables/gibs/dispenser_gib1.mdl" ),
 				Scrap = 10,
+				SkinRED = 0,
+				SkinBLU = 1,
 				
 			},
 			
@@ -90,6 +95,8 @@ ENT.Levels = {
 				
 				Model = Model( "models/buildables/gibs/dispenser_gib2.mdl" ),
 				Scrap = 10,
+				SkinRED = 0,
+				SkinBLU = 1,
 				
 			},
 			
@@ -97,6 +104,8 @@ ENT.Levels = {
 				
 				Model = Model( "models/buildables/gibs/dispenser_gib3.mdl" ),
 				Scrap = 10,
+				SkinRED = 0,
+				SkinBLU = 1,
 				
 			},
 			
@@ -104,6 +113,8 @@ ENT.Levels = {
 				
 				Model = Model( "models/buildables/gibs/dispenser_gib4.mdl" ),
 				Scrap = 10,
+				SkinRED = 0,
+				SkinBLU = 1,
 				
 			},
 			
@@ -111,6 +122,8 @@ ENT.Levels = {
 				
 				Model = Model( "models/buildables/gibs/dispenser_gib5.mdl" ),
 				Scrap = 10,
+				SkinRED = 0,
+				SkinBLU = 1,
 				
 			},
 			
@@ -139,6 +152,9 @@ ENT.Levels = {
 		BuildAnim = "upgrade",
 		BuildTime = 3,
 		
+		SkinRED = 0,
+		SkinBLU = 1,
+		
 		Idle = "ref",
 		
 		Bodygroups = "000",
@@ -150,6 +166,8 @@ ENT.Levels = {
 				
 				Model = Model( "models/buildables/gibs/dispenser_gib1.mdl" ),
 				Scrap = 10,
+				SkinRED = 0,
+				SkinBLU = 1,
 				
 			},
 			
@@ -157,6 +175,8 @@ ENT.Levels = {
 				
 				Model = Model( "models/buildables/gibs/dispenser_gib2.mdl" ),
 				Scrap = 10,
+				SkinRED = 0,
+				SkinBLU = 1,
 				
 			},
 			
@@ -164,6 +184,8 @@ ENT.Levels = {
 				
 				Model = Model( "models/buildables/gibs/dispenser_gib3.mdl" ),
 				Scrap = 10,
+				SkinRED = 0,
+				SkinBLU = 1,
 				
 			},
 			
@@ -171,6 +193,8 @@ ENT.Levels = {
 				
 				Model = Model( "models/buildables/gibs/dispenser_gib4.mdl" ),
 				Scrap = 10,
+				SkinRED = 0,
+				SkinBLU = 1,
 				
 			},
 			
@@ -178,6 +202,8 @@ ENT.Levels = {
 				
 				Model = Model( "models/buildables/gibs/dispenser_gib5.mdl" ),
 				Scrap = 10,
+				SkinRED = 0,
+				SkinBLU = 1,
 				
 			},
 			
@@ -205,6 +231,9 @@ ENT.Levels = {
 		BuildAnim = "upgrade",
 		BuildTime = 3,
 		
+		SkinRED = 0,
+		SkinBLU = 1,
+		
 		Idle = "ref",
 		
 		Bodygroups = "000",
@@ -216,6 +245,8 @@ ENT.Levels = {
 				
 				Model = Model( "models/buildables/gibs/dispenser_gib1.mdl" ),
 				Scrap = 10,
+				SkinRED = 0,
+				SkinBLU = 1,
 				
 			},
 			
@@ -223,6 +254,8 @@ ENT.Levels = {
 				
 				Model = Model( "models/buildables/gibs/dispenser_gib2.mdl" ),
 				Scrap = 10,
+				SkinRED = 0,
+				SkinBLU = 1,
 				
 			},
 			
@@ -230,6 +263,8 @@ ENT.Levels = {
 				
 				Model = Model( "models/buildables/gibs/dispenser_gib3.mdl" ),
 				Scrap = 10,
+				SkinRED = 0,
+				SkinBLU = 1,
 				
 			},
 			
@@ -237,6 +272,8 @@ ENT.Levels = {
 				
 				Model = Model( "models/buildables/gibs/dispenser_gib4.mdl" ),
 				Scrap = 10,
+				SkinRED = 0,
+				SkinBLU = 1,
 				
 			},
 			
@@ -244,6 +281,8 @@ ENT.Levels = {
 				
 				Model = Model( "models/buildables/gibs/dispenser_gib5.mdl" ),
 				Scrap = 10,
+				SkinRED = 0,
+				SkinBLU = 1,
 				
 			},
 			
@@ -592,7 +631,8 @@ function ENT:Think()
 	
 end
 
-ENT.MeterBackground = Material( "vgui/dispenser_meter_bg_red" )
+ENT.MeterBackgroundRed = Material( "vgui/dispenser_meter_bg_red" )
+ENT.MeterBackgroundBlue = Material( "vgui/dispenser_meter_bg_blue" )
 ENT.Meter = Material( "vgui/dispenser_meter_arrow" )
 
 function ENT:Draw()
@@ -601,24 +641,13 @@ function ENT:Draw()
 	
 	if self:GetTFBuilding() == true then return end
 	
+	local bg = self.MeterBackgroundRed
+	if self:GetTFBLU() == true then bg = self.MeterBackgroundBlue end
+	
 	local fpos = self:GetPos() + ( self:GetAngles():Forward() * 6.5 ) + ( self:GetAngles():Up() * 48 ) + ( self:GetAngles():Right() * 9 )
 	local fang = self:GetAngles()
 	fang:RotateAroundAxis( fang:Up(), 90 )
 	fang:RotateAroundAxis( fang:Forward(), 90 )
-	
-	--[[
-	local ang = -70
-	
-	local yrot = 12
-	
-	local y = ( ang / 90 ) * yrot
-	
-	
-	local xrot = -48
-	
-	local x = ( ang / 90 ) * xrot
-	
-	]]--
 	
 	local minang = 80
 	local midang = 0
@@ -654,7 +683,7 @@ function ENT:Draw()
 		
 		surface.SetDrawColor( 255, 255, 255, 255 )
 		
-		surface.SetMaterial( self.MeterBackground )
+		surface.SetMaterial( bg )
 		surface.DrawTexturedRect( 0, 0, 200, 110 )
 		
 		surface.SetMaterial( self.Meter )
@@ -671,7 +700,7 @@ function ENT:Draw()
 		
 		surface.SetDrawColor( 255, 255, 255, 255 )
 		
-		surface.SetMaterial( self.MeterBackground )
+		surface.SetMaterial( bg )
 		surface.DrawTexturedRect( 0, 0, 200, 110 )
 		
 		surface.SetMaterial( self.Meter )

@@ -72,7 +72,7 @@ function ENT:TFNetworkVar( vartype, varname, default, slot, extended )
 	slot = self.CreatedNetworkVars[ vartype ]
 	
 	self:NetworkVar( vartype, slot, "TF" .. varname, extended )
-	if default != nil then self[ "SetTF" .. varname ]( self, default ) end
+	if SERVER and default != nil then self[ "SetTF" .. varname ]( self, default ) end
 	
 	self.CreatedNetworkVars[ vartype ] = self.CreatedNetworkVars[ vartype ] + 1
 	
@@ -85,6 +85,7 @@ function ENT:BaseDataTables()
 	self:TFNetworkVar( "Bool", "Upgrading", false )
 	self:TFNetworkVar( "Bool", "Building", false )
 	self:TFNetworkVar( "Bool", "Destroyed", false )
+	self:TFNetworkVar( "Bool", "BLU", false )
 	
 	self:TFNetworkVar( "Float", "UpgradeMult", 1 )
 	self:TFNetworkVar( "Float", "LastUpgrade", 0 )
@@ -131,6 +132,20 @@ function ENT:SetLevelModel( level, building )
 		
 		if stats.Model != nil then self:SetModel( stats.Model ) end
 		if stats.Bodygroups != nil then self:SetBodyGroups( stats.Bodygroups ) end
+		
+	end
+	
+	if SERVER then
+		
+		if self:GetTFBLU() != true then
+			
+			if stats.SkinRED != nil then self:SetSkin( stats.SkinRED ) end
+			
+		else
+			
+			if stats.SkinBLU != nil then self:SetSkin( stats.SkinBLU ) end
+			
+		end
 		
 	end
 	
@@ -475,11 +490,22 @@ function ENT:CreateGibs()
 		
 		for i = 1, #stats.Gibs do
 			
+			local gibstat = stats.Gibs[ i ]
+			
 			local gib = ents.Create( "tf_obj_gib" )
 			gib:SetPos( self:GetPos() )
 			gib:SetAngles( self:GetAngles() )
-			gib:SetGibModel( stats.Gibs[ i ].Model )
-			gib:SetGibScrap( stats.Gibs[ i ].Scrap )
+			if gibstat.Model != nil then gib:SetGibModel( gibstat.Model ) end
+			if gibstat.Scrap != nil then gib:SetGibScrap( gibstat.Scrap ) end
+			if self:GetTFBLU() != true then
+				
+				if gibstat.SkinRED != nil then gib:SetGibSkin( gibstat.SkinRED ) end
+				
+			else
+				
+				if gibstat.SkinBLU != nil then gib:SetGibSkin( gibstat.SkinBLU ) end
+				
+			end
 			gib:Spawn()
 			gib:PhysWake()
 			

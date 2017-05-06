@@ -595,14 +595,15 @@ function SWEP:Build()
 	
 	if IsValid( build ) != true then return end
 	
-	build:SetTFOwner( self:GetOwner() )
-	build:SetTFBuildID( self:GetTFBuildID() )
-	build:SetBuildAlt( building.Alternate )
-	
 	build:SetPos( self:GetBuildPosition() )
 	build:SetAngles( self:GetBuildAngle() )
 	
 	build:Spawn()
+	
+	build:SetTFBLU( self:GetTeam() )
+	build:SetTFOwner( self:GetOwner() )
+	build:SetTFBuildID( self:GetTFBuildID() )
+	build:SetBuildAlt( building.Alternate )
 	
 	return build
 	
@@ -625,26 +626,30 @@ function SWEP:PrimaryAttack()
 				
 				local build = self:Build()
 				
-				table.insert( plybuildings[ self:GetTFBuildNum() ], build )
-				
-				local owner = self:GetOwner()
-				local num = self:GetTFBuildNum()
-				
-				timer.Simple( 0, function()
+				if IsValid( build ) == true then
 					
-					if IsValid( owner ) != true or num == nil then return end
+					table.insert( plybuildings[ self:GetTFBuildNum() ], build )
 					
-					net.Start( "tf2weapons_building_insert" )
+					local owner = self:GetOwner()
+					local num = self:GetTFBuildNum()
+					
+					timer.Simple( 0, function()
 						
-						net.WriteEntity( owner )
-						net.WriteInt( num, 32 )
-						net.WriteEntity( build )
+						if IsValid( owner ) != true or num == nil then return end
 						
-					net.Broadcast()
+						net.Start( "tf2weapons_building_insert" )
+							
+							net.WriteEntity( owner )
+							net.WriteInt( num, 32 )
+							net.WriteEntity( build )
+							
+						net.Broadcast()
+						
+					end )
 					
-				end )
-				
-				self:GetOwner().TF2Weapons_Buildings = plybuildings
+					self:GetOwner().TF2Weapons_Buildings = plybuildings
+					
+				end
 				
 			end
 			
