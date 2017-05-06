@@ -11,6 +11,7 @@ if CLIENT then SWEP.WepSelectIcon = surface.GetTextureID( "backpack/weapons/guns
 SWEP.PrintName = "Gunslinger"
 SWEP.HUDName = "The Gunslinger"
 SWEP.Author = "AwfulRanger"
+SWEP.Description = ""
 SWEP.Category = "Team Fortress 2"
 SWEP.Level = 15
 SWEP.Type = "Robot Arm"
