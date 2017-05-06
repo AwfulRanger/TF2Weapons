@@ -24,9 +24,9 @@ SWEP.Quality = TF2Weapons.Quality.NORMAL
 SWEP.Spawnable = true
 SWEP.AdminOnly = false
 
-SWEP.ViewModel = "models/weapons/c_models/c_pda_engineer/c_pda_engineer.mdl"
-SWEP.WorldModel = "models/weapons/c_models/c_pda_engineer/c_pda_engineer.mdl"
-SWEP.HandModel = "models/weapons/c_models/c_engineer_arms.mdl"
+SWEP.ViewModel = Model( "models/weapons/c_models/c_pda_engineer/c_pda_engineer.mdl" )
+SWEP.WorldModel = Model( "models/weapons/c_models/c_pda_engineer/c_pda_engineer.mdl" )
+SWEP.HandModel = Model( "models/weapons/c_models/c_engineer_arms.mdl" )
 SWEP.HoldType = "slam"
 function SWEP:GetAnimations()
 	
@@ -57,7 +57,7 @@ SWEP.Buildings = {
 		
 		Class = "obj_sentrygun",
 		Name = "Sentry Gun",
-		Model = "models/buildables/sentry1_blueprint.mdl",
+		Model = Model( "models/buildables/sentry1_blueprint.mdl" ),
 		Cost = 130,
 		BuildIcon = Material( "hud/eng_build_sentry_blueprint" ),
 		DestroyIcon = {
@@ -86,7 +86,7 @@ SWEP.Buildings = {
 		
 		Class = "obj_dispenser",
 		Name = "Dispenser",
-		Model = "models/buildables/dispenser_blueprint.mdl",
+		Model = Model( "models/buildables/dispenser_blueprint.mdl" ),
 		Cost = 100,
 		BuildIcon = Material( "hud/eng_build_dispenser_blueprint" ),
 		DestroyIcon = {
@@ -115,7 +115,7 @@ SWEP.Buildings = {
 		
 		Class = "obj_teleporter",
 		Name = "Entrance",
-		Model = "models/buildables/teleporter_blueprint_enter.mdl",
+		Model = Model( "models/buildables/teleporter_blueprint_enter.mdl" ),
 		Cost = 50,
 		BuildIcon = Material( "hud/eng_build_tele_entrance_blueprint" ),
 		DestroyIcon = {
@@ -144,7 +144,7 @@ SWEP.Buildings = {
 		
 		Class = "obj_teleporter",
 		Name = "Exit",
-		Model = "models/buildables/teleporter_blueprint_exit.mdl",
+		Model = Model( "models/buildables/teleporter_blueprint_exit.mdl" ),
 		Cost = 50,
 		BuildIcon = Material( "hud/eng_build_tele_exit_blueprint" ),
 		DestroyIcon = {

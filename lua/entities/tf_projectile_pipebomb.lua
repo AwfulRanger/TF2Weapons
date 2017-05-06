@@ -25,7 +25,7 @@ function ENT:TF2Weapons_OnAirblasted( weapon, ent )
 	
 end
 
-ENT.Model = "models/weapons/w_models/w_stickybomb.mdl"
+ENT.Model = Model( "models/weapons/w_models/w_stickybomb.mdl" )
 ENT.Skin = 0
 ENT.Particles = {
 	

@@ -21,9 +21,9 @@ SWEP.Quality = TF2Weapons.Quality.UNIQUE
 SWEP.Spawnable = true
 SWEP.AdminOnly = false
 
-SWEP.ViewModel = "models/weapons/c_models/c_degreaser/c_degreaser.mdl"
-SWEP.WorldModel = "models/weapons/c_models/c_degreaser/c_degreaser.mdl"
-SWEP.HandModel = "models/weapons/c_models/c_pyro_arms.mdl"
+SWEP.ViewModel = Model( "models/weapons/c_models/c_degreaser/c_degreaser.mdl" )
+SWEP.WorldModel = Model( "models/weapons/c_models/c_degreaser/c_degreaser.mdl" )
+SWEP.HandModel = Model( "models/weapons/c_models/c_pyro_arms.mdl" )
 SWEP.HoldType = "crossbow"
 function SWEP:GetAnimations()
 	

@@ -3,8 +3,8 @@ AddCSLuaFile()
 ENT.Base = "tf_projectile_rocket"
 ENT.PrintName = "Sentry Rocket"
 
-ENT.Model = "models/weapons/w_models/w_rocket.mdl"
-ENT.SentryModel = "models/buildables/sentry3_rockets.mdl"
+ENT.Model = Model( "models/weapons/w_models/w_rocket.mdl" )
+ENT.SentryModel = Model( "models/buildables/sentry3_rockets.mdl" )
 
 function ENT:SetSentryRocketModel( sentrymodel )
 	

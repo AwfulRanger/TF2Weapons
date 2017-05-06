@@ -20,9 +20,9 @@ SWEP.Quality = TF2Weapons.Quality.NORMAL
 SWEP.Spawnable = true
 SWEP.AdminOnly = false
 
-SWEP.ViewModel = "models/weapons/c_models/c_smg/c_smg.mdl"
-SWEP.WorldModel = "models/weapons/c_models/c_smg/c_smg.mdl"
-SWEP.HandModel = "models/weapons/c_models/c_sniper_arms.mdl"
+SWEP.ViewModel = Model( "models/weapons/c_models/c_smg/c_smg.mdl" )
+SWEP.WorldModel = Model( "models/weapons/c_models/c_smg/c_smg.mdl" )
+SWEP.HandModel = Model( "models/weapons/c_models/c_sniper_arms.mdl" )
 SWEP.HoldType = "smg"
 function SWEP:GetAnimations()
 	

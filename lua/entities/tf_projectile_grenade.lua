@@ -10,7 +10,7 @@ ENT.AdminOnly = false
 
 ENT.TF2Weapons_OwnOnAirblast = true
 
-ENT.Model = "models/weapons/w_models/w_grenade_grenadelauncher.mdl"
+ENT.Model = Model( "models/weapons/w_models/w_grenade_grenadelauncher.mdl" )
 ENT.Skin = 0
 ENT.Particles = {
 	

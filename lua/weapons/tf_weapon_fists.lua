@@ -21,9 +21,9 @@ SWEP.Quality = TF2Weapons.Quality.NORMAL
 SWEP.Spawnable = true
 SWEP.AdminOnly = false
 
-SWEP.ViewModel = "models/weapons/c_models/c_heavy_arms.mdl"
+SWEP.ViewModel = Model( "models/weapons/c_models/c_heavy_arms.mdl" )
 SWEP.WorldModel = ""
-SWEP.HandModel = "models/weapons/c_models/c_heavy_arms.mdl"
+SWEP.HandModel = Model( "models/weapons/c_models/c_heavy_arms.mdl" )
 SWEP.HoldType = "fist"
 function SWEP:GetAnimations()
 	

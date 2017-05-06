@@ -8,7 +8,7 @@ ENT.Author = "AwfulRanger"
 ENT.Spawnable = false
 ENT.AdminOnly = false
 
-ENT.Model = "models/buildables/gibs/sentry1_gib1.mdl"
+ENT.Model = Model( "models/buildables/gibs/sentry1_gib1.mdl" )
 ENT.Scrap = 16
 
 function ENT:SetGibModel( model )

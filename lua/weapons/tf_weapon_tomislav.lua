@@ -20,9 +20,9 @@ SWEP.Quality = TF2Weapons.Quality.UNIQUE
 SWEP.Spawnable = true
 SWEP.AdminOnly = false
 
-SWEP.ViewModel = "models/weapons/c_models/c_tomislav/c_tomislav.mdl"
-SWEP.WorldModel = "models/weapons/c_models/c_tomislav/c_tomislav.mdl"
-SWEP.HandModel = "models/weapons/c_models/c_heavy_arms.mdl"
+SWEP.ViewModel = Model( "models/weapons/c_models/c_tomislav/c_tomislav.mdl" )
+SWEP.WorldModel = Model( "models/weapons/c_models/c_tomislav/c_tomislav.mdl" )
+SWEP.HandModel = Model( "models/weapons/c_models/c_heavy_arms.mdl" )
 SWEP.HoldType = "crossbow"
 SWEP.HoldTypeRevved = "ar2"
 function SWEP:GetAnimations()

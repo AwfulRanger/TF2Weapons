@@ -20,9 +20,9 @@ SWEP.Quality = TF2Weapons.Quality.NORMAL
 SWEP.Spawnable = true
 SWEP.AdminOnly = false
 
-SWEP.ViewModel = "models/weapons/c_models/c_knife/c_knife.mdl"
-SWEP.WorldModel = "models/weapons/c_models/c_knife/c_knife.mdl"
-SWEP.HandModel = "models/weapons/c_models/c_spy_arms.mdl"
+SWEP.ViewModel = Model( "models/weapons/c_models/c_knife/c_knife.mdl" )
+SWEP.WorldModel = Model( "models/weapons/c_models/c_knife/c_knife.mdl" )
+SWEP.HandModel = Model( "models/weapons/c_models/c_spy_arms.mdl" )
 SWEP.HoldType = "knife"
 function SWEP:GetAnimations()
 	

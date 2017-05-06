@@ -67,8 +67,8 @@ ENT.Levels = {
 		
 		Health = 150,
 		UpgradeCost = 200,
-		Model = "models/buildables/dispenser_light.mdl",
-		BuildModel = "models/buildables/dispenser.mdl",
+		Model = Model( "models/buildables/dispenser_light.mdl" ),
+		BuildModel = Model( "models/buildables/dispenser.mdl" ),
 		BuildAnim = "build",
 		BuildTime = 15,
 		
@@ -81,35 +81,35 @@ ENT.Levels = {
 			
 			{
 				
-				Model = "models/buildables/gibs/dispenser_gib1.mdl",
+				Model = Model( "models/buildables/gibs/dispenser_gib1.mdl" ),
 				Scrap = 10,
 				
 			},
 			
 			{
 				
-				Model = "models/buildables/gibs/dispenser_gib2.mdl",
+				Model = Model( "models/buildables/gibs/dispenser_gib2.mdl" ),
 				Scrap = 10,
 				
 			},
 			
 			{
 				
-				Model = "models/buildables/gibs/dispenser_gib3.mdl",
+				Model = Model( "models/buildables/gibs/dispenser_gib3.mdl" ),
 				Scrap = 10,
 				
 			},
 			
 			{
 				
-				Model = "models/buildables/gibs/dispenser_gib4.mdl",
+				Model = Model( "models/buildables/gibs/dispenser_gib4.mdl" ),
 				Scrap = 10,
 				
 			},
 			
 			{
 				
-				Model = "models/buildables/gibs/dispenser_gib5.mdl",
+				Model = Model( "models/buildables/gibs/dispenser_gib5.mdl" ),
 				Scrap = 10,
 				
 			},
@@ -134,8 +134,8 @@ ENT.Levels = {
 		
 		Health = 180,
 		UpgradeCost = 200,
-		Model = "models/buildables/dispenser_lvl2_light.mdl",
-		BuildModel = "models/buildables/dispenser_lvl2.mdl",
+		Model = Model( "models/buildables/dispenser_lvl2_light.mdl" ),
+		BuildModel = Model( "models/buildables/dispenser_lvl2.mdl" ),
 		BuildAnim = "upgrade",
 		BuildTime = 3,
 		
@@ -148,35 +148,35 @@ ENT.Levels = {
 			
 			{
 				
-				Model = "models/buildables/gibs/dispenser_gib1.mdl",
+				Model = Model( "models/buildables/gibs/dispenser_gib1.mdl" ),
 				Scrap = 10,
 				
 			},
 			
 			{
 				
-				Model = "models/buildables/gibs/dispenser_gib2.mdl",
+				Model = Model( "models/buildables/gibs/dispenser_gib2.mdl" ),
 				Scrap = 10,
 				
 			},
 			
 			{
 				
-				Model = "models/buildables/gibs/dispenser_gib3.mdl",
+				Model = Model( "models/buildables/gibs/dispenser_gib3.mdl" ),
 				Scrap = 10,
 				
 			},
 			
 			{
 				
-				Model = "models/buildables/gibs/dispenser_gib4.mdl",
+				Model = Model( "models/buildables/gibs/dispenser_gib4.mdl" ),
 				Scrap = 10,
 				
 			},
 			
 			{
 				
-				Model = "models/buildables/gibs/dispenser_gib5.mdl",
+				Model = Model( "models/buildables/gibs/dispenser_gib5.mdl" ),
 				Scrap = 10,
 				
 			},
@@ -200,8 +200,8 @@ ENT.Levels = {
 		
 		Health = 216,
 		UpgradeCost = -1,
-		Model = "models/buildables/dispenser_lvl3_light.mdl",
-		BuildModel = "models/buildables/dispenser_lvl3.mdl",
+		Model = Model( "models/buildables/dispenser_lvl3_light.mdl" ),
+		BuildModel = Model( "models/buildables/dispenser_lvl3.mdl" ),
 		BuildAnim = "upgrade",
 		BuildTime = 3,
 		
@@ -214,35 +214,35 @@ ENT.Levels = {
 			
 			{
 				
-				Model = "models/buildables/gibs/dispenser_gib1.mdl",
+				Model = Model( "models/buildables/gibs/dispenser_gib1.mdl" ),
 				Scrap = 10,
 				
 			},
 			
 			{
 				
-				Model = "models/buildables/gibs/dispenser_gib2.mdl",
+				Model = Model( "models/buildables/gibs/dispenser_gib2.mdl" ),
 				Scrap = 10,
 				
 			},
 			
 			{
 				
-				Model = "models/buildables/gibs/dispenser_gib3.mdl",
+				Model = Model( "models/buildables/gibs/dispenser_gib3.mdl" ),
 				Scrap = 10,
 				
 			},
 			
 			{
 				
-				Model = "models/buildables/gibs/dispenser_gib4.mdl",
+				Model = Model( "models/buildables/gibs/dispenser_gib4.mdl" ),
 				Scrap = 10,
 				
 			},
 			
 			{
 				
-				Model = "models/buildables/gibs/dispenser_gib5.mdl",
+				Model = Model( "models/buildables/gibs/dispenser_gib5.mdl" ),
 				Scrap = 10,
 				
 			},

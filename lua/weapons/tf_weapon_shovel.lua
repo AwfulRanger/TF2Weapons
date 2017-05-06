@@ -20,9 +20,9 @@ SWEP.Quality = TF2Weapons.Quality.NORMAL
 SWEP.Spawnable = true
 SWEP.AdminOnly = false
 
-SWEP.ViewModel = "models/weapons/c_models/c_shovel/c_shovel.mdl"
-SWEP.WorldModel = "models/weapons/c_models/c_shovel/c_shovel.mdl"
-SWEP.HandModel = "models/weapons/c_models/c_soldier_arms.mdl"
+SWEP.ViewModel = Model( "models/weapons/c_models/c_shovel/c_shovel.mdl" )
+SWEP.WorldModel = Model( "models/weapons/c_models/c_shovel/c_shovel.mdl" )
+SWEP.HandModel = Model( "models/weapons/c_models/c_soldier_arms.mdl" )
 SWEP.HoldType = "melee"
 function SWEP:GetAnimations()
 	

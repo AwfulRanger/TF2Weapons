@@ -22,9 +22,9 @@ SWEP.Quality = TF2Weapons.Quality.UNIQUE
 SWEP.Spawnable = true
 SWEP.AdminOnly = false
 
-SWEP.ViewModel = "models/weapons/c_models/c_pep_pistol/c_pep_pistol.mdl"
-SWEP.WorldModel = "models/weapons/c_models/c_pep_pistol/c_pep_pistol.mdl"
-SWEP.HandModel = "models/weapons/c_models/c_scout_arms.mdl"
+SWEP.ViewModel = Model( "models/weapons/c_models/c_pep_pistol/c_pep_pistol.mdl" )
+SWEP.WorldModel = Model( "models/weapons/c_models/c_pep_pistol/c_pep_pistol.mdl" )
+SWEP.HandModel = Model( "models/weapons/c_models/c_scout_arms.mdl" )
 SWEP.HoldType = "pistol"
 function SWEP:GetAnimations()
 	

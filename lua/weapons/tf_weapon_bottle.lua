@@ -34,13 +34,13 @@ SWEP.Quality = TF2Weapons.Quality.NORMAL
 SWEP.Spawnable = true
 SWEP.AdminOnly = false
 
-SWEP.ViewModel = "models/weapons/c_models/c_bottle/c_bottle.mdl"
-SWEP.WorldModel = "models/weapons/c_models/c_bottle/c_bottle.mdl"
+SWEP.ViewModel = Model( "models/weapons/c_models/c_bottle/c_bottle.mdl" )
+SWEP.WorldModel = Model( "models/weapons/c_models/c_bottle/c_bottle.mdl" )
 SWEP.ViewModelBroken = "models/weapons/c_models/c_bottle/c_bottle_broken.mdl"
 SWEP.WorldModelBroken = "models/weapons/c_models/c_bottle/c_bottle_broken.mdl"
 SWEP.ViewModelRepaired = "models/weapons/c_models/c_bottle/c_bottle.mdl"
 SWEP.WorldModelRepaired = "models/weapons/c_models/c_bottle/c_bottle.mdl"
-SWEP.HandModel = "models/weapons/c_models/c_demo_arms.mdl"
+SWEP.HandModel = Model( "models/weapons/c_models/c_demo_arms.mdl" )
 SWEP.HoldType = "melee"
 function SWEP:GetAnimations()
 	
@@ -99,8 +99,8 @@ function SWEP:Repair()
 	
 	self:SetTFBroken( false )
 	
-	self.ViewModel = "models/weapons/c_models/c_bottle/c_bottle.mdl"
-	self.WorldModel = "models/weapons/c_models/c_bottle/c_bottle.mdl"
+	self.ViewModel = Model( "models/weapons/c_models/c_bottle/c_bottle.mdl" )
+	self.WorldModel = Model( "models/weapons/c_models/c_bottle/c_bottle.mdl" )
 	
 	self:CheckHands()
 	

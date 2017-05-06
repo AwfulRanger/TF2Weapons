@@ -10,8 +10,8 @@ ENT.AdminOnly = false
 
 ENT.TF2Weapons_NoAirblast = true
 
-ENT.PhysModel = "models/weapons/w_models/w_drg_ball.mdl"
-ENT.Model = "models/weapons/w_models/w_syringe_proj.mdl"
+ENT.PhysModel = Model( "models/weapons/w_models/w_drg_ball.mdl" )
+ENT.Model = Model( "models/weapons/w_models/w_syringe_proj.mdl" )
 ENT.Skin = 0
 ENT.Damage = 10
 ENT.Life = 10

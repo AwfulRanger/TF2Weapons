@@ -34,8 +34,8 @@ ENT.Levels = {
 		
 		Health = 150,
 		UpgradeCost = 200,
-		Model = "models/buildables/teleporter_light.mdl",
-		BuildModel = "models/buildables/teleporter.mdl",
+		Model = Model( "models/buildables/teleporter_light.mdl" ),
+		BuildModel = Model( "models/buildables/teleporter.mdl" ),
 		BuildAnim = "build",
 		BuildTime = 20,
 		
@@ -48,28 +48,28 @@ ENT.Levels = {
 			
 			{
 				
-				Model = "models/buildables/gibs/teleporter_gib1.mdl",
+				Model = Model( "models/buildables/gibs/teleporter_gib1.mdl" ),
 				Scrap = 6,
 				
 			},
 			
 			{
 				
-				Model = "models/buildables/gibs/teleporter_gib2.mdl",
+				Model = Model( "models/buildables/gibs/teleporter_gib2.mdl" ),
 				Scrap = 6,
 				
 			},
 			
 			{
 				
-				Model = "models/buildables/gibs/teleporter_gib3.mdl",
+				Model = Model( "models/buildables/gibs/teleporter_gib3.mdl" ),
 				Scrap = 6,
 				
 			},
 			
 			{
 				
-				Model = "models/buildables/gibs/teleporter_gib4.mdl",
+				Model = Model( "models/buildables/gibs/teleporter_gib4.mdl" ),
 				Scrap = 7,
 				
 			},
@@ -93,8 +93,8 @@ ENT.Levels = {
 		
 		Health = 180,
 		UpgradeCost = 200,
-		Model = "models/buildables/teleporter_light.mdl",
-		BuildModel = "models/buildables/teleporter_light.mdl",
+		Model = Model( "models/buildables/teleporter_light.mdl" ),
+		BuildModel = Model( "models/buildables/teleporter_light.mdl" ),
 		BuildAnim = "upgrade",
 		BuildTime = 2,
 		
@@ -107,28 +107,28 @@ ENT.Levels = {
 			
 			{
 				
-				Model = "models/buildables/gibs/teleporter_gib1.mdl",
+				Model = Model( "models/buildables/gibs/teleporter_gib1.mdl" ),
 				Scrap = 6,
 				
 			},
 			
 			{
 				
-				Model = "models/buildables/gibs/teleporter_gib2.mdl",
+				Model = Model( "models/buildables/gibs/teleporter_gib2.mdl" ),
 				Scrap = 6,
 				
 			},
 			
 			{
 				
-				Model = "models/buildables/gibs/teleporter_gib3.mdl",
+				Model = Model( "models/buildables/gibs/teleporter_gib3.mdl" ),
 				Scrap = 6,
 				
 			},
 			
 			{
 				
-				Model = "models/buildables/gibs/teleporter_gib4.mdl",
+				Model = Model( "models/buildables/gibs/teleporter_gib4.mdl" ),
 				Scrap = 7,
 				
 			},
@@ -152,8 +152,8 @@ ENT.Levels = {
 		
 		Health = 216,
 		UpgradeCost = -1,
-		Model = "models/buildables/teleporter_light.mdl",
-		BuildModel = "models/buildables/teleporter_light.mdl",
+		Model = Model( "models/buildables/teleporter_light.mdl" ),
+		BuildModel = Model( "models/buildables/teleporter_light.mdl" ),
 		BuildAnim = "upgrade",
 		BuildTime = 2,
 		
@@ -166,28 +166,28 @@ ENT.Levels = {
 			
 			{
 				
-				Model = "models/buildables/gibs/teleporter_gib1.mdl",
+				Model = Model( "models/buildables/gibs/teleporter_gib1.mdl" ),
 				Scrap = 6,
 				
 			},
 			
 			{
 				
-				Model = "models/buildables/gibs/teleporter_gib2.mdl",
+				Model = Model( "models/buildables/gibs/teleporter_gib2.mdl" ),
 				Scrap = 6,
 				
 			},
 			
 			{
 				
-				Model = "models/buildables/gibs/teleporter_gib3.mdl",
+				Model = Model( "models/buildables/gibs/teleporter_gib3.mdl" ),
 				Scrap = 6,
 				
 			},
 			
 			{
 				
-				Model = "models/buildables/gibs/teleporter_gib4.mdl",
+				Model = Model( "models/buildables/gibs/teleporter_gib4.mdl" ),
 				Scrap = 7,
 				
 			},

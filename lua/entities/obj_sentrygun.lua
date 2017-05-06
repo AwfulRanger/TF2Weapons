@@ -69,8 +69,8 @@ ENT.Levels = {
 		
 		Health = 150,
 		UpgradeCost = 200,
-		Model = "models/buildables/sentry1.mdl",
-		BuildModel = "models/buildables/sentry1_heavy.mdl",
+		Model = Model( "models/buildables/sentry1.mdl" ),
+		BuildModel = Model( "models/buildables/sentry1_heavy.mdl" ),
 		BuildAnim = "build",
 		BuildTime = 10,
 		
@@ -83,28 +83,28 @@ ENT.Levels = {
 			
 			{
 				
-				Model = "models/buildables/gibs/sentry1_gib1.mdl",
+				Model = Model( "models/buildables/gibs/sentry1_gib1.mdl" ),
 				Scrap = 16,
 				
 			},
 			
 			{
 				
-				Model = "models/buildables/gibs/sentry1_gib2.mdl",
+				Model = Model( "models/buildables/gibs/sentry1_gib2.mdl" ),
 				Scrap = 16,
 				
 			},
 			
 			{
 				
-				Model = "models/buildables/gibs/sentry1_gib3.mdl",
+				Model = Model( "models/buildables/gibs/sentry1_gib3.mdl" ),
 				Scrap = 16,
 				
 			},
 			
 			{
 				
-				Model = "models/buildables/gibs/sentry1_gib4.mdl",
+				Model = Model( "models/buildables/gibs/sentry1_gib4.mdl" ),
 				Scrap = 17,
 				
 			},
@@ -150,8 +150,8 @@ ENT.Levels = {
 		
 		Health = 180,
 		UpgradeCost = 200,
-		Model = "models/buildables/sentry2.mdl",
-		BuildModel = "models/buildables/sentry2_heavy.mdl",
+		Model = Model( "models/buildables/sentry2.mdl" ),
+		BuildModel = Model( "models/buildables/sentry2_heavy.mdl" ),
 		BuildAnim = "upgrade",
 		BuildTime = 1.5,
 		
@@ -164,28 +164,28 @@ ENT.Levels = {
 			
 			{
 				
-				Model = "models/buildables/gibs/sentry2_gib1.mdl",
+				Model = Model( "models/buildables/gibs/sentry2_gib1.mdl" ),
 				Scrap = 16,
 				
 			},
 			
 			{
 				
-				Model = "models/buildables/gibs/sentry2_gib2.mdl",
+				Model = Model( "models/buildables/gibs/sentry2_gib2.mdl" ),
 				Scrap = 16,
 				
 			},
 			
 			{
 				
-				Model = "models/buildables/gibs/sentry2_gib3.mdl",
+				Model = Model( "models/buildables/gibs/sentry2_gib3.mdl" ),
 				Scrap = 16,
 				
 			},
 			
 			{
 				
-				Model = "models/buildables/gibs/sentry2_gib4.mdl",
+				Model = Model( "models/buildables/gibs/sentry2_gib4.mdl" ),
 				Scrap = 17,
 				
 			},
@@ -239,8 +239,8 @@ ENT.Levels = {
 		
 		Health = 216,
 		UpgradeCost = -1,
-		Model = "models/buildables/sentry3.mdl",
-		BuildModel = "models/buildables/sentry3_heavy.mdl",
+		Model = Model( "models/buildables/sentry3.mdl" ),
+		BuildModel = Model( "models/buildables/sentry3_heavy.mdl" ),
 		BuildAnim = "upgrade",
 		BuildTime = 1.5,
 		
@@ -253,28 +253,28 @@ ENT.Levels = {
 			
 			{
 				
-				Model = "models/buildables/gibs/sentry3_gib1.mdl",
+				Model = Model( "models/buildables/gibs/sentry3_gib1.mdl" ),
 				Scrap = 16,
 				
 			},
 			
 			{
 				
-				Model = "models/buildables/gibs/sentry2_gib2.mdl",
+				Model = Model( "models/buildables/gibs/sentry2_gib2.mdl" ),
 				Scrap = 16,
 				
 			},
 			
 			{
 				
-				Model = "models/buildables/gibs/sentry2_gib3.mdl",
+				Model = Model( "models/buildables/gibs/sentry2_gib3.mdl" ),
 				Scrap = 16,
 				
 			},
 			
 			{
 				
-				Model = "models/buildables/gibs/sentry2_gib4.mdl",
+				Model = Model( "models/buildables/gibs/sentry2_gib4.mdl" ),
 				Scrap = 17,
 				
 			},
@@ -330,7 +330,7 @@ ENT.Levels = {
 			Shots = 1,
 			Spread = 0,
 			Force = 10,
-			Model = "models/buildables/sentry3_rockets.mdl",
+			Model = Model( "models/buildables/sentry3_rockets.mdl" ),
 			Speed = 1100,
 			Radius = 146,
 			ExplodeSound = { Sound( "weapons/explode1.wav" ), Sound( "weapons/explode2.wav" ), Sound( "weapons/explode3.wav" ) },

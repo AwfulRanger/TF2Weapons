@@ -47,16 +47,16 @@ SWEP.AdminOnly = false
 --Models still continue to play their animations when holstered,
 --so weapons like the wrench will continue to play their animation sounds.
 --These are the models to change to when holstered to prevent things like that from happening.
-SWEP.HolsteredViewModel = "models/weapons/c_models/c_pistol/c_pistol.mdl"
-SWEP.HolsteredHandModel = "models/weapons/c_models/c_scout_arms.mdl"
+SWEP.HolsteredViewModel = Model( "models/weapons/c_models/c_pistol/c_pistol.mdl" )
+SWEP.HolsteredHandModel = Model( "models/weapons/c_models/c_scout_arms.mdl" )
 
---SWEP.ViewModel = "models/weapons/c_models/c_ttg_max_gun/c_ttg_max_gun.mdl"
-SWEP.ViewModel = "models/weapons/c_models/c_pistol/c_pistol.mdl"
-SWEP.WorldModel = "models/weapons/c_models/c_pistol/c_pistol.mdl"
+--SWEP.ViewModel = Model( "models/weapons/c_models/c_ttg_max_gun/c_ttg_max_gun.mdl" )
+SWEP.ViewModel = Model( "models/weapons/c_models/c_pistol/c_pistol.mdl" )
+SWEP.WorldModel = Model( "models/weapons/c_models/c_pistol/c_pistol.mdl" )
 SWEP.ViewModelFlip = false
 SWEP.ViewModelFOV = 54
 SWEP.UseHands = false
-SWEP.HandModel = "models/weapons/c_models/c_scout_arms.mdl"
+SWEP.HandModel = Model( "models/weapons/c_models/c_scout_arms.mdl" )
 SWEP.HoldType = "pistol"
 function SWEP:GetAnimations()
 	
@@ -1717,11 +1717,11 @@ function SWEP:DoDeploy()
 	
 	if self:GetOwner():HasWeapon( "tf_weapon_robot_arm" ) == true and self.HandModel == "models/weapons/c_models/c_engineer_arms.mdl" then
 		
-		self.HandModel = "models/weapons/c_models/c_engineer_gunslinger.mdl"
+		self.HandModel = Model( "models/weapons/c_models/c_engineer_gunslinger.mdl" )
 		
 	elseif self:GetOwner():HasWeapon( "tf_weapon_robot_arm" ) != true and self.HandModel == "models/weapons/c_models/c_engineer_gunslinger.mdl" then
 		
-		self.HandModel = "models/weapons/c_models/c_engineer_arms.mdl"
+		self.HandModel = Model( "models/weapons/c_models/c_engineer_arms.mdl" )
 		
 	end
 	

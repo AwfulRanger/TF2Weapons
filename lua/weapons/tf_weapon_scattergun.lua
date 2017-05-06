@@ -20,9 +20,9 @@ SWEP.Quality = TF2Weapons.Quality.NORMAL
 SWEP.Spawnable = true
 SWEP.AdminOnly = false
 
-SWEP.ViewModel = "models/weapons/c_models/c_scattergun.mdl"
-SWEP.WorldModel = "models/weapons/c_models/c_scattergun.mdl"
-SWEP.HandModel = "models/weapons/c_models/c_scout_arms.mdl"
+SWEP.ViewModel = Model( "models/weapons/c_models/c_scattergun.mdl" )
+SWEP.WorldModel = Model( "models/weapons/c_models/c_scattergun.mdl" )
+SWEP.HandModel = Model( "models/weapons/c_models/c_scout_arms.mdl" )
 SWEP.HoldType = "shotgun"
 function SWEP:GetAnimations()
 	

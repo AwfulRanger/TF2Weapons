@@ -31,9 +31,9 @@ SWEP.Quality = TF2Weapons.Quality.NORMAL
 SWEP.Spawnable = true
 SWEP.AdminOnly = false
 
-SWEP.ViewModel = "models/weapons/c_models/c_grenadelauncher/c_grenadelauncher.mdl"
-SWEP.WorldModel = "models/weapons/c_models/c_grenadelauncher/c_grenadelauncher.mdl"
-SWEP.HandModel = "models/weapons/c_models/c_demo_arms.mdl"
+SWEP.ViewModel = Model( "models/weapons/c_models/c_grenadelauncher/c_grenadelauncher.mdl" )
+SWEP.WorldModel = Model( "models/weapons/c_models/c_grenadelauncher/c_grenadelauncher.mdl" )
+SWEP.HandModel = Model( "models/weapons/c_models/c_demo_arms.mdl" )
 SWEP.HoldType = "shotgun"
 function SWEP:GetAnimations()
 	

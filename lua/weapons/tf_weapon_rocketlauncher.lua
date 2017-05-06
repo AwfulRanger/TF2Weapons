@@ -28,9 +28,9 @@ SWEP.Quality = TF2Weapons.Quality.NORMAL
 SWEP.Spawnable = true
 SWEP.AdminOnly = false
 
-SWEP.ViewModel = "models/weapons/c_models/c_rocketlauncher/c_rocketlauncher.mdl"
-SWEP.WorldModel = "models/weapons/c_models/c_rocketlauncher/c_rocketlauncher.mdl"
-SWEP.HandModel = "models/weapons/c_models/c_soldier_arms.mdl"
+SWEP.ViewModel = Model( "models/weapons/c_models/c_rocketlauncher/c_rocketlauncher.mdl" )
+SWEP.WorldModel = Model( "models/weapons/c_models/c_rocketlauncher/c_rocketlauncher.mdl" )
+SWEP.HandModel = Model( "models/weapons/c_models/c_soldier_arms.mdl" )
 SWEP.HoldType = "rpg"
 function SWEP:GetAnimations()
 	

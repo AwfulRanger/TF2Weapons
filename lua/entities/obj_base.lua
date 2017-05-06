@@ -42,8 +42,8 @@ ENT.Levels = {
 		
 		Health = 100,
 		UpgradeCost = -1,
-		Model = "models/buildables/repair_level1.mdl",
-		BuildModel = "models/buildables/repair_level1.mdl",
+		Model = Model( "models/buildables/repair_level1.mdl" ),
+		BuildModel = Model( "models/buildables/repair_level1.mdl" ),
 		BuildAnim = nil,
 		BuildTime = 10,
 		
