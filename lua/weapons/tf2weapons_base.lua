@@ -124,18 +124,6 @@ function SWEP:SetVariables()
 	
 end
 
-SWEP.CreatedNetworkVars = {
-	
-	String = 0,
-	Bool = 0,
-	Float = 0,
-	Int = 0,
-	Vector = 0,
-	Angle = 0,
-	Entity = 0,
-	
-}
-
 --[[
 	Name:	SWEP:TFNetworkVar( vartype, varname, default, slot, extended )
 	
@@ -155,11 +143,14 @@ SWEP.CreatedNetworkVars = {
 ]]--
 function SWEP:TFNetworkVar( vartype, varname, default, slot, extended )
 	
+	if self.CreatedNetworkVars == nil then self.CreatedNetworkVars = {} end
+	
 	if self.CreatedNetworkVars[ vartype ] == nil then
 		
 		self.CreatedNetworkVars[ vartype ] = 0
 		
 	end
+	
 	if slot != nil then self.CreatedNetworkVars[ vartype ] = slot end
 	slot = self.CreatedNetworkVars[ vartype ]
 	

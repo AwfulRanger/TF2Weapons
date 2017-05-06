@@ -58,19 +58,9 @@ ENT.Levels = {
 	
 }
 
-ENT.CreatedNetworkVars = {
-	
-	String = 0,
-	Bool = 0,
-	Float = 0,
-	Int = 0,
-	Vector = 0,
-	Angle = 0,
-	Entity = 0,
-	
-}
-
 function ENT:TFNetworkVar( vartype, varname, default, slot, extended )
+	
+	if self.CreatedNetworkVars == nil then self.CreatedNetworkVars = {} end
 	
 	if self.CreatedNetworkVars[ vartype ] == nil then
 		
