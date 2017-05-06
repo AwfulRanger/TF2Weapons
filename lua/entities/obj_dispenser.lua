@@ -388,12 +388,15 @@ function ENT:HandleHealthRegen()
 			if stats == nil then return end
 			
 			local targets = self:GetRegenTargets()
-			
-			for i = 1, #targets do
+			if targets != nil then
 				
-				if IsValid( targets[ i ] ) == true and targets[ i ]:Health() > 0 then
+				for i = 1, #targets do
 					
-					self:GiveTargetHealth( targets[ i ], healthfloor )
+					if IsValid( targets[ i ] ) == true and targets[ i ]:Health() > 0 then
+						
+						self:GiveTargetHealth( targets[ i ], healthfloor )
+						
+					end
 					
 				end
 				
@@ -462,12 +465,15 @@ function ENT:HandleAmmoRegen()
 	if CurTime() > self:GetTFNextAmmoRegen() then
 		
 		local targets = self:GetRegenTargets()
-		
-		for i = 1, #targets do
+		if targets != nil then
 			
-			if IsValid( targets[ i ] ) == true and targets[ i ]:IsPlayer() == true then
+			for i = 1, #targets do
 				
-				self:GiveTargetAmmo( targets[ i ] )
+				if IsValid( targets[ i ] ) == true and targets[ i ]:IsPlayer() == true then
+					
+					self:GiveTargetAmmo( targets[ i ] )
+					
+				end
 				
 			end
 			
@@ -486,12 +492,21 @@ function ENT:HandleRegen()
 	if self:GetTFUpgrading() != true then
 		
 		local targets = self:GetRegenTargets()
-		if #targets > 0 and self:GetTFSoundPlaying() != true then
+		if targets != nil then
 			
-			self:EmitSound( self.HealSound, nil, nil, nil, CHAN_ITEM )
-			self:SetTFSoundPlaying( true )
+			if #targets > 0 and self:GetTFSoundPlaying() != true then
+				
+				self:EmitSound( self.HealSound, nil, nil, nil, CHAN_ITEM )
+				self:SetTFSoundPlaying( true )
+				
+			elseif #targets < 1 and self:GetTFSoundPlaying() == true then
+				
+				self:EmitSound( "null.wav", nil, nil, nil, CHAN_ITEM )
+				self:SetTFSoundPlaying( false )
+				
+			end
 			
-		elseif #targets < 1 and self:GetTFSoundPlaying() == true then
+		else
 			
 			self:EmitSound( "null.wav", nil, nil, nil, CHAN_ITEM )
 			self:SetTFSoundPlaying( false )

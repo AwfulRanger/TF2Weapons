@@ -488,6 +488,7 @@ function ENT:HandleTargetTurning()
 	if self:GetTFLastTurn() <= 0 then self:SetTFLastTurn( CurTime() ) end
 	
 	local target = self:GetTFTarget()
+	if IsValid( target ) != true then return end
 	
 	local ang = self:GetTFTurnAngle()
 	ang:Normalize()
