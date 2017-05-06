@@ -44,6 +44,12 @@ SWEP.Quality = TF2Weapons.Quality.DEVELOPER
 SWEP.Spawnable = false
 SWEP.AdminOnly = false
 
+--Models still continue to play their animations when holstered,
+--so weapons like the wrench will continue to play their animation sounds.
+--These are the models to change to when holstered to prevent things like that from happening.
+SWEP.HolsteredViewModel = "models/weapons/c_models/c_pistol/c_pistol.mdl"
+SWEP.HolsteredHandModel = "models/weapons/c_models/c_scout_arms.mdl"
+
 --SWEP.ViewModel = "models/weapons/c_models/c_ttg_max_gun/c_ttg_max_gun.mdl"
 SWEP.ViewModel = "models/weapons/c_models/c_pistol/c_pistol.mdl"
 SWEP.WorldModel = "models/weapons/c_models/c_pistol/c_pistol.mdl"
@@ -1156,6 +1162,7 @@ function SWEP:AddHands( owner )
 	if IsValid( weapon ) == true and self.ViewModel != nil and self.ViewModel != "" then
 		
 		weapon:SetWeaponModel( self.ViewModel, self )
+		
 		if IsValid( hands ) == true and self.HandModel != nil and self.HandModel != "" then
 			
 			weapon:SetParent( hands )
@@ -1185,7 +1192,8 @@ function SWEP:RemoveHands( owner )
 	
 	if IsValid( hands ) == true then
 		
-		hands:SetWeaponModel( self.HandModel, nil )
+		--hands:SetWeaponModel( self.HandModel, nil )
+		hands:SetWeaponModel( self.HolsteredHandModel, nil )
 		
 	end
 	
@@ -1193,7 +1201,8 @@ function SWEP:RemoveHands( owner )
 		
 		weapon:SetParent( nil )
 		weapon:RemoveEffects( EF_BONEMERGE )
-		weapon:SetWeaponModel( self.ViewModel, nil )
+		--weapon:SetWeaponModel( self.ViewModel, nil )
+		weapon:SetWeaponModel( self.HolsteredViewModel, nil )
 		
 	end
 	
