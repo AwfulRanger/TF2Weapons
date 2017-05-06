@@ -272,6 +272,7 @@ function SWEP:DrawHUD()
 	surface.SetFont( "TF2Weapons_SpectatorKeyHints" )
 	
 	local bind = input.LookupBinding( "slot10", true )
+	if bind == nil then bind = input.LookupBinding( "lastinv", true ) end
 	if bind == nil then bind = "UNBOUND" end
 	
 	local cancelw, cancelh = surface.GetTextSize( "Hit '" .. bind .. "' to Cancel" )
