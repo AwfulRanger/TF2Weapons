@@ -4,12 +4,17 @@ SWEP.TF2Weapons_SniperRifleDot = true
 
 hook.Add( "OnEntityCreated", "TF2Weapons_SniperRifle_OnCreated", function( ent )
 	
-	if ent.TF2Weapons_SniperRifleDot != true then return end
-	if TF2Weapons == nil then return end
-	
-	if TF2Weapons.SniperRifles == nil then TF2Weapons.SniperRifles = {} end
-	
-	table.insert( TF2Weapons.SniperRifles, ent )
+	timer.Simple( 0, function()
+		
+		if IsValid( ent ) != true then return end
+		if ent.TF2Weapons_SniperRifleDot != true then return end
+		if TF2Weapons == nil then return end
+		
+		if TF2Weapons.SniperRifles == nil then TF2Weapons.SniperRifles = {} end
+		
+		table.insert( TF2Weapons.SniperRifles, ent )
+		
+	end )
 	
 end )
 
