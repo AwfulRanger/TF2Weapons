@@ -178,15 +178,25 @@ else
 		
 		local ply = net.ReadEntity()
 		local num = net.ReadInt( 32 )
+		local valid = net.ReadBool()
+		local key = net.ReadInt( 32 )
 		local build = net.ReadEntity()
 		
 		if IsValid( ply ) != true or num == nil then return end
 		
 		local plybuildings = ply.TF2Weapons_Buildings
 			
-		if plybuildings == nil or plybuildings[ num ] == nil then return end
+		if plybuildings == nil or num == nil or plybuildings[ num ] == nil then return end
 		
-		table.RemoveByValue( plybuildings[ num ], build )
+		if valid == true then
+			
+			if key != nil then plybuildings[ num ][ key ] = nil end
+			
+		else
+			
+			if build != nil then table.RemoveByValue( plybuildings[ num ], build ) end
+			
+		end
 		
 		ply.TF2Weapons_Buildings = plybuildings
 		

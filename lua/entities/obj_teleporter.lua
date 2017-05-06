@@ -632,27 +632,9 @@ end
 
 function ENT:OnRemove()
 	
+	self:Removed()
+	
 	self:EmitSound( "null.wav", nil, nil, nil, CHAN_WEAPON )
-	
-	local plybuildings = self:GetTFOwner().TF2Weapons_Buildings
-	
-	if plybuildings == nil or plybuildings[ self:GetBuildNum() ] == nil then return end
-	
-	table.RemoveByValue( plybuildings[ self:GetBuildNum() ], self )
-	
-	self:GetTFOwner().TF2Weapons_Buildings = plybuildings
-	
-	if SERVER then
-		
-		net.Start( "tf2weapons_building_remove" )
-			
-			net.WriteEntity( self:GetTFOwner() )
-			net.WriteInt( self:GetBuildNum(), 32 )
-			net.WriteEntity( self )
-			
-		net.Broadcast()
-		
-	end
 	
 	if IsValid( self:GetLink() ) == true then
 		

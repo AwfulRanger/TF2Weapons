@@ -520,13 +520,22 @@ function ENT:OnDestroy( send )
 	
 end
 
-function ENT:OnRemove()
+function ENT:Removed()
 	
 	local plybuildings = self:GetTFOwner().TF2Weapons_Buildings
 	
 	if plybuildings == nil or plybuildings[ self:GetBuildNum() ] == nil then return end
 	
-	table.RemoveByValue( plybuildings[ self:GetBuildNum() ], self )
+	local valid = true
+	
+	local key = table.RemoveByValue( plybuildings[ self:GetBuildNum() ], self )
+	
+	if key == false then
+		
+		valid = false
+		key = -1
+		
+	end
 	
 	self:GetTFOwner().TF2Weapons_Buildings = plybuildings
 	
@@ -536,10 +545,18 @@ function ENT:OnRemove()
 			
 			net.WriteEntity( self:GetTFOwner() )
 			net.WriteInt( self:GetBuildNum(), 32 )
+			net.WriteBool( valid )
+			net.WriteInt( key, 32 )
 			net.WriteEntity( self )
 			
 		net.Broadcast()
 		
 	end
+	
+end
+
+function ENT:OnRemove()
+	
+	self:Removed()
 	
 end
