@@ -36,6 +36,10 @@ ENT.BuildMaxs = Vector( 20, 20, 66 )
 
 ENT.ExplodeSound = Sound( "weapons/sentry_explode.wav" )
 
+ENT.BuildUpgradeBase = 25
+ENT.BuildRepairBase = 105
+ENT.BuildConstructionRateBase = 2
+
 ENT.Levels = {
 	
 	{
@@ -219,8 +223,8 @@ function ENT:Upgrade( dmg )
 	
 	local upgrade = self:GetTFUpgrade()
 	--local upgrademax = weapon:BuildUpgradeMax()
-	local upgrademax = 25
-	if weapon.BuildUpgradeMax != nil then upgrademax = weapon:BuildUpgradeMax() end
+	local upgrademax = self.BuildUpgradeBase
+	if weapon.BuildUpgradeMax != nil then upgrademax = weapon:BuildUpgradeMax( self.BuildUpgradeBase ) end
 	if upgrademax > weapon:Ammo1() then upgrademax = weapon:Ammo1() end
 	
 	if upgrademax <= 0 then return false end
@@ -353,7 +357,10 @@ function ENT:DoUpgradeMult()
 			
 		else
 			
-			mult = mult * self.RepairerMult
+			local addmult = self.RepairerMult
+			if _.BuildConstructRate != nil then addmult = _:BuildConstructRate( self.RepairerMult ) end
+			
+			mult = mult * addmult
 			
 		end
 		
@@ -378,8 +385,8 @@ function ENT:Repair( dmg )
 	
 	local repair = self:Health()
 	--local repairmax = weapon:BuildRepairMax()
-	local repairmax = 105
-	if weapon.BuildRepairMax != nil then repairmax = weapon:BuildRepairMax() end
+	local repairmax = self.BuildRepairBase
+	if weapon.BuildRepairMax != nil then repairmax = weapon:BuildRepairMax( self.BuildRepairBase ) end
 	if repair + repairmax > self:GetMaxHealth() then repairmax = self:GetMaxHealth() - repair end
 	
 	local cost = ( 1 + repairmax ) / 3
@@ -441,7 +448,7 @@ function ENT:OnHit( dmg )
 		
 		if self:GetTFBuilding() == true then
 			
-			self.RepairerList[ dmg:GetAttacker() ] = CurTime()
+			self.RepairerList[ dmg:GetInflictor() ] = CurTime()
 			upgraded = true
 			
 		elseif self:GetTFUpgrading() != true then

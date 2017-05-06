@@ -629,6 +629,86 @@ TF2Weapons:AddAttribute( {
 } )
 TF2Weapons:AddAttribute( {
 	
+	id = 92,
+	name = "Construction rate increased",
+	desc = "Construction hit speed boost increased by %s1%",
+	color = TF2Weapons.Color.POSITIVE,
+	type = "percentage",
+	class = "mult_construction_value",
+	hidden = false,
+	func = function( weapon, values )
+		
+		if values[ 1 ] == nil or IsValid( weapon ) != true then return values end
+		
+		if weapon.BuildConstructRateMult != nil then weapon.BuildConstructRateMult = weapon.BuildConstructRateMult * values[ 1 ] end
+		
+		return values
+		
+	end,
+	
+} )
+TF2Weapons:AddAttribute( {
+	
+	id = 93,
+	name = "Construction rate decreased",
+	desc = "Construction hit speed boost decreased by %s1%",
+	color = TF2Weapons.Color.NEGATIVE,
+	type = "inverted_percentage",
+	class = "mult_construction_value",
+	hidden = false,
+	func = function( weapon, values )
+		
+		if values[ 1 ] == nil or IsValid( weapon ) != true then return values end
+		
+		if weapon.BuildConstructRateMult != nil then weapon.BuildConstructRateMult = weapon.BuildConstructRateMult * values[ 1 ] end
+		
+		return values
+		
+	end,
+	
+} )
+TF2Weapons:AddAttribute( {
+	
+	id = 94,
+	name = "Repair rate increased",
+	desc = "%s1% faster repair rate",
+	color = TF2Weapons.Color.POSITIVE,
+	type = "percentage",
+	class = "mult_repair_value",
+	hidden = false,
+	func = function( weapon, values )
+		
+		if values[ 1 ] == nil or IsValid( weapon ) != true then return values end
+		
+		if weapon.BuildRepairMult != nil then weapon.BuildRepairMult = weapon.BuildRepairMult * values[ 1 ] end
+		
+		return values
+		
+	end,
+	
+} )
+TF2Weapons:AddAttribute( {
+	
+	id = 95,
+	name = "Repair rate decreased",
+	desc = "%s1% slower repair rate",
+	color = TF2Weapons.Color.NEGATIVE,
+	type = "inverted_percentage",
+	class = "mult_repair_value",
+	hidden = false,
+	func = function( weapon, values )
+		
+		if values[ 1 ] == nil or IsValid( weapon ) != true then return values end
+		
+		if weapon.BuildRepairMult != nil then weapon.BuildRepairMult = weapon.BuildRepairMult * values[ 1 ] end
+		
+		return values
+		
+	end,
+	
+} )
+TF2Weapons:AddAttribute( {
+	
 	id = 96,
 	name = "Reload time increased",
 	desc = "%s1% slower reload time",
@@ -728,6 +808,22 @@ TF2Weapons:AddAttribute( {
 	color = TF2Weapons.Color.NEUTRAL,
 	type = "additive",
 	class = "provide_on_active",
+	hidden = false,
+	func = function( weapon, values )
+		
+		return values
+		
+	end,
+	
+} )
+TF2Weapons:AddAttribute( {
+	
+	id = 137,
+	name = "dmg bonus vs buildings",
+	desc = "+%s1% damage vs buildings",
+	color = TF2Weapons.Color.POSITIVE,
+	type = "percentage",
+	class = "mult_dmg_vs_buildings",
 	hidden = false,
 	func = function( weapon, values )
 		
@@ -995,6 +1091,22 @@ TF2Weapons:AddAttribute( {
 		if values[ 1 ] == nil or IsValid( weapon ) != true then return values end
 		
 		if weapon.DeployTime != nil then weapon.DeployTime = weapon.DeployTime * values[ 1 ] end
+		
+		return values
+		
+	end,
+	
+} )
+TF2Weapons:AddAttribute( {
+	
+	id = 775,
+	name = "dmg penalty vs buildings",
+	desc = "%s1% damage penalty vs buildings",
+	color = TF2Weapons.Color.NEGATIVE,
+	type = "percentage",
+	class = "mult_dmg_vs_buildings",
+	hidden = false,
+	func = function( weapon, values )
 		
 		return values
 		

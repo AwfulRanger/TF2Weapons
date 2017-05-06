@@ -2468,6 +2468,7 @@ function SWEP:GetDamageMods( damage, mod, target, crit )
 		if self:GetAttributeClass( "mult_dmg_vs_nonburning" ) != nil and target:IsOnFire() != true then damage = damage * self:GetAttributeClass( "mult_dmg_vs_nonburning" ) end
 		if self:GetAttributeClass( "mult_dmg_bonus_while_half_dead" ) != nil and self:GetOwner():Health() < self:GetOwner():GetMaxHealth() * 0.5 then damage = damage * self:GetAttributeClass( "mult_dmg_bonus_while_half_dead" ) end
 		if self:GetAttributeClass( "mult_dmg_penalty_while_half_alive" ) != nil and self:GetOwner():Health() >= self:GetOwner():GetMaxHealth() * 0.5 then damage = damage * self:GetAttributeClass( "mult_dmg_penalty_while_half_alive" ) end
+		if self:GetAttributeClass( "mult_dmg_vs_buildings" ) != nil and target.TF2Weapons_Building == true then damage = damage * self:GetAttributeClass( "mult_dmg_vs_buildings" ) end
 		
 	end
 	

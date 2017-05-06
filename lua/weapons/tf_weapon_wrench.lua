@@ -72,14 +72,55 @@ function SWEP:SetVariables()
 	
 end
 
-function SWEP:BuildUpgradeMax()
+SWEP.BuildUpgradeBase = 25
+SWEP.BuildRepairBase = 105
+SWEP.BuildConstructRateBase = 2
+
+SWEP.BuildUpgradeMult = 1
+SWEP.BuildRepairMult = 1
+SWEP.BuildConstructRateMult = 1
+
+function SWEP:BuildUpgradeMax( base )
 	
-	return 25
+	if base == nil then
+		
+		base = 25
+		if self.BuildUpgradeBase != nil then base = self.BuildUpgradeBase end
+		
+	end
+	
+	if self.BuildUpgradeMult != nil then base = base * self.BuildUpgradeMult end
+	
+	return base
 	
 end
 
-function SWEP:BuildRepairMax()
+function SWEP:BuildRepairMax( base )
 	
-	return 105
+	if base == nil then
+		
+		base = 105
+		if self.BuildRepairBase != nil then base = self.BuildRepairBase end
+		
+	end
+	
+	if self.BuildRepairMult != nil then base = base * self.BuildRepairMult end
+	
+	return base
+	
+end
+
+function SWEP:BuildConstructRate( base )
+	
+	if base == nil then
+		
+		base = 2
+		if self.BuildConstructRateBase != nil then base = self.BuildConstructRateBase end
+		
+	end
+	
+	if self.BuildConstructRateMult != nil then base = base * self.BuildConstructRateMult end
+	
+	return base
 	
 end
