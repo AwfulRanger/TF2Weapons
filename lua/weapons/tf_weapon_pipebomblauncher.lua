@@ -148,7 +148,6 @@ function SWEP:Initialize()
 	if CLIENT then self:AddKillIcon( self.KillIcon, self.KillIconColor, self.KillIconX, self.KillIconY, self.KillIconW, self.KillIconH, self.PipebombClass ) end
 	
 	self:PrecacheParticles( self.PipebombParticles )
-	self:PrecacheParticles( self.MuzzleParticle )
 	
 end
 

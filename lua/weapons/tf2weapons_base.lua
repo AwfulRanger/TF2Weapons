@@ -476,6 +476,8 @@ function SWEP:DoInitialize()
 		
 	end
 	
+	if self.MuzzleParticle != nil and self.MuzzleParticle != "" then self:PrecacheParticles( self.MuzzleParticle ) end
+	
 end
 
 --[[
@@ -487,8 +489,6 @@ end
 function SWEP:Initialize()
 	
 	self:DoInitialize()
-	
-	self:PrecacheParticles( self.MuzzleParticle )
 	
 end
 
