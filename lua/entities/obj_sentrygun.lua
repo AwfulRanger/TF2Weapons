@@ -658,6 +658,7 @@ function ENT:GetSentryTarget()
 				
 				if t == self:GetTFOwner() then friendly = true end
 				if t.GetTFOwner != nil and self:GetTFOwner() == t:GetTFOwner() then friendly = true end
+				if t:GetOwner() == self:GetTFOwner() then friendly = true end
 				
 				if friendly != true and ( distance < 0 or dist < distance ) then
 					
