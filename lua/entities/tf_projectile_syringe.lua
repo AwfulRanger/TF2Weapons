@@ -148,6 +148,16 @@ ENT.RemoveTime = 0
 
 function ENT:Think()
 	
+	if CLIENT then
+		
+		if IsValid( self.ClientModel ) != true then self.ClientModel = ClientsideModel( self:GetSyringeModel() ) end
+		if self.ClientModel:GetModel() != self:GetSyringeModel() then self.ClientModel:SetModel( self:GetSyringeModel() ) end
+		
+		self.ClientModel:SetPos( self:GetPos() )
+		self.ClientModel:SetAngles( self:GetAngles() )
+		
+	end
+	
 	if self.RemoveNext == true and CurTime() > self.RemoveTime then self:Remove() end
 	
 end
@@ -197,20 +207,7 @@ function ENT:PhysicsCollide( data, collider )
 	
 end
 
---Default syringe model lacks physics so here's a bad workaround
-
-ENT.ClientModel = nil
-
 function ENT:Draw()
-	
-	--self:DrawModel()
-	
-	if IsValid( self.ClientModel ) != true then self.ClientModel = ClientsideModel( self:GetSyringeModel() ) end
-	if self.ClientModel:GetModel() != self:GetSyringeModel() then self.ClientModel:SetModel( self:GetSyringeModel() ) end
-	
-	self.ClientModel:SetPos( self:GetPos() )
-	self.ClientModel:SetAngles( self:GetAngles() )
-	
 end
 
 function ENT:OnRemove()

@@ -36,6 +36,30 @@ function ENT:Touch( ent )
 	
 end
 
+function ENT:Think()
+	
+	self:SetAngles( self:GetRocketAngles() )
+	
+	if IsValid( self:GetPhysicsObject() ) == true then
+		
+		self:GetPhysicsObject():EnableDrag( false )
+		self:GetPhysicsObject():EnableGravity( false )
+		self:GetPhysicsObject():SetVelocity( self:GetAngles():Forward() * self:GetRocketSpeed() )
+		
+	end
+	
+	if CLIENT then
+		
+		if IsValid( self.ClientModel ) != true then self.ClientModel = ClientsideModel( self:GetSentryRocketModel() ) end
+		if self.ClientModel:GetModel() != self:GetSentryRocketModel() then self.ClientModel:SetModel( self:GetSentryRocketModel() ) end
+		
+		self.ClientModel:SetPos( self:GetPos() )
+		self.ClientModel:SetAngles( self:GetAngles() )
+		
+	end
+	
+end
+
 function ENT:PhysicsCollide( data, collider )
 	
 	if data.HitEntity != self:GetOwner() and data.HitEntity:GetClass() != self:GetClass() and data.HitEntity != self:GetSentry() then
@@ -54,20 +78,7 @@ function ENT:PhysicsCollide( data, collider )
 	
 end
 
---Default sentry rocket model lacks physics so here's a bad workaround
-
-ENT.ClientModel = nil
-
 function ENT:Draw()
-	
-	--self:DrawModel()
-	
-	if IsValid( self.ClientModel ) != true then self.ClientModel = ClientsideModel( self:GetSentryRocketModel() ) end
-	if self.ClientModel:GetModel() != self:GetSentryRocketModel() then self.ClientModel:SetModel( self:GetSentryRocketModel() ) end
-	
-	self.ClientModel:SetPos( self:GetPos() )
-	self.ClientModel:SetAngles( self:GetAngles() )
-	
 end
 
 function ENT:OnRemove()
