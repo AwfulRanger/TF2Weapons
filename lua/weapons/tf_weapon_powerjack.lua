@@ -15,7 +15,7 @@ SWEP.Category = "Team Fortress 2"
 SWEP.Level = 5
 SWEP.Type = "Sledgehammer"
 SWEP.Base = "tf_weapon_fireaxe"
-SWEP.Classes = { TF2Weapons.Class.PYRO }
+SWEP.Classes = { [ TF2Weapons.Class.PYRO ] = true }
 SWEP.Quality = TF2Weapons.Quality.UNIQUE
 
 SWEP.Spawnable = true

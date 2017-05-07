@@ -16,7 +16,7 @@ SWEP.Category = "Team Fortress 2"
 SWEP.Level = 15
 SWEP.Type = "Robot Arm"
 SWEP.Base = "tf_weapon_wrench"
-SWEP.Classes = { TF2Weapons.Class.ENGINEER }
+SWEP.Classes = { [ TF2Weapons.Class.ENGINEER ] = true }
 SWEP.Quality = TF2Weapons.Quality.UNIQUE
 
 SWEP.Spawnable = true

@@ -144,6 +144,8 @@ else
 		
 	end )
 	
+	CreateClientConVar( "tf2weapons_class", "1", true, true, "1 = Scout, 2 = Soldier, 3 = Pyro, 4 = Demoman, 5 = Heavy, 6 = Engineer, 7 = Medic, 8 = Sniper, 9 = Spy" )
+	
 end
 
 local meta = FindMetaTable( "Entity" )
@@ -491,6 +493,20 @@ TF2Weapons.Class = {
 	MEDIC = 7,
 	SNIPER = 8,
 	SPY = 9,
+	
+}
+
+TF2Weapons.ClassHand = {
+	
+	[ TF2Weapons.Class.SCOUT ] = Model( "models/weapons/c_models/c_scout_arms.mdl" ),
+	[ TF2Weapons.Class.SOLDIER ] = Model( "models/weapons/c_models/c_soldier_arms.mdl" ),
+	[ TF2Weapons.Class.PYRO ] = Model( "models/weapons/c_models/c_pyro_arms.mdl" ),
+	[ TF2Weapons.Class.DEMOMAN ] = Model( "models/weapons/c_models/c_demo_arms.mdl" ),
+	[ TF2Weapons.Class.HEAVY ] = Model( "models/weapons/c_models/c_heavy_arms.mdl" ),
+	[ TF2Weapons.Class.ENGINEER ] = Model( "models/weapons/c_models/c_engineer_arms.mdl" ),
+	[ TF2Weapons.Class.MEDIC ] = Model( "models/weapons/c_models/c_medic_arms.mdl" ),
+	[ TF2Weapons.Class.SNIPER ] = Model( "models/weapons/c_models/c_sniper_arms.mdl" ),
+	[ TF2Weapons.Class.SPY ] = Model( "models/weapons/c_models/c_spy_arms.mdl" ),
 	
 }
 

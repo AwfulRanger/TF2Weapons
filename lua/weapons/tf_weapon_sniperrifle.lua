@@ -59,7 +59,7 @@ SWEP.Category = "Team Fortress 2"
 SWEP.Level = 1
 SWEP.Type = "Sniper Rifle"
 SWEP.Base = "tf2weapons_base"
-SWEP.Classes = { TF2Weapons.Class.SNIPER }
+SWEP.Classes = { [ TF2Weapons.Class.SNIPER ] = true }
 SWEP.Quality = TF2Weapons.Quality.NORMAL
 
 SWEP.Spawnable = true

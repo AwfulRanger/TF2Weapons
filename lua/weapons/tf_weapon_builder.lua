@@ -222,7 +222,7 @@ SWEP.Category = "Team Fortress 2"
 SWEP.Level = 1
 SWEP.Type = "Toolbox"
 SWEP.Base = "tf2weapons_base"
-SWEP.Classes = { TF2Weapons.Class.ENGINEER }
+SWEP.Classes = { [ TF2Weapons.Class.ENGINEER ] = true }
 SWEP.Quality = TF2Weapons.Quality.NORMAL
 
 SWEP.Spawnable = false

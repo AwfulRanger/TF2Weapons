@@ -15,7 +15,7 @@ SWEP.Category = "Team Fortress 2"
 SWEP.Level = 5
 SWEP.Type = "Kukri"
 SWEP.Base = "tf_weapon_club"
-SWEP.Classes = { TF2Weapons.Class.SNIPER }
+SWEP.Classes = { [ TF2Weapons.Class.SNIPER ] = true }
 SWEP.Quality = TF2Weapons.Quality.UNIQUE
 
 SWEP.Spawnable = true

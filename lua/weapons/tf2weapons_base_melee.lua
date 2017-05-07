@@ -20,7 +20,7 @@ SWEP.Category = "Team Fortress 2"
 SWEP.Level = 101
 SWEP.Type = "Weapon Base"
 SWEP.Base = "tf2weapons_base"
-SWEP.Classes = { TF2Weapons.Class.NONE }
+SWEP.Classes = { [ TF2Weapons.Class.NONE ] = true }
 SWEP.Quality = TF2Weapons.Quality.DEVELOPER
 
 SWEP.Spawnable = false
@@ -105,6 +105,7 @@ function SWEP:BaseDataTables()
 	
 	self:TFNetworkVar( "Int", "Reloads", 0 )
 	self:TFNetworkVar( "Int", "ReloadAmmo", 0 )
+	self:TFNetworkVar( "Int", "PlayerClass", 0 )
 	
 	self:TFNetworkVar( "Entity", "LastOwner", nil )
 	

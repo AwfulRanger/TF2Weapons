@@ -5,6 +5,8 @@ include( "tf2weapons.lua" )
 
 SWEP.TF2Weapon = true
 
+SWEP.ClassBases = {}
+
 SWEP.Weight = 5
 
 SWEP.AutoSwitchTo = true
@@ -38,7 +40,7 @@ SWEP.Level = 101
 SWEP.HUDLevel = nil
 SWEP.Type = "Weapon Base"
 SWEP.Base = "weapon_base"
-SWEP.Classes = { TF2Weapons.Class.NONE }
+SWEP.Classes = { [ TF2Weapons.Class.NONE ] = true }
 SWEP.Quality = TF2Weapons.Quality.DEVELOPER
 
 SWEP.Spawnable = false
@@ -56,6 +58,7 @@ SWEP.WorldModel = Model( "models/weapons/c_models/c_pistol/c_pistol.mdl" )
 SWEP.ViewModelFlip = false
 SWEP.ViewModelFOV = 54
 SWEP.UseHands = false
+SWEP.DisableAutomaticHands = false
 SWEP.HandModel = Model( "models/weapons/c_models/c_scout_arms.mdl" )
 SWEP.HoldType = "pistol"
 function SWEP:GetAnimations()
@@ -237,6 +240,7 @@ function SWEP:BaseDataTables()
 	
 	self:TFNetworkVar( "Int", "Reloads", 0 )
 	self:TFNetworkVar( "Int", "ReloadAmmo", 0 )
+	self:TFNetworkVar( "Int", "PlayerClass", 0 )
 	
 	self:TFNetworkVar( "Entity", "LastOwner", nil )
 	
@@ -445,6 +449,49 @@ end
 function SWEP:TeamSet( blu )
 	
 	self:DoTeamSet( blu )
+	
+end
+
+--[[
+	Name:	SWEP:GetPlayerClass( ply )
+	
+	Desc:	Get the player's class
+]]--
+function SWEP:GetPlayerClass()
+	
+	if CLIENT then return self:GetTFPlayerClass() end
+	
+	local class = self:GetOwner():GetInfoNum( "tf2weapons_class", 1 )
+	if self.Classes[ class ] == nil then
+		
+		local found = false
+		
+		for i = 0, #TF2Weapons.Class do
+			
+			if self.Classes[ i ] == true and found != true then
+				
+				class = i
+				found = true
+				
+			end
+			
+		end
+		
+		if found != true then class = 0 end
+		
+	end
+	
+	self:SetTFPlayerClass( class )
+	return class
+	
+end
+
+function SWEP:DoPlayerClassSet( class )
+end
+
+function SWEP:PlayerClassSet( class )
+	
+	self:DoPlayerClassSet( class )
 	
 end
 
@@ -1136,6 +1183,37 @@ function SWEP:GetVMAnimation()
 end
 
 --[[
+	Name:	SWEP:GetHandModel()
+	
+	Desc:	Returns hand model based on the owner's class
+	
+	Ret1:	Hand model
+]]--
+function SWEP:GetHandModel()
+	
+	local hands = self.HandModel
+	
+	if self.DisableAutomaticHands != true then
+		
+		if TF2Weapons.ClassHand[ self:GetPlayerClass() ] != nil then return TF2Weapons.ClassHand[ self:GetPlayerClass() ] end
+		
+	end
+	
+	if hands == "models/weapons/c_models/c_engineer_arms.mdl" and self:GetOwner():HasWeapon( "tf_weapon_robot_arm" ) == true then
+		
+		hands = Model( "models/weapons/c_models/c_engineer_gunslinger.mdl" )
+		
+	elseif hands == "models/weapons/c_models/c_engineer_gunslinger.mdl" and self:GetOwner():HasWeapon( "tf_weapon_robot_arm" ) != true then
+		
+		hands = Model( "models/weapons/c_models/c_engineer_arms.mdl" )
+		
+	end
+	
+	return hands
+	
+end
+
+--[[
 	Name:	SWEP:AddHands( owner )
 	
 	Desc:	Creates and initializes weapon and hands viewmodels
@@ -1149,9 +1227,11 @@ function SWEP:AddHands( owner )
 	
 	local hands, weapon = self:GetViewModels( owner )
 	
-	if IsValid( hands ) == true and self.HandModel != nil and self.HandModel != "" then
+	local handmodel = self:GetHandModel()
+	
+	if IsValid( hands ) == true and handmodel != nil and handmodel != "" then
 		
-		hands:SetWeaponModel( self.HandModel, self )
+		hands:SetWeaponModel( handmodel, self )
 		
 		hands:SetNoDraw( false )
 		
@@ -1161,7 +1241,7 @@ function SWEP:AddHands( owner )
 		
 		weapon:SetWeaponModel( self.ViewModel, self )
 		
-		if IsValid( hands ) == true and self.HandModel != nil and self.HandModel != "" then
+		if IsValid( hands ) == true and handmodel != nil and handmodel != "" then
 			
 			weapon:SetParent( hands )
 			weapon:AddEffects( EF_BONEMERGE )
@@ -1190,7 +1270,7 @@ function SWEP:RemoveHands( owner )
 	
 	if IsValid( hands ) == true then
 		
-		--hands:SetWeaponModel( self.HandModel, nil )
+		--hands:SetWeaponModel( self:GetHandModel(), nil )
 		hands:SetWeaponModel( self.HolsteredHandModel, nil )
 		
 	end
@@ -1220,7 +1300,7 @@ function SWEP:CheckHands( owner )
 	
 	local hands, weapon = self:GetViewModels( owner )
 	
-	if IsValid( weapon ) == false or IsValid( hands ) == false or weapon:GetParent() != hands or weapon:IsEffectActive( EF_BONEMERGE ) == false or hands:GetModel() != self.HandModel or weapon:GetModel() != self.ViewModel then
+	if IsValid( weapon ) == false or IsValid( hands ) == false or weapon:GetParent() != hands or weapon:IsEffectActive( EF_BONEMERGE ) == false or hands:GetModel() != self:GetHandModel() or weapon:GetModel() != self.ViewModel then
 		
 		self:AddHands()
 		
@@ -1713,16 +1793,6 @@ function SWEP:DoDeploy()
 	
 	self:SetTFLastOwner( self:GetOwner() )
 	
-	if self:GetOwner():HasWeapon( "tf_weapon_robot_arm" ) == true and self.HandModel == "models/weapons/c_models/c_engineer_arms.mdl" then
-		
-		self.HandModel = Model( "models/weapons/c_models/c_engineer_gunslinger.mdl" )
-		
-	elseif self:GetOwner():HasWeapon( "tf_weapon_robot_arm" ) != true and self.HandModel == "models/weapons/c_models/c_engineer_gunslinger.mdl" then
-		
-		self.HandModel = Model( "models/weapons/c_models/c_engineer_arms.mdl" )
-		
-	end
-	
 	self:CheckHands()
 	
 	local deploytime = self.DeployTime
@@ -1740,6 +1810,7 @@ function SWEP:DoDeploy()
 	self:SetVMAnimation( draw, 0.67 / deploytime )
 	
 	self:TeamSet( self:GetTeam() )
+	self:PlayerClassSet( self:GetPlayerClass() )
 	
 end
 

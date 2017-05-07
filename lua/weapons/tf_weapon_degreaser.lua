@@ -15,7 +15,7 @@ SWEP.Category = "Team Fortress 2"
 SWEP.Level = 10
 SWEP.Type = "Flame Thrower"
 SWEP.Base = "tf_weapon_flamethrower"
-SWEP.Classes = { TF2Weapons.Class.PYRO }
+SWEP.Classes = { [ TF2Weapons.Class.PYRO ] = true }
 SWEP.Quality = TF2Weapons.Quality.UNIQUE
 
 SWEP.Spawnable = true

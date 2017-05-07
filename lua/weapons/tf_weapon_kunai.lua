@@ -17,7 +17,7 @@ SWEP.Category = "Team Fortress 2"
 SWEP.Level = 1
 SWEP.Type = "Kunai"
 SWEP.Base = "tf_weapon_knife"
-SWEP.Classes = { TF2Weapons.Class.SPY }
+SWEP.Classes = { [ TF2Weapons.Class.SPY ] = true }
 SWEP.Quality = TF2Weapons.Quality.UNIQUE
 
 SWEP.Spawnable = true

@@ -15,7 +15,7 @@ SWEP.Category = "Team Fortress 2"
 SWEP.Level = 10
 SWEP.Type = "Shotgun"
 SWEP.Base = "tf_weapon_shotgun_hwg"
-SWEP.Classes = { TF2Weapons.Class.HEAVY }
+SWEP.Classes = { [ TF2Weapons.Class.HEAVY ] = true }
 SWEP.Quality = TF2Weapons.Quality.UNIQUE
 
 SWEP.Spawnable = true

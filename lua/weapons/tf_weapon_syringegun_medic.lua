@@ -14,7 +14,7 @@ SWEP.Category = "Team Fortress 2"
 SWEP.Level = 1
 SWEP.Type = "Syringe Gun"
 SWEP.Base = "tf2weapons_base"
-SWEP.Classes = { TF2Weapons.Class.MEDIC }
+SWEP.Classes = { [ TF2Weapons.Class.MEDIC ] = true }
 SWEP.Quality = TF2Weapons.Quality.NORMAL
 
 SWEP.Spawnable = true

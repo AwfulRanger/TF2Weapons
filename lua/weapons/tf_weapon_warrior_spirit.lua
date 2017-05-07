@@ -16,7 +16,7 @@ SWEP.Category = "Team Fortress 2"
 SWEP.Level = 10
 SWEP.Type = "Boxing Gloves"
 SWEP.Base = "tf_weapon_fists"
-SWEP.Classes = { TF2Weapons.Class.HEAVY }
+SWEP.Classes = { [ TF2Weapons.Class.HEAVY ] = true }
 SWEP.Quality = TF2Weapons.Quality.UNIQUE
 
 SWEP.Spawnable = true

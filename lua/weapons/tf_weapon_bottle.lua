@@ -28,7 +28,7 @@ SWEP.Category = "Team Fortress 2"
 SWEP.Level = 1
 SWEP.Type = "Bottle"
 SWEP.Base = "tf2weapons_base_melee"
-SWEP.Classes = { TF2Weapons.Class.DEMOMAN }
+SWEP.Classes = { [ TF2Weapons.Class.DEMOMAN ] = true }
 SWEP.Quality = TF2Weapons.Quality.NORMAL
 
 SWEP.Spawnable = true

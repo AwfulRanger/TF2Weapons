@@ -16,7 +16,7 @@ SWEP.Category = "Team Fortress 2"
 SWEP.Level = 10
 SWEP.Type = "Pistol"
 SWEP.Base = "tf_weapon_pistol"
-SWEP.Classes = { TF2Weapons.Class.SCOUT }
+SWEP.Classes = { [ TF2Weapons.Class.SCOUT ] = true }
 SWEP.Quality = TF2Weapons.Quality.UNIQUE
 
 SWEP.Spawnable = true

@@ -14,7 +14,7 @@ SWEP.Category = "Team Fortress 2"
 SWEP.Level = 5
 SWEP.Type = "Minigun"
 SWEP.Base = "tf_weapon_minigun"
-SWEP.Classes = { TF2Weapons.Class.HEAVY }
+SWEP.Classes = { [ TF2Weapons.Class.HEAVY ] = true }
 SWEP.Quality = TF2Weapons.Quality.UNIQUE
 
 SWEP.Spawnable = true
