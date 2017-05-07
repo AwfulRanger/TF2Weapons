@@ -10,7 +10,6 @@ ENT.AdminOnly = false
 
 ENT.TF2Weapons_NoAirblast = true
 
-ENT.PhysModel = Model( "models/weapons/w_models/w_drg_ball.mdl" )
 ENT.Model = Model( "models/weapons/w_models/w_syringe_proj.mdl" )
 ENT.Skin = 0
 ENT.Damage = 10
@@ -19,7 +18,7 @@ ENT.Life = 10
 function ENT:SetSyringeModel( model )
 	
 	self:SetNW2String( "model", model )
-	--self:SetModel( model )
+	self:SetModel( model )
 	
 end
 
@@ -32,7 +31,7 @@ end
 function ENT:SetSyringeSkin( skin )
 	
 	self:SetNW2Int( "skin", skin )
-	--self:SetSkin( skin )
+	self:SetSkin( skin )
 	
 end
 
@@ -82,15 +81,17 @@ function ENT:Initialize()
 	
 	if SERVER then
 		
-		self:SetModel( self.PhysModel )
+		self:SetModel( self.Model )
 		self:SetMoveType( MOVETYPE_VPHYSICS )
-		self:PhysicsInit( SOLID_VPHYSICS )
-		self:SetSolid( SOLID_VPHYSICS )
 		self:SetCollisionGroup( COLLISION_GROUP_DEBRIS_TRIGGER )
+		
+		self:SetGravity( 0.3 )
 		
 		self:SetTrigger( true )
 		
 	end
+	
+	self:PhysicsInitSphere( 0.1, "default" )
 	
 	if IsValid( self:GetPhysicsObject() ) == true then
 		
@@ -111,6 +112,8 @@ function ENT:Touch( ent )
 			self.RemoveNext = true
 			self.RemoveTime = CurTime() + 10
 			if IsValid( self:GetPhysicsObject() ) == true then self:GetPhysicsObject():EnableMotion( false ) end
+			
+			if CLIENT then self.HitAng = self:GetRenderAngles() end
 			
 		elseif self.FirstHit != false then
 			
@@ -148,15 +151,21 @@ ENT.RemoveTime = 0
 
 function ENT:Think()
 	
+	--[[
 	if CLIENT then
 		
-		if IsValid( self.ClientModel ) != true then self.ClientModel = ClientsideModel( self:GetSyringeModel() ) end
-		if self.ClientModel:GetModel() != self:GetSyringeModel() then self.ClientModel:SetModel( self:GetSyringeModel() ) end
+		local motion = IsValid( self:GetPhysicsObject() ) == true and self:GetPhysicsObject():IsMotionEnabled() == true
 		
-		self.ClientModel:SetPos( self:GetPos() )
-		self.ClientModel:SetAngles( self:GetAngles() )
+		if self.LastPos != nil and motion == true and self.LastPos != self:GetPos() then
+			
+			self:SetRenderAngles( ( self:GetPos() - self.LastPos ):Angle() )
+			
+		end
+		
+		self.LastPos = self:GetPos()
 		
 	end
+	]]--
 	
 	if self.RemoveNext == true and CurTime() > self.RemoveTime then self:Remove() end
 	
@@ -175,6 +184,8 @@ function ENT:PhysicsCollide( data, collider )
 			self.RemoveNext = true
 			self.RemoveTime = CurTime() + self:GetSyringeLife()
 			collider:EnableMotion( false )
+			
+			if CLIENT then self.HitAng = self:GetRenderAngles() end
 			
 		elseif self.FirstHit != false then
 			
@@ -204,14 +215,5 @@ function ENT:PhysicsCollide( data, collider )
 	end
 	
 	self.FirstHit = false
-	
-end
-
-function ENT:Draw()
-end
-
-function ENT:OnRemove()
-	
-	if IsValid( self.ClientModel ) == true then self.ClientModel:Remove() end
 	
 end
