@@ -2138,56 +2138,81 @@ function SWEP:PrimaryAttack()
 	bullet.Num = self.Primary.Shots
 	bullet.Spread = Vector( spread, spread )
 	bullet.Force = self.Primary.Force
+	
+	local bulletnum = 0
+	local hit = {}
+	
 	bullet.Callback = function( attacker, tr, dmg )
+		
+		bulletnum = bulletnum + 1
 		
 		for i = 1, #self.BulletCallbacks do
 			
-			if self.BulletCallback[ i ]( attacker, tr, dmg ) == true then return end
+			if self.BulletCallbacks[ i ]( attacker, tr, dmg, bullet, bulletnum ) == true then return end
 			
 		end
 		
-		if SERVER and dmg != nil and IsValid( tr.Entity ) == true then
+		if dmg != nil then
 			
-			local modifier = self.DamageNormal
-			
-			if IsValid( attacker ) == true then
+			if SERVER and IsValid( tr.Entity ) == true then
 				
-				local distance = attacker:GetPos():Distance( tr.HitPos )
+				local modifier = self.DamageNormal
 				
-				if distance < self.NormalDistance then
+				if IsValid( attacker ) == true then
 					
-					if distance < self.MinDistance then distance = self.MinDistance end
+					local distance = attacker:GetPos():Distance( tr.HitPos )
 					
-				else
+					if distance < self.NormalDistance then
+						
+						if distance < self.MinDistance then distance = self.MinDistance end
+						
+					else
+						
+						if distance > self.MaxDistance then distance = self.MaxDistance end
+						
+					end
 					
-					if distance > self.MaxDistance then distance = self.MaxDistance end
+					modifier = ( distance / self.MaxDistance ) - ( self.DamageRampup - self.DamageNormal )
 					
 				end
 				
-				modifier = ( distance / self.MaxDistance ) - ( self.DamageRampup - self.DamageNormal )
+				dmg:SetAttacker( self:GetOwner() )
+				dmg:SetInflictor( self )
+				
+				if hit[ tr.Entity ] == nil then hit[ tr.Entity ] = 0 end
+				
+				hit[ tr.Entity ] = hit[ tr.Entity ] + dmg:GetDamage()
+				
+				if bulletnum == bullet.Num then
+					
+					for _, v in pairs( hit ) do
+						
+						dmg:SetDamage( self:GetDamageMods( v, math.ceil( v - ( v * modifier ) ), _ ) )
+						
+						if _:IsPlayer() == true or _:IsNPC() == true then
+							
+							if IsValid( attacker ) == true and attacker:IsPlayer() == true then
+								
+								if self:GetAttributeClass( "add_onhit_addhealth" ) != nil then self:GiveHealth( self:GetAttributeClass( "add_onhit_addhealth" ), attacker:GetMaxHealth() ) end
+								
+							end
+							
+						end
+						
+						if self.TF2Weapons_BuildTool == true and _.TF2Weapons_Building == true then
+							
+							_:OnHit( dmg )
+							
+						end
+						
+						_:TakeDamageInfo( dmg )
+						
+					end
+					
+				end
 				
 			end
 			
-			dmg:SetAttacker( self:GetOwner() )
-			dmg:SetInflictor( self )
-			dmg:SetDamage( self:GetDamageMods( dmg:GetDamage(), math.ceil( dmg:GetDamage() - ( dmg:GetDamage() * modifier ) ), tr.Entity ) )
-			
-			if tr.Entity:IsPlayer() == true or tr.Entity:IsNPC() == true then
-				
-				if self:GetAttributeClass( "add_onhit_addhealth" ) != nil then self:GiveHealth( self:GetAttributeClass( "add_onhit_addhealth" ), self:GetOwner(), self:GetOwner():GetMaxHealth() ) end
-				
-			end
-			
-			if self.TF2Weapons_BuildTool == true and tr.Entity.TF2Weapons_Building == true then
-				
-				tr.Entity:OnHit( dmg )
-				
-			end
-			
-			tr.Entity:TakeDamageInfo( dmg )
-			
-			--dmg:SetAttacker( game.GetWorld() )
-			--dmg:SetInflictor( game.GetWorld() )
 			dmg:SetDamage( 0 )
 			
 		end
