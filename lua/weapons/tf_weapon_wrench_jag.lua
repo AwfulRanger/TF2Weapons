@@ -4,8 +4,9 @@ SWEP.Slot = 2
 SWEP.SlotPos = 0
 
 SWEP.CrosshairType = TF2Weapons.Crosshair.CIRCLE
-SWEP.KillIconX = 96
-SWEP.KillIconY = 96
+SWEP.KillIconX = 256
+SWEP.KillIconY = 864
+SWEP.KillIconW = 64
 
 if CLIENT then SWEP.WepSelectIcon = surface.GetTextureID( "backpack/workshop/weapons/c_models/c_jag/c_jag_large" ) end
 SWEP.PrintName = "Jag"
