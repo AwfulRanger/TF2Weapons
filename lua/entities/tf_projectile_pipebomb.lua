@@ -195,6 +195,24 @@ function ENT:PhysicsCollide( data, collider )
 	
 end
 
+ENT.ExplodeCallbacks = {}
+
+function ENT:ExplodeCallback( info )
+	
+	for i = 1, #self.ExplodeCallbacks do
+		
+		if self.ExplodeCallbacks[ i ]( info ) == true then return true end
+		
+	end
+	
+end
+
+function ENT:AddExplodeCallback( func )
+	
+	table.insert( self.ExplodeCallbacks, func )
+	
+end
+
 function ENT:Explode( remove, damage )
 	
 	if CLIENT then return end
@@ -250,22 +268,33 @@ function ENT:Explode( remove, damage )
 				
 			end
 			
-			local hitpos = hit[ i ]:GetPos() + hit[ i ]:OBBCenter()
-			local dir = ( hitpos - self:GetPos() ):Angle()
-			
-			local vel = ( self:GetTFRadius() - distance ) * self:GetTFForce()
-			
-			if hit[ i ]:IsPlayer() == true then
+			if self:ExplodeCallback( {
 				
-				hit[ i ]:SetVelocity( dir:Forward() * vel )
+				Attacker = attacker,
+				Damage = dmg,
+				Projectile = self,
+				Entity = hit[ i ],
 				
-			elseif IsValid( hit[ i ]:GetPhysicsObject() ) == true then
+			} ) != true then
 				
-				hit[ i ]:GetPhysicsObject():AddVelocity( dir:Forward() * vel )
+				local hitpos = hit[ i ]:GetPos() + hit[ i ]:OBBCenter()
+				local dir = ( hitpos - self:GetPos() ):Angle()
+				
+				local vel = ( self:GetTFRadius() - distance ) * self:GetTFForce()
+				
+				if hit[ i ]:IsPlayer() == true then
+					
+					hit[ i ]:SetVelocity( dir:Forward() * vel )
+					
+				elseif IsValid( hit[ i ]:GetPhysicsObject() ) == true then
+					
+					hit[ i ]:GetPhysicsObject():AddVelocity( dir:Forward() * vel )
+					
+				end
+				
+				hit[ i ]:TakeDamageInfo( dmg )
 				
 			end
-			
-			hit[ i ]:TakeDamageInfo( dmg )
 			
 		end
 		
@@ -293,22 +322,33 @@ function ENT:Explode( remove, damage )
 			
 		end
 		
-		local hitpos = self:GetOwner():GetPos() + self:GetOwner():OBBCenter()
-		local dir = ( hitpos - self:GetPos() ):Angle()
-		
-		local vel = ( self:GetTFRadius() - distance ) * self:GetTFForce()
-		
-		if self:GetOwner():IsPlayer() == true then
+		if self:ExplodeCallback( {
 			
-			self:GetOwner():SetVelocity( dir:Forward() * vel )
+			Attacker = attacker,
+			Damage = dmg,
+			Projectile = self,
+			Entity = self:GetOwner(),
 			
-		elseif IsValid( self:GetOwner():GetPhysicsObject() ) == true then
+		} ) != true then
 			
-			self:GetOwner():GetPhysicsObject():AddVelocity( dir:Forward() * vel )
+			local hitpos = self:GetOwner():GetPos() + self:GetOwner():OBBCenter()
+			local dir = ( hitpos - self:GetPos() ):Angle()
+			
+			local vel = ( self:GetTFRadius() - distance ) * self:GetTFForce()
+			
+			if self:GetOwner():IsPlayer() == true then
+				
+				self:GetOwner():SetVelocity( dir:Forward() * vel )
+				
+			elseif IsValid( self:GetOwner():GetPhysicsObject() ) == true then
+				
+				self:GetOwner():GetPhysicsObject():AddVelocity( dir:Forward() * vel )
+				
+			end
+			
+			self:GetOwner():TakeDamageInfo( dmg )
 			
 		end
-		
-		self:GetOwner():TakeDamageInfo( dmg )
 		
 	end
 	

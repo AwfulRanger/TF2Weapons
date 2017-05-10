@@ -80,6 +80,24 @@ function ENT:Initialize()
 	
 end
 
+ENT.HitCallbacks = {}
+
+function ENT:HitCallback( info )
+	
+	for i = 1, #self.HitCallbacks do
+		
+		if self.HitCallbacks[ i ]( info ) == true then return true end
+		
+	end
+	
+end
+
+function ENT:AddHitCallback( func )
+	
+	table.insert( self.HitCallbacks, func )
+	
+end
+
 function ENT:Touch( ent )
 	
 	if ent != self:GetOwner() and ent:GetOwner() != self:GetOwner() then
@@ -111,7 +129,19 @@ function ENT:Touch( ent )
 			dmg:SetDamagePosition( self:GetPos() )
 			dmg:SetDamageType( DMG_BULLET )
 			dmg:SetDamage( self:GetTFDamage() )
-			ent:TakeDamageInfo( dmg )
+			
+			if self:HitCallback( {
+				
+				Attacker = attacker,
+				Damage = dmg,
+				Projectile = self,
+				Entity = ent,
+				
+			} ) != true then
+				
+				ent:TakeDamageInfo( dmg )
+				
+			end
 			
 			self:Remove()
 			
@@ -180,7 +210,19 @@ function ENT:PhysicsCollide( data, collider )
 			dmg:SetDamagePosition( self:GetPos() )
 			dmg:SetDamageType( DMG_BULLET )
 			dmg:SetDamage( self:GetTFDamage() )
-			data.HitEntity:TakeDamageInfo( dmg )
+			
+			if self:HitCallback( {
+				
+				Attacker = attacker,
+				Damage = dmg,
+				Projectile = self,
+				Entity = data.HitEntity,
+				
+			} ) != true then
+				
+				data.HitEntity:TakeDamageInfo( dmg )
+				
+			end
 			
 			self:Remove()
 			

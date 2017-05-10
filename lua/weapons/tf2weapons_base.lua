@@ -1812,7 +1812,6 @@ function SWEP:DoDeploy()
 	self:SetVMAnimation( draw, 0.67 / deploytime )
 	
 	self:TeamSet( self:GetTeam() )
-	self:PlayerClassSet( self:GetPlayerClass() )
 	
 end
 
@@ -1976,6 +1975,10 @@ end
 	Arg1:	Entity equipping the weapon
 ]]--
 function SWEP:Equip( ent )
+	
+	print( self, "equipped by", ent )
+	print( self:Ammo1() )
+	self:PlayerClassSet( self:GetPlayerClass() )
 	
 	self:AddAttributes()
 	
@@ -2219,9 +2222,20 @@ function SWEP:PrimaryAttack()
 		
 		bulletnum = bulletnum + 1
 		
+		local info = {
+			
+			Attacker = attacker,
+			Trace = tr,
+			Damage = dmg,
+			Bullet = bullet,
+			BulletNum = bulletnum,
+			Entity = tr.Entity,
+			
+		}
+		
 		for i = 1, #self.BulletCallbacks do
 			
-			if self.BulletCallbacks[ i ]( attacker, tr, dmg, bullet, bulletnum ) == true then return end
+			if self.BulletCallbacks[ i ]( info ) == true then return end
 			
 		end
 		

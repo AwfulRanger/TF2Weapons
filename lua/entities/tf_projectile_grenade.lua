@@ -210,6 +210,24 @@ function ENT:PhysicsCollide( data, collider )
 	
 end
 
+ENT.ExplodeCallbacks = {}
+
+function ENT:ExplodeCallback( info )
+	
+	for i = 1, #self.ExplodeCallbacks do
+		
+		if self.ExplodeCallbacks[ i ]( info ) == true then return true end
+		
+	end
+	
+end
+
+function ENT:AddExplodeCallback( func )
+	
+	table.insert( self.ExplodeCallbacks, func )
+	
+end
+
 function ENT:Explode( remove, damage )
 	
 	if CLIENT then return end
@@ -257,7 +275,19 @@ function ENT:Explode( remove, damage )
 				
 			end
 			
-			hit[ i ]:TakeDamageInfo( dmg )
+			if self:ExplodeCallback( {
+				
+				Attacker = attacker,
+				Damage = dmg,
+				Projectile = self,
+				Entity = hit[ i ],
+				HitEntity = self:GetTFHitEntity(),
+				
+			} ) != true then
+				
+				hit[ i ]:TakeDamageInfo( dmg )
+				
+			end
 			
 		else
 			
@@ -281,22 +311,34 @@ function ENT:Explode( remove, damage )
 				
 			end
 			
-			local hitpos = hit[ i ]:GetPos() + hit[ i ]:OBBCenter()
-			local dir = ( hitpos - self:GetPos() ):Angle()
-			
-			local vel = ( self:GetTFRadius() - distance ) * self:GetTFForce()
-			
-			if hit[ i ]:IsPlayer() == true then
+			if self:ExplodeCallback( {
 				
-				hit[ i ]:SetVelocity( dir:Forward() * vel )
+				Attacker = attacker,
+				Damage = dmg,
+				Projectile = self,
+				Entity = hit[ i ],
+				HitEntity = self:GetTFHitEntity(),
 				
-			elseif IsValid( hit[ i ]:GetPhysicsObject() ) == true then
+			} ) != true then
 				
-				hit[ i ]:GetPhysicsObject():AddVelocity( dir:Forward() * vel )
+				local hitpos = hit[ i ]:GetPos() + hit[ i ]:OBBCenter()
+				local dir = ( hitpos - self:GetPos() ):Angle()
+				
+				local vel = ( self:GetTFRadius() - distance ) * self:GetTFForce()
+				
+				if hit[ i ]:IsPlayer() == true then
+					
+					hit[ i ]:SetVelocity( dir:Forward() * vel )
+					
+				elseif IsValid( hit[ i ]:GetPhysicsObject() ) == true then
+					
+					hit[ i ]:GetPhysicsObject():AddVelocity( dir:Forward() * vel )
+					
+				end
+				
+				hit[ i ]:TakeDamageInfo( dmg )
 				
 			end
-			
-			hit[ i ]:TakeDamageInfo( dmg )
 			
 		end
 		
