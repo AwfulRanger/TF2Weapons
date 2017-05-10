@@ -14,7 +14,7 @@ SWEP.PrintName = "Wrench"
 SWEP.Author = "AwfulRanger"
 SWEP.Description = [[Upgrades, repairs and speeds up
 construction of friendly buildings on hit.]]
-SWEP.Category = "Team Fortress 2"
+SWEP.Category = "Team Fortress 2 - Engineer"
 SWEP.Level = 1
 SWEP.Type = "Wrench"
 SWEP.Base = "tf2weapons_base_melee"

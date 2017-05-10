@@ -13,7 +13,7 @@ SWEP.Author = "AwfulRanger"
 SWEP.Description = [[Start off with low health
 Kill somebody with this knife
 Steal all of their health]]
-SWEP.Category = "Team Fortress 2"
+SWEP.Category = "Team Fortress 2 - Spy"
 SWEP.Level = 1
 SWEP.Type = "Kunai"
 SWEP.Base = "tf_weapon_knife"
