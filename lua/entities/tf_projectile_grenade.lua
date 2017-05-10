@@ -10,8 +10,6 @@ ENT.AdminOnly = false
 
 ENT.TF2Weapons_OwnOnAirblast = true
 
-ENT.Model = Model( "models/weapons/w_models/w_grenade_grenadelauncher.mdl" )
-ENT.Skin = 0
 ENT.Particles = {
 	
 	trail = "pipebombtrail_red",
@@ -20,41 +18,57 @@ ENT.Particles = {
 	critexplode = "explosioncore_midair",
 	
 }
-ENT.ImpactDamage = 100
-ENT.Damage = 60
-ENT.Radius = 146
-ENT.Force = 5
-ENT.Time = 2.3
 
-ENT.CritMultiplier = 3
-
-function ENT:SetGrenadeModel( model )
+function ENT:TFNetworkVar( vartype, varname, default, slot, extended )
 	
-	self:SetNW2String( "model", model )
-	self:SetModel( model )
+	if self[ "GetTF" .. varname ] != nil or self[ "SetTF" .. varname ] != nil then return end
+	
+	if self.CreatedNetworkVars == nil then self.CreatedNetworkVars = {} end
+	
+	if self.CreatedNetworkVars[ vartype ] == nil then
+		
+		self.CreatedNetworkVars[ vartype ] = 0
+		
+	end
+	
+	if slot != nil then self.CreatedNetworkVars[ vartype ] = slot end
+	slot = self.CreatedNetworkVars[ vartype ]
+	
+	self:NetworkVar( vartype, slot, "TF" .. varname, extended )
+	if SERVER and default != nil then self[ "SetTF" .. varname ]( self, default ) end
+	
+	self.CreatedNetworkVars[ vartype ] = self.CreatedNetworkVars[ vartype ] + 1
+	
+	return self[ "GetTF" .. varname ]( self )
 	
 end
 
-function ENT:GetGrenadeModel()
+function ENT:BaseDataTables()
 	
-	return self:GetNW2String( "model", self.Model )
+	self:TFNetworkVar( "Bool", "BLU", false )
+	self:TFNetworkVar( "Bool", "Crit", false )
+	self:TFNetworkVar( "Bool", "Hit", false )
+	
+	self:TFNetworkVar( "Float", "Radius", 0 )
+	self:TFNetworkVar( "Float", "Force", 0 )
+	self:TFNetworkVar( "Float", "Time", 0 )
+	self:TFNetworkVar( "Float", "CritMult", 0 )
+	self:TFNetworkVar( "Float", "DetonateTime", 0 )
+	
+	self:TFNetworkVar( "Int", "ImpactDamage", 0 )
+	self:TFNetworkVar( "Int", "Damage", 0 )
+	
+	self:TFNetworkVar( "Entity", "HitEntity", nil )
 	
 end
 
-function ENT:SetGrenadeSkin( skin )
+function ENT:SetupDataTables()
 	
-	self:SetNW2Int( "skin", skin )
-	self:SetSkin( skin )
-	
-end
-
-function ENT:GetGrenadeSkin()
-	
-	return self:GetNW2Int( "skin", self.Skin )
+	self:BaseDataTables()
 	
 end
 
-function ENT:SetGrenadeParticles( particles )
+function ENT:SetParticles( particles )
 	
 	for _, v in pairs( self.Particles ) do
 		
@@ -68,7 +82,7 @@ function ENT:SetGrenadeParticles( particles )
 	
 end
 
-function ENT:GetGrenadeParticles()
+function ENT:GetParticles()
 	
 	local particles = {}
 	for _, v in pairs( self.Particles ) do
@@ -81,103 +95,7 @@ function ENT:GetGrenadeParticles()
 	
 end
 
-function ENT:SetGrenadeImpactDamage( impactdamage )
-	
-	self:SetNW2String( "impactdamage", impactdamage )
-	
-end
-
-function ENT:GetGrenadeImpactDamage()
-	
-	return self:GetNW2String( "impactdamage", self.ImpactDamage )
-	
-end
-
-function ENT:SetGrenadeDamage( damage )
-	
-	self:SetNW2Float( "damage", damage )
-	
-end
-
-function ENT:GetGrenadeDamage()
-	
-	return self:GetNW2Float( "damage", self.Damage )
-	
-end
-
-function ENT:SetGrenadeRadius( radius )
-	
-	self:SetNW2Float( "radius", radius )
-	
-end
-
-function ENT:GetGrenadeRadius()
-	
-	return self:GetNW2Float( "radius", self.Radius )
-	
-end
-
-function ENT:SetGrenadeForce( force )
-	
-	self:SetNW2Float( "force", force )
-	
-end
-
-function ENT:GetGrenadeForce()
-	
-	return self:GetNW2Float( "force", self.Force )
-	
-end
-
-function ENT:SetGrenadeTime( time )
-	
-	self:SetNW2Float( "time", time )
-	
-end
-
-function ENT:GetGrenadeTime()
-	
-	return self:GetNW2Float( "time", self.Time )
-	
-end
-
-function ENT:SetGrenadeBLU( blu )
-	
-	self:SetNW2Bool( "blu", blu )
-	
-end
-
-function ENT:GetGrenadeBLU()
-	
-	return self:GetNW2Bool( "blu", false )
-	
-end
-
-function ENT:SetGrenadeCrit( crit )
-	
-	self:SetNW2Bool( "crit", crit )
-	
-end
-
-function ENT:GetGrenadeCrit()
-	
-	return self:GetNW2Bool( "crit", false )
-	
-end
-
-function ENT:SetGrenadeCritMultiplier( critmultiplier )
-	
-	self:SetNW2Float( "critmultiplier", critmultiplier )
-	
-end
-
-function ENT:GetGrenadeCritMultiplier()
-	
-	return self:GetNW2Float( "critmultiplier", self.CritMultiplier )
-	
-end
-
-function ENT:SetSounds()
+function ENT:SetVariables()
 	
 	self.ExplodeSound = { Sound( "weapons/explode1.wav" ), Sound( "weapons/explode2.wav" ), Sound( "weapons/explode3.wav" ) }
 	
@@ -197,13 +115,11 @@ function ENT:PlaySound( sound )
 	
 end
 
-ENT.DetonateTime = 0
-
 function ENT:Initialize()
 	
-	self.DetonateTime = CurTime() + self:GetGrenadeTime()
+	self:SetTFDetonateTime( CurTime() + self:GetTFTime() )
 	
-	for _, v in pairs( self:GetGrenadeParticles() ) do
+	for _, v in pairs( self:GetParticles() ) do
 		
 		PrecacheParticleSystem( v )
 		
@@ -211,7 +127,6 @@ function ENT:Initialize()
 	
 	if SERVER then
 		
-		self:SetModel( self.Model )
 		self:PhysicsInit( SOLID_VPHYSICS )
 		self:SetMoveType( MOVETYPE_VPHYSICS )
 		self:SetSolid( SOLID_VPHYSICS )
@@ -227,7 +142,7 @@ function ENT:Initialize()
 		
 	end
 	
-	local trail = self:GetGrenadeParticles().trail
+	local trail = self:GetParticles().trail
 	
 	if trail != nil and trail != "" then
 		
@@ -243,26 +158,23 @@ function ENT:Initialize()
 		
 	end
 	
-	self:SetSounds()
+	self:SetVariables()
 	
 end
 
-ENT.HitEntity = nil
-ENT.FirstHit = true
-
 function ENT:Touch( ent )
 	
-	if ent != self:GetOwner() and ent:GetOwner() != self:GetOwner() and self.FirstHit == true then
+	if ent != self:GetOwner() and ent:GetOwner() != self:GetOwner() and self:GetTFHit() != true then
 		
-		if ( ent:IsPlayer() == true or ent:IsNPC() == true ) and ent != self:GetOwner() and self.FirstHit == true then
+		if ( ent:IsPlayer() == true or ent:IsNPC() == true ) and ent != self:GetOwner() and self:GetTFHit() != true then
 			
-			if IsValid( self.HitEntity ) == false then self.HitEntity = ent end
+			if IsValid( self:GetTFHitEntity() ) == false then self:SetTFHitEntity( ent ) end
 			
 			self:Explode( true )
 			
 		end
 		
-		self.FirstHit = false
+		self:SetTFHit( true )
 		
 	end
 	
@@ -270,7 +182,7 @@ end
 
 function ENT:Think()
 	
-	if CurTime() > self.DetonateTime then self:Explode( true ) end
+	if CurTime() > self:GetTFDetonateTime() then self:Explode( true ) end
 	
 end
 
@@ -282,17 +194,17 @@ function ENT:PhysicsCollide( data, collider )
 		
 	end
 	
-	if data.HitEntity != self:GetOwner() and data.HitEntity:GetOwner() != self:GetOwner() and self.FirstHit == true then
+	if data.HitEntity != self:GetOwner() and data.HitEntity:GetOwner() != self:GetOwner() and self:GetTFHit() != true then
 		
 		if data.HitEntity:IsPlayer() == true or data.HitEntity:IsNPC() == true then
 			
-			if IsValid( self.HitEntity ) == false then self.HitEntity = data.HitEntity end
+			if IsValid( self:GetTFHitEntity() ) == false then self:SetTFHitEntity( data.HitEntity ) end
 			
 			self:Explode( true )
 			
 		end
 		
-		self.FirstHit = false
+		self:SetTFHit( true )
 		
 	end
 	
@@ -312,19 +224,18 @@ function ENT:Explode( remove, damage )
 		
 	end
 	
-	if damage == nil then damage = self:GetGrenadeDamage() end
+	if damage == nil then damage = self:GetTFDamage() end
 	
 	self:PlaySound( self.ExplodeSound )
-	--util.BlastDamage( self, attacker, self:GetPos(), self:GetGrenadeRadius(), damage )
 	
-	local explode = self:GetGrenadeParticles().explode
+	local explode = self:GetParticles().explode
 	
 	ParticleEffect( explode, self:GetPos(), self:GetAngles() )
 	
-	local hit = ents.FindInSphere( self:GetPos(), self:GetGrenadeRadius() )
+	local hit = ents.FindInSphere( self:GetPos(), self:GetTFRadius() )
 	for i = 1, #hit do
 		
-		if hit[ i ] != self.HitEntity then
+		if hit[ i ] != self:GetTFHitEntity() then
 			
 			local distance = self:GetPos():Distance( hit[ i ]:GetPos() + hit[ i ]:OBBCenter() )
 			local damagemod = ( distance / 2.88 ) * 0.01
@@ -336,9 +247,9 @@ function ENT:Explode( remove, damage )
 			dmg:SetReportedPosition( self:GetPos() )
 			dmg:SetDamagePosition( self:GetPos() )
 			dmg:SetDamageType( DMG_BLAST )
-			if self:GetGrenadeCrit() == true and hit[ i ] != self:GetOwner() then
+			if self:GetTFCrit() == true and hit[ i ] != self:GetOwner() then
 				
-				dmg:SetDamage( ( damage - ( damage * damagemod ) ) * self:GetGrenadeCritMultiplier() )
+				dmg:SetDamage( ( damage - ( damage * damagemod ) ) * self:GetTFCritMult() )
 				
 			else
 				
@@ -360,20 +271,20 @@ function ENT:Explode( remove, damage )
 			dmg:SetReportedPosition( self:GetPos() )
 			dmg:SetDamagePosition( self:GetPos() )
 			dmg:SetDamageType( DMG_BLAST )
-			if self:GetGrenadeCrit() == true and hit[ i ] != self:GetOwner() then
+			if self:GetTFCrit() == true and hit[ i ] != self:GetOwner() then
 				
-				dmg:SetDamage( self:GetGrenadeImpactDamage() * self:GetGrenadeCritMultiplier() )
+				dmg:SetDamage( self:GetTFImpactDamage() * self:GetTFCritMult() )
 				
 			else
 				
-				dmg:SetDamage( self:GetGrenadeImpactDamage() )
+				dmg:SetDamage( self:GetTFImpactDamage() )
 				
 			end
 			
 			local hitpos = hit[ i ]:GetPos() + hit[ i ]:OBBCenter()
 			local dir = ( hitpos - self:GetPos() ):Angle()
 			
-			local vel = ( self:GetGrenadeRadius() - distance ) * self:GetGrenadeForce()
+			local vel = ( self:GetTFRadius() - distance ) * self:GetTFForce()
 			
 			if hit[ i ]:IsPlayer() == true then
 				

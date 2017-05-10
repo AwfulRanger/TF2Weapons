@@ -927,23 +927,20 @@ function ENT:DoFireRocket()
 				
 				rocket:SetOwner( self:GetTFOwner() )
 				rocket:SetPos( self:GetRocketPos() )
-				--rocket:SetAngles( ( target:GetPos() + target:OBBCenter() - self:GetShootPos() ):Angle() )
 				rocket:SetAngles( ( self:GetAimPos( target ) - self:GetRocketPos() ):Angle() )
-				--rocket:SetRocketBLU( self:GetTeam() )
-				rocket:SetRocketBLU( false )
-				rocket:SetRocketSkin( 0 )
-				--rocket:SetRocketModel( stats.Rocket.Model )
-				rocket:SetRocketModel( "models/weapons/w_models/w_rocket.mdl" )
-				rocket:SetSentryRocketModel( stats.Rocket.Model )
-				rocket:SetRocketAngles( ( target:GetPos() + target:OBBCenter() - self:GetShootPos() ):Angle() )
-				rocket:SetRocketDamage( stats.Rocket.Damage )
-				rocket:SetRocketCrit( false )
-				rocket:SetRocketCritMultiplier( 0 )
-				rocket:SetRocketSpeed( stats.Rocket.Speed )
-				rocket:SetRocketRadius( stats.Rocket.Radius )
-				rocket:SetRocketForce( stats.Rocket.Force )
+				rocket:SetTFBLU( self:GetTFBLU() )
+				rocket:SetSkin( 0 )
+				rocket:SetModel( "models/weapons/w_models/w_rocket.mdl" )
+				rocket:SetTFModel( stats.Rocket.Model )
+				rocket:SetTFAngle( ( self:GetAimPos( target ) - self:GetRocketPos() ):Angle() )
+				rocket:SetTFDamage( stats.Rocket.Damage )
+				rocket:SetTFCrit( false )
+				rocket:SetTFCritMult( 0 )
+				rocket:SetTFSpeed( stats.Rocket.Speed )
+				rocket:SetTFRadius( stats.Rocket.Radius )
+				rocket:SetTFForce( stats.Rocket.Force )
 				rocket.ExplodeSound = stats.Rocket.ExplodeSound[ math.random( #stats.Rocket.ExplodeSound ) ]
-				rocket:SetSentry( self )
+				rocket:SetTFSentry( self )
 				rocket:Spawn()
 				
 			end
@@ -964,9 +961,6 @@ function ENT:DoFireRocket()
 end
 
 function ENT:GetShootPos()
-	
-	--local attach = self:LookupAttachment( "sentrydamage" )
-	--if attach != nil and self:GetAttachment( attach ) != nil and self:GetAttachment( attach ).Pos != nil then return self:GetAttachment( attach ).Pos end
 	
 	return self:GetPos() + ( self:GetAngles():Up() * 48 )
 	

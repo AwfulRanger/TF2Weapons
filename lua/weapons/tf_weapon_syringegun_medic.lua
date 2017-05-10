@@ -101,8 +101,8 @@ function SWEP:SetProjectileModel( syringe, model, num )
 	local skin = self.SyringeSkinRED
 	if self:GetTeam() == true then skin = self.SyringeSkinBLU end
 	
-	syringe:SetSyringeSkin( skin )
-	syringe:SetSyringeModel( _model )
+	syringe:SetSkin( skin )
+	syringe:SetModel( _model )
 	return _model
 	
 end
@@ -129,7 +129,7 @@ function SWEP:PrimaryAttack()
 				syringe:SetPos( starttrace.HitPos )
 				self:SetProjectileModel( syringe, self:GetSyringeModel() )
 				syringe:SetAngles( ( hittrace.HitPos - starttrace.HitPos ):Angle() )
-				syringe:SetSyringeDamage( self:GetDamageMods( self.Primary.Damage ) )
+				syringe:SetTFDamage( self:GetDamageMods( self.Primary.Damage ) )
 				syringe:Spawn()
 				syringe:PhysWake()
 				if IsValid( syringe:GetPhysicsObject() ) == true then

@@ -8,45 +8,41 @@ ENT.Author = "AwfulRanger"
 ENT.Spawnable = false
 ENT.AdminOnly = false
 
-ENT.Model = Model( "models/buildables/gibs/sentry1_gib1.mdl" )
-ENT.Skin = 0
-ENT.Scrap = 16
-
-function ENT:SetGibModel( model )
+function ENT:TFNetworkVar( vartype, varname, default, slot, extended )
 	
-	self:SetNW2String( "model", model )
-	self:SetModel( model )
+	if self[ "GetTF" .. varname ] != nil or self[ "SetTF" .. varname ] != nil then return end
 	
-end
-
-function ENT:GetGibModel()
+	if self.CreatedNetworkVars == nil then self.CreatedNetworkVars = {} end
 	
-	return self:GetNW2String( "model", self.Model )
+	if self.CreatedNetworkVars[ vartype ] == nil then
+		
+		self.CreatedNetworkVars[ vartype ] = 0
+		
+	end
 	
-end
-
-function ENT:SetGibSkin( skin )
+	if slot != nil then self.CreatedNetworkVars[ vartype ] = slot end
+	slot = self.CreatedNetworkVars[ vartype ]
 	
-	self:SetNW2Int( "skin", skin )
-	self:SetSkin( skin )
+	self:NetworkVar( vartype, slot, "TF" .. varname, extended )
+	if SERVER and default != nil then self[ "SetTF" .. varname ]( self, default ) end
 	
-end
-
-function ENT:GetGibSkin()
+	self.CreatedNetworkVars[ vartype ] = self.CreatedNetworkVars[ vartype ] + 1
 	
-	return self:GetNW2Int( "skin", self.Skin )
+	return self[ "GetTF" .. varname ]( self )
 	
 end
 
-function ENT:SetGibScrap( scrap )
+function ENT:BaseDataTables()
 	
-	self:SetNW2Int( "scrap", scrap )
+	self:TFNetworkVar( "Bool", "Touched", false )
+	
+	self:TFNetworkVar( "Int", "Scrap", 0 )
 	
 end
 
-function ENT:GetGibScrap()
+function ENT:SetupDataTables()
 	
-	return self:GetNW2Int( "scrap", self.Scrap )
+	self:BaseDataTables()
 	
 end
 
@@ -54,7 +50,6 @@ function ENT:Initialize()
 	
 	if SERVER then
 		
-		self:SetModel( self:GetGibModel() )
 		self:PhysicsInit( SOLID_VPHYSICS )
 		self:SetMoveType( MOVETYPE_VPHYSICS )
 		self:SetSolid( SOLID_VPHYSICS )
@@ -72,16 +67,14 @@ function ENT:Initialize()
 	
 end
 
-ENT.Touched = false
-
 function ENT:Touch( ent )
 	
-	if self.Touched != true and ent:IsPlayer() == true then
+	if self:GetTFTouched() != true and ent:IsPlayer() == true then
 		
-		ent:GiveAmmo( self:GetGibScrap(), "tf2weapons_metal" )
+		ent:GiveAmmo( self:GetTFScrap(), "tf2weapons_metal" )
 		self:Remove()
 		
-		self.Touched = true
+		self:SetTFTouched( true )
 		
 	end
 	

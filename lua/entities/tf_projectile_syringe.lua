@@ -10,70 +10,50 @@ ENT.AdminOnly = false
 
 ENT.TF2Weapons_NoAirblast = true
 
-ENT.Model = Model( "models/weapons/w_models/w_syringe_proj.mdl" )
-ENT.Skin = 0
-ENT.Damage = 10
 ENT.Life = 10
 
-function ENT:SetSyringeModel( model )
+function ENT:TFNetworkVar( vartype, varname, default, slot, extended )
 	
-	self:SetNW2String( "model", model )
-	self:SetModel( model )
+	if self[ "GetTF" .. varname ] != nil or self[ "SetTF" .. varname ] != nil then return end
 	
-end
-
-function ENT:GetSyringeModel()
+	if self.CreatedNetworkVars == nil then self.CreatedNetworkVars = {} end
 	
-	return self:GetNW2String( "model", self.Model )
+	if self.CreatedNetworkVars[ vartype ] == nil then
+		
+		self.CreatedNetworkVars[ vartype ] = 0
+		
+	end
 	
-end
-
-function ENT:SetSyringeSkin( skin )
+	if slot != nil then self.CreatedNetworkVars[ vartype ] = slot end
+	slot = self.CreatedNetworkVars[ vartype ]
 	
-	self:SetNW2Int( "skin", skin )
-	self:SetSkin( skin )
+	self:NetworkVar( vartype, slot, "TF" .. varname, extended )
+	if SERVER and default != nil then self[ "SetTF" .. varname ]( self, default ) end
 	
-end
-
-function ENT:GetSyringeSkin()
+	self.CreatedNetworkVars[ vartype ] = self.CreatedNetworkVars[ vartype ] + 1
 	
-	return self:GetNW2Int( "skin", self.Skin )
+	return self[ "GetTF" .. varname ]( self )
 	
 end
 
-function ENT:SetSyringeDamage( damage )
+function ENT:BaseDataTables()
 	
-	self:SetNW2Float( "damage", damage )
+	self:TFNetworkVar( "Bool", "BLU", false )
+	self:TFNetworkVar( "Bool", "Hit", false )
+	self:TFNetworkVar( "Bool", "RemoveNext", false )
 	
-end
-
-function ENT:GetSyringeDamage()
+	self:TFNetworkVar( "Float", "Life", 0 )
+	self:TFNetworkVar( "Float", "RemoveTime", 0 )
 	
-	return self:GetNW2Float( "damage", self.Damage )
+	self:TFNetworkVar( "Int", "Damage", 0 )
 	
-end
-
-function ENT:SetSyringeLife( life )
-	
-	self:SetNW2Float( "life", life )
+	self:TFNetworkVar( "Angle", "Angle", Angle( 0, 0, 0 ) )
 	
 end
 
-function ENT:GetSyringeLife()
+function ENT:SetupDataTables()
 	
-	return self:GetNW2Float( "life", self.Life )
-	
-end
-
-function ENT:SetSyringeBLU( blu )
-	
-	self:SetNW2Bool( "blu", blu )
-	
-end
-
-function ENT:GetSyringeBLU()
-	
-	return self:GetNW2Float( "blu", false )
+	self:BaseDataTables()
 	
 end
 
@@ -81,7 +61,6 @@ function ENT:Initialize()
 	
 	if SERVER then
 		
-		self:SetModel( self.Model )
 		self:SetMoveType( MOVETYPE_VPHYSICS )
 		self:SetCollisionGroup( COLLISION_GROUP_DEBRIS_TRIGGER )
 		
@@ -101,21 +80,19 @@ function ENT:Initialize()
 	
 end
 
-ENT.FirstHit = true
-
 function ENT:Touch( ent )
 	
 	if ent != self:GetOwner() and ent:GetOwner() != self:GetOwner() then
 		
 		if ent:IsWorld() != false then
 			
-			self.RemoveNext = true
-			self.RemoveTime = CurTime() + 10
+			self:SetTFRemoveNext( true )
+			self:SetTFRemoveTime( CurTime() + self.Life )
 			if IsValid( self:GetPhysicsObject() ) == true then self:GetPhysicsObject():EnableMotion( false ) end
 			
 			if CLIENT then self.HitAng = self:GetRenderAngles() end
 			
-		elseif self.FirstHit != false then
+		elseif self:GetTFHit() != true then
 			
 			if IsValid( self:GetOwner() ) == false then
 				
@@ -133,7 +110,7 @@ function ENT:Touch( ent )
 			dmg:SetReportedPosition( self:GetPos() )
 			dmg:SetDamagePosition( self:GetPos() )
 			dmg:SetDamageType( DMG_BULLET )
-			dmg:SetDamage( self:GetSyringeDamage() )
+			dmg:SetDamage( self:GetTFDamage() )
 			ent:TakeDamageInfo( dmg )
 			
 			self:Remove()
@@ -142,12 +119,9 @@ function ENT:Touch( ent )
 		
 	end
 	
-	self.FirstHit = false
+	self:SetTFHit( true )
 	
 end
-
-ENT.RemoveNext = false
-ENT.RemoveTime = 0
 
 function ENT:Think()
 	
@@ -167,7 +141,7 @@ function ENT:Think()
 	end
 	]]--
 	
-	if self.RemoveNext == true and CurTime() > self.RemoveTime then self:Remove() end
+	if SERVER and self:GetTFRemoveNext() == true and CurTime() > self:GetTFRemoveTime() then self:Remove() end
 	
 end
 
@@ -181,13 +155,13 @@ function ENT:PhysicsCollide( data, collider )
 			
 		elseif data.HitEntity:IsWorld() != false then
 			
-			self.RemoveNext = true
-			self.RemoveTime = CurTime() + self:GetSyringeLife()
+			self:SetTFRemoveNext( true )
+			self:SetTFRemoveTime( CurTime() + self.Life )
 			collider:EnableMotion( false )
 			
 			if CLIENT then self.HitAng = self:GetRenderAngles() end
 			
-		elseif self.FirstHit != false then
+		elseif self:GetTFHit() != true then
 			
 			if IsValid( self:GetOwner() ) == false then
 				
@@ -205,7 +179,7 @@ function ENT:PhysicsCollide( data, collider )
 			dmg:SetReportedPosition( self:GetPos() )
 			dmg:SetDamagePosition( self:GetPos() )
 			dmg:SetDamageType( DMG_BULLET )
-			dmg:SetDamage( self:GetSyringeDamage() )
+			dmg:SetDamage( self:GetTFDamage() )
 			data.HitEntity:TakeDamageInfo( dmg )
 			
 			self:Remove()
@@ -214,6 +188,6 @@ function ENT:PhysicsCollide( data, collider )
 		
 	end
 	
-	self.FirstHit = false
+	self:SetTFHit( true )
 	
 end

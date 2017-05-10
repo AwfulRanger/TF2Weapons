@@ -24,12 +24,10 @@ function ENT:TF2Weapons_OnAirblasted( weapon, ent )
 	local trace = util.TraceLine( { start = weapon:GetOwner():GetShootPos(), endpos = weapon:GetOwner():GetShootPos() + ( weapon:GetOwner():EyeAngles():Forward() * 32768 ), filter = { ent, weapon:GetOwner() } } )
 	if weapon:GetOwner():IsPlayer() == true then weapon:GetOwner():LagCompensation( false ) end
 	
-	ent:SetRocketAngles( ( trace.HitPos - ent:GetPos() ):Angle() )
+	ent:SetTFAngle( ( trace.HitPos - ent:GetPos() ):Angle() )
 	
 end
 
-ENT.Model = Model( "models/weapons/w_models/w_rocket.mdl" )
-ENT.Skin = 0
 ENT.Particles = {
 	
 	trail = "rockettrail",
@@ -38,42 +36,54 @@ ENT.Particles = {
 	critexplode = "explosioncore_wall",
 	
 }
-ENT.Angles = Angle( 0, 0, 0 )
-ENT.Damage = 90
---ENT.Speed = 1024
-ENT.Speed = 1100
-ENT.Radius = 146
-ENT.Force = 5
 
-ENT.CritMultiplier = 3
-
-function ENT:SetRocketModel( model )
+function ENT:TFNetworkVar( vartype, varname, default, slot, extended )
 	
-	self:SetNW2String( "model", model )
-	self:SetModel( model )
+	if self[ "GetTF" .. varname ] != nil or self[ "SetTF" .. varname ] != nil then return end
+	
+	if self.CreatedNetworkVars == nil then self.CreatedNetworkVars = {} end
+	
+	if self.CreatedNetworkVars[ vartype ] == nil then
+		
+		self.CreatedNetworkVars[ vartype ] = 0
+		
+	end
+	
+	if slot != nil then self.CreatedNetworkVars[ vartype ] = slot end
+	slot = self.CreatedNetworkVars[ vartype ]
+	
+	self:NetworkVar( vartype, slot, "TF" .. varname, extended )
+	if SERVER and default != nil then self[ "SetTF" .. varname ]( self, default ) end
+	
+	self.CreatedNetworkVars[ vartype ] = self.CreatedNetworkVars[ vartype ] + 1
+	
+	return self[ "GetTF" .. varname ]( self )
 	
 end
 
-function ENT:GetRocketModel()
+function ENT:BaseDataTables()
 	
-	return self:GetNW2String( "model", self.Model )
+	self:TFNetworkVar( "Bool", "BLU", false )
+	self:TFNetworkVar( "Bool", "Crit", false )
 	
-end
-
-function ENT:SetRocketSkin( skin )
+	self:TFNetworkVar( "Float", "Speed", 0 )
+	self:TFNetworkVar( "Float", "Radius", 0 )
+	self:TFNetworkVar( "Float", "Force", 0 )
+	self:TFNetworkVar( "Float", "CritMult", 0 )
 	
-	self:SetNW2Int( "skin", skin )
-	self:SetSkin( skin )
+	self:TFNetworkVar( "Int", "Damage", 0 )
 	
-end
-
-function ENT:GetRocketSkin()
-	
-	return self:GetNW2Int( "skin", self.Skin )
+	self:TFNetworkVar( "Angle", "Angle", Angle( 0, 0, 0 ) )
 	
 end
 
-function ENT:SetRocketParticles( particles )
+function ENT:SetupDataTables()
+	
+	self:BaseDataTables()
+	
+end
+
+function ENT:SetParticles( particles )
 	
 	for _, v in pairs( self.Particles ) do
 		
@@ -87,7 +97,7 @@ function ENT:SetRocketParticles( particles )
 	
 end
 
-function ENT:GetRocketParticles()
+function ENT:GetParticles()
 	
 	local particles = {}
 	for _, v in pairs( self.Particles ) do
@@ -100,105 +110,7 @@ function ENT:GetRocketParticles()
 	
 end
 
-function ENT:SetRocketAngles( angles )
-	
-	self:SetNW2Angle( "angles", angles )
-	self:SetAngles( angles )
-	
-end
-
-function ENT:GetRocketAngles()
-	
-	--return self.Angles
-	return self:GetNW2Angle( "angles", self.Angles )
-	
-end
-
-function ENT:SetRocketDamage( damage )
-	
-	self:SetNW2Float( "damage", damage )
-	
-end
-
-function ENT:GetRocketDamage()
-	
-	return self:GetNW2Float( "damage", self.Damage )
-	
-end
-
-function ENT:SetRocketSpeed( speed )
-	
-	self:SetNW2Float( "speed", speed )
-	
-end
-
-function ENT:GetRocketSpeed()
-	
-	return self:GetNW2Float( "speed", self.Speed )
-	
-end
-
-function ENT:SetRocketRadius( radius )
-	
-	self:SetNW2Float( "radius", radius )
-	
-end
-
-function ENT:GetRocketRadius()
-	
-	return self:GetNW2Float( "radius", self.Radius )
-	
-end
-
-function ENT:SetRocketForce( force )
-	
-	self:SetNW2Float( "force", force )
-	
-end
-
-function ENT:GetRocketForce()
-	
-	return self:GetNW2Float( "force", self.Force )
-	
-end
-
-function ENT:SetRocketBLU( blu )
-	
-	self:SetNW2Bool( "blu", blu )
-	
-end
-
-function ENT:GetRocketBLU()
-	
-	return self:GetNW2Float( "blu", false )
-	
-end
-
-function ENT:SetRocketCrit( crit )
-	
-	self:SetNW2Bool( "crit", crit )
-	
-end
-
-function ENT:GetRocketCrit()
-	
-	return self:GetNW2Bool( "crit", false )
-	
-end
-
-function ENT:SetRocketCritMultiplier( critmultiplier )
-	
-	self:SetNW2Float( "critmultiplier", critmultiplier )
-	
-end
-
-function ENT:GetRocketCritMultiplier()
-	
-	return self:GetNW2Float( "critmultiplier", self.CritMultiplier )
-	
-end
-
-function ENT:SetSounds()
+function ENT:SetVariables()
 	
 	self.ExplodeSound = { Sound( "weapons/explode1.wav" ), Sound( "weapons/explode2.wav" ), Sound( "weapons/explode3.wav" ) }
 	
@@ -220,7 +132,7 @@ end
 
 function ENT:Initialize()
 	
-	for _, v in pairs( self:GetRocketParticles() ) do
+	for _, v in pairs( self:GetParticles() ) do
 		
 		PrecacheParticleSystem( v )
 		
@@ -228,7 +140,6 @@ function ENT:Initialize()
 	
 	if SERVER then
 		
-		self:SetModel( self.Model )
 		self:PhysicsInit( SOLID_VPHYSICS )
 		self:SetMoveType( MOVETYPE_VPHYSICS )
 		self:SetSolid( SOLID_VPHYSICS )
@@ -246,7 +157,7 @@ function ENT:Initialize()
 		
 	end
 	
-	local trail = self:GetRocketParticles().trail
+	local trail = self:GetParticles().trail
 	
 	if trail != nil and trail != "" then
 		
@@ -262,7 +173,7 @@ function ENT:Initialize()
 		
 	end
 	
-	self:SetSounds()
+	self:SetVariables()
 	
 end
 
@@ -274,13 +185,13 @@ end
 
 function ENT:Think()
 	
-	self:SetAngles( self:GetRocketAngles() )
+	self:SetAngles( self:GetTFAngle() )
 	
 	if IsValid( self:GetPhysicsObject() ) == true then
 		
 		self:GetPhysicsObject():EnableDrag( false )
 		self:GetPhysicsObject():EnableGravity( false )
-		self:GetPhysicsObject():SetVelocity( self:GetAngles():Forward() * self:GetRocketSpeed() )
+		self:GetPhysicsObject():SetVelocity( self:GetAngles():Forward() * self:GetTFSpeed() )
 		
 	end
 	
@@ -318,19 +229,18 @@ function ENT:Explode( remove, damage )
 		
 	end
 	
-	if damage == nil then damage = self:GetRocketDamage() end
+	if damage == nil then damage = self:GetTFDamage() end
 	
 	self:PlaySound( self.ExplodeSound )
-	--util.BlastDamage( self, attacker, self:GetPos(), self:GetRocketRadius(), damage )
 	
-	local explode = self:GetRocketParticles().explode
+	local explode = self:GetParticles().explode
 	
 	ParticleEffect( explode, self:GetPos(), self:GetAngles() )
 	
 	local playerhit = false
 	local ownerhit = false
 	
-	local hit = ents.FindInSphere( self:GetPos(), self:GetRocketRadius() )
+	local hit = ents.FindInSphere( self:GetPos(), self:GetTFRadius() )
 	for i = 1, #hit do
 		
 		if ( hit[ i ]:IsPlayer() == true or hit[ i ]:IsNPC() == true ) and hit[ i ] != self:GetOwner() then playerhit = true end
@@ -350,9 +260,9 @@ function ENT:Explode( remove, damage )
 			dmg:SetReportedPosition( self:GetPos() )
 			dmg:SetDamagePosition( self:GetPos() )
 			dmg:SetDamageType( DMG_BLAST )
-			if self:GetRocketCrit() == true then
+			if self:GetTFCrit() == true then
 				
-				dmg:SetDamage( ( damage - ( damage * damagemod ) ) * self:GetRocketCritMultiplier() )
+				dmg:SetDamage( ( damage - ( damage * damagemod ) ) * self:GetTFCritMult() )
 				
 			else
 				
@@ -363,7 +273,7 @@ function ENT:Explode( remove, damage )
 			local hitpos = hit[ i ]:GetPos() + hit[ i ]:OBBCenter()
 			local dir = ( hitpos - self:GetPos() ):Angle()
 			
-			local vel = ( self:GetRocketRadius() - distance ) * self:GetRocketForce()
+			local vel = ( self:GetTFRadius() - distance ) * self:GetTFForce()
 			
 			if hit[ i ]:IsPlayer() == true then
 				
@@ -406,7 +316,7 @@ function ENT:Explode( remove, damage )
 		local hitpos = self:GetOwner():GetPos() + self:GetOwner():OBBCenter()
 		local dir = ( hitpos - self:GetPos() ):Angle()
 		
-		local vel = ( self:GetRocketRadius() - distance ) * 4
+		local vel = ( self:GetTFRadius() - distance ) * 4
 		
 		if self:GetOwner():IsPlayer() == true then
 			

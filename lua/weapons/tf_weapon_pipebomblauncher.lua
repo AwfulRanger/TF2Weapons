@@ -173,8 +173,8 @@ function SWEP:SetProjectileModel( pipebomb, model, num )
 	local skin = self.PipebombSkinRED
 	if self:GetTeam() == true then skin = self.PipebombSkinBLU end
 	
-	pipebomb:SetPipebombSkin( skin )
-	pipebomb:SetPipebombModel( _model )
+	pipebomb:SetSkin( skin )
+	pipebomb:SetModel( _model )
 	return _model
 	
 end
@@ -321,16 +321,16 @@ function SWEP:PrimaryAttack( charged, charge )
 				
 				pipebomb:SetOwner( self:GetOwner() )
 				pipebomb:SetPos( starttrace.HitPos )
-				pipebomb:SetPipebombBLU( self:GetTeam() )
+				pipebomb:SetTFBLU( self:GetTeam() )
 				self:SetProjectileModel( pipebomb, self:GetPipebombModel() )
-				pipebomb:SetPipebombParticles( self:GetProjectileParticles() )
+				pipebomb:SetParticles( self:GetProjectileParticles() )
 				pipebomb:SetAngles( ( hittrace.HitPos - starttrace.HitPos ):Angle() )
-				pipebomb:SetPipebombDamage( self.Primary.Damage )
-				pipebomb:SetPipebombCrit( self:DoCrit() )
-				pipebomb:SetPipebombCritMultiplier( self.CritMultiplier )
-				pipebomb:SetPipebombRadius( self.PipebombRadius )
-				pipebomb:SetPipebombForce( self.Primary.Force )
-				pipebomb:SetPipebombTime( CurTime() + self.PipebombTime )
+				pipebomb:SetTFDamage( self.Primary.Damage )
+				pipebomb:SetTFCrit( self:DoCrit() )
+				pipebomb:SetTFCritMult( self.CritMultiplier )
+				pipebomb:SetTFRadius( self.PipebombRadius )
+				pipebomb:SetTFForce( self.Primary.Force )
+				pipebomb:SetTFTime( CurTime() + self.PipebombTime )
 				pipebomb:Spawn()
 				pipebomb:PhysWake()
 				if IsValid( pipebomb:GetPhysicsObject() ) == true then
@@ -386,7 +386,7 @@ function SWEP:RemovePipes( explode, force, mute )
 		
 		if force != true then
 			
-			if IsValid( v ) == true and CurTime() > v:GetPipebombTime() then
+			if IsValid( v ) == true and CurTime() > v:GetTFTime() then
 				
 				playsound = true
 				
@@ -420,7 +420,7 @@ function SWEP:RemovePipes( explode, force, mute )
 			
 			if IsValid( v ) == true then
 				
-				if CurTime() > v:GetPipebombTime() then playsound = true end
+				if CurTime() > v:GetTFTime() then playsound = true end
 				
 				if SERVER then
 					

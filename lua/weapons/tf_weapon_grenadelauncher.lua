@@ -117,7 +117,6 @@ function SWEP:SetProjectileModel( grenade, model, num )
 		if num == nil then num = math.random( #model ) end
 		_model = model[ num ]
 		
-		
 	else
 		
 		_model = model
@@ -127,8 +126,8 @@ function SWEP:SetProjectileModel( grenade, model, num )
 	local skin = self.GrenadeSkinRED
 	if self:GetTeam() == true then skin = self.GrenadeSkinBLU end
 	
-	grenade:SetGrenadeSkin( skin )
-	grenade:SetGrenadeModel( _model )
+	grenade:SetSkin( skin )
+	grenade:SetModel( _model )
 	return _model
 	
 end
@@ -237,17 +236,17 @@ function SWEP:PrimaryAttack()
 				
 				grenade:SetOwner( self:GetOwner() )
 				grenade:SetPos( starttrace.HitPos )
-				grenade:SetGrenadeBLU( self:GetTeam() )
+				grenade:SetTFBLU( self:GetTeam() )
 				self:SetProjectileModel( grenade, self:GetGrenadeModel() )
-				grenade:SetGrenadeParticles( self:GetProjectileParticles() )
+				grenade:SetParticles( self:GetProjectileParticles() )
 				grenade:SetAngles( ( hittrace.HitPos - starttrace.HitPos ):Angle() )
-				grenade:SetGrenadeImpactDamage( self:GetDamageMods( self.Primary.ImpactDamage ) )
-				grenade:SetGrenadeDamage( self.Primary.Damage )
-				grenade:SetGrenadeCrit( self:DoCrit() )
-				grenade:SetGrenadeCritMultiplier( self.CritMultiplier )
-				grenade:SetGrenadeRadius( self.GrenadeRadius )
-				grenade:SetGrenadeForce( self.Primary.Force )
-				grenade:SetGrenadeTime( self.GrenadeTime )
+				grenade:SetTFImpactDamage( self:GetDamageMods( self.Primary.ImpactDamage ) )
+				grenade:SetTFDamage( self.Primary.Damage )
+				grenade:SetTFCrit( self:DoCrit() )
+				grenade:SetTFCritMult( self.CritMultiplier )
+				grenade:SetTFRadius( self.GrenadeRadius )
+				grenade:SetTFForce( self.Primary.Force )
+				grenade:SetTFTime( self.GrenadeTime )
 				grenade:Spawn()
 				grenade:PhysWake()
 				if IsValid( grenade:GetPhysicsObject() ) == true then

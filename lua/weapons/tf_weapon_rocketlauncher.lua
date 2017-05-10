@@ -133,8 +133,8 @@ function SWEP:SetProjectileModel( rocket, model, num )
 	local skin = self.RocketSkinRED
 	if self:GetTeam() == true then skin = self.RocketSkinBLU end
 	
-	rocket:SetRocketSkin( skin )
-	rocket:SetRocketModel( _model )
+	rocket:SetSkin( skin )
+	rocket:SetModel( _model )
 	return _model
 	
 end
@@ -206,16 +206,16 @@ function SWEP:PrimaryAttack()
 				rocket:SetOwner( self:GetOwner() )
 				rocket:SetPos( starttrace.HitPos )
 				rocket:SetAngles( ( hittrace.HitPos - starttrace.HitPos ):Angle() )
-				rocket:SetRocketBLU( self:GetTeam() )
+				rocket:SetTFBLU( self:GetTeam() )
 				self:SetProjectileModel( rocket, self:GetRocketModel() )
-				rocket:SetRocketParticles( self:GetProjectileParticles() )
-				rocket:SetRocketAngles( ( hittrace.HitPos - starttrace.HitPos ):Angle() )
-				rocket:SetRocketDamage( self.Primary.Damage )
-				rocket:SetRocketCrit( self:DoCrit() )
-				rocket:SetRocketCritMultiplier( self.CritMultiplier )
-				rocket:SetRocketSpeed( self.RocketSpeed )
-				rocket:SetRocketRadius( self.RocketRadius )
-				rocket:SetRocketForce( self.Primary.Force )
+				rocket:SetParticles( self:GetProjectileParticles() )
+				rocket:SetTFAngle( ( hittrace.HitPos - starttrace.HitPos ):Angle() )
+				rocket:SetTFDamage( self.Primary.Damage )
+				rocket:SetTFCrit( self:DoCrit() )
+				rocket:SetTFCritMult( self.CritMultiplier )
+				rocket:SetTFSpeed( self.RocketSpeed )
+				rocket:SetTFRadius( self.RocketRadius )
+				rocket:SetTFForce( self.Primary.Force )
 				rocket.ExplodeSound = self.RocketSound
 				rocket:Spawn()
 				
