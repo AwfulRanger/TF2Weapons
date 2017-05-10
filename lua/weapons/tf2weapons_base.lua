@@ -152,6 +152,8 @@ end
 ]]--
 function SWEP:TFNetworkVar( vartype, varname, default, slot, extended )
 	
+	if self[ "GetTF" .. varname ] != nil or self[ "SetTF" .. varname ] != nil then return end
+	
 	if self.CreatedNetworkVars == nil then self.CreatedNetworkVars = {} end
 	
 	if self.CreatedNetworkVars[ vartype ] == nil then
