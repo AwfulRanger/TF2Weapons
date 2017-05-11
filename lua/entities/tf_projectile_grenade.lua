@@ -19,6 +19,9 @@ ENT.Particles = {
 	
 }
 
+ENT.OwnerHitMult = 1
+ENT.OwnerEnemyHitMult = 1
+
 function ENT:TFNetworkVar( vartype, varname, default, slot, extended )
 	
 	if self[ "GetTF" .. varname ] != nil or self[ "SetTF" .. varname ] != nil then return end
@@ -250,10 +253,18 @@ function ENT:Explode( remove, damage )
 	
 	ParticleEffect( explode, self:GetPos(), self:GetAngles() )
 	
+	local playerhit = false
+	local ownerhit = false
+	
 	local hit = ents.FindInSphere( self:GetPos(), self:GetTFRadius() )
 	for i = 1, #hit do
 		
-		if hit[ i ] != self:GetTFHitEntity() then
+		if ( hit[ i ]:IsPlayer() == true or hit[ i ]:IsNPC() == true ) and hit[ i ] != self:GetOwner() then playerhit = true end
+		if hit[ i ] == self:GetOwner() then
+			
+			ownerhit = true
+			
+		elseif hit[ i ] != self:GetTFHitEntity() then
 			
 			local distance = self:GetPos():Distance( hit[ i ]:GetPos() + hit[ i ]:OBBCenter() )
 			local damagemod = ( distance / 2.88 ) * 0.01
@@ -284,6 +295,21 @@ function ENT:Explode( remove, damage )
 				HitEntity = self:GetTFHitEntity(),
 				
 			} ) != true then
+				
+				local hitpos = hit[ i ]:GetPos() + hit[ i ]:OBBCenter()
+				local dir = ( hitpos - self:GetPos() ):Angle()
+				
+				local vel = ( self:GetTFRadius() - distance ) * self:GetTFForce()
+				
+				if hit[ i ]:IsPlayer() == true then
+					
+					hit[ i ]:SetVelocity( dir:Forward() * vel )
+					
+				elseif IsValid( hit[ i ]:GetPhysicsObject() ) == true then
+					
+					hit[ i ]:GetPhysicsObject():AddVelocity( dir:Forward() * vel )
+					
+				end
 				
 				hit[ i ]:TakeDamageInfo( dmg )
 				
@@ -339,6 +365,58 @@ function ENT:Explode( remove, damage )
 				hit[ i ]:TakeDamageInfo( dmg )
 				
 			end
+			
+		end
+		
+	end
+	
+	if ownerhit == true then
+		
+		local distance = self:GetPos():Distance( self:GetOwner():GetPos() + self:GetOwner():OBBCenter() )
+		local damagemod = ( distance / 2.88 ) * 0.01
+		if damagemod > 0.5 then damagemod = 0.5 end
+		
+		local dmg = DamageInfo()
+		dmg:SetInflictor( self )
+		dmg:SetAttacker( attacker )
+		dmg:SetReportedPosition( self:GetPos() )
+		dmg:SetDamagePosition( self:GetPos() )
+		dmg:SetDamageType( DMG_BLAST )
+		if playerhit == true then
+			
+			dmg:SetDamage( ( damage - ( damage * damagemod ) ) * self.OwnerEnemyHitMult )
+			
+		else
+			
+			dmg:SetDamage( ( damage - ( damage * damagemod ) ) * self.OwnerHitMult )
+			
+		end
+		
+		if self:ExplodeCallback( {
+			
+			Attacker = attacker,
+			Damage = dmg,
+			Projectile = self,
+			Entity = self:GetOwner(),
+			
+		} ) != true then
+			
+			local hitpos = self:GetOwner():GetPos() + self:GetOwner():OBBCenter()
+			local dir = ( hitpos - self:GetPos() ):Angle()
+			
+			local vel = ( self:GetTFRadius() - distance ) * self:GetTFForce()
+			
+			if self:GetOwner():IsPlayer() == true then
+				
+				self:GetOwner():SetVelocity( dir:Forward() * vel )
+				
+			elseif IsValid( self:GetOwner():GetPhysicsObject() ) == true then
+				
+				self:GetOwner():GetPhysicsObject():AddVelocity( dir:Forward() * vel )
+				
+			end
+			
+			self:GetOwner():TakeDamageInfo( dmg )
 			
 		end
 		

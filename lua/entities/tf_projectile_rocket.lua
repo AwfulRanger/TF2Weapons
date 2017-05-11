@@ -37,6 +37,9 @@ ENT.Particles = {
 	
 }
 
+ENT.OwnerHitMult = 0.6
+ENT.OwnerEnemyHitMult = 1
+
 function ENT:TFNetworkVar( vartype, varname, default, slot, extended )
 	
 	if self[ "GetTF" .. varname ] != nil or self[ "SetTF" .. varname ] != nil then return end
@@ -334,11 +337,11 @@ function ENT:Explode( remove, damage )
 		dmg:SetDamageType( DMG_BLAST )
 		if playerhit == true then
 			
-			dmg:SetDamage( damage - ( damage * damagemod ) )
+			dmg:SetDamage( ( damage - ( damage * damagemod ) ) * self.OwnerEnemyHitMult )
 			
 		else
 			
-			dmg:SetDamage( ( damage - ( damage * damagemod ) ) * 0.6 )
+			dmg:SetDamage( ( damage - ( damage * damagemod ) ) * self.OwnerHitMult )
 			
 		end
 		
