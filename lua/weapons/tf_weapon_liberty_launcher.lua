@@ -12,8 +12,8 @@ SWEP.Slot = 0
 SWEP.SlotPos = 0
 
 SWEP.CrosshairType = TF2Weapons.Crosshair.CIRCLE
-SWEP.KillIconX = 0
-SWEP.KillIconY = 224
+SWEP.KillIconX = 384
+SWEP.KillIconY = 608
 
 if CLIENT then SWEP.WepSelectIcon = surface.GetTextureID( "backpack/weapons/c_models/c_liberty_launcher/c_liberty_launcher_large" ) end
 SWEP.PrintName = "Liberty Launcher"
