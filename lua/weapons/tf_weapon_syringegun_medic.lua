@@ -74,7 +74,7 @@ function SWEP:Initialize()
 	
 	self:DoInitialize()
 	
-	if CLIENT then self:AddKillIcon( self.KillIcon, self.KillIconColor, self.KillIconX, self.KillIconY, self.KillIconW, self.KillIconH, self.SyringeClass ) end
+	--if CLIENT then self:AddKillIcon( self.KillIcon, self.KillIconColor, self.KillIconX, self.KillIconY, self.KillIconW, self.KillIconH, self.SyringeClass ) end
 	
 end
 
