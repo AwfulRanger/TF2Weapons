@@ -96,6 +96,9 @@ SWEP.RocketParticles = {
 SWEP.RocketSpeed = 1100
 SWEP.RocketRadius = 146
 
+SWEP.RocketOwnerHitMult = 0.6
+SWEP.RocketOwnerEnemyHitMult = 1
+
 SWEP.RocketClass = "tf_projectile_rocket"
 
 SWEP.BackBlastParticle = "rocketbackblast"
@@ -217,6 +220,8 @@ function SWEP:PrimaryAttack()
 				rocket:SetTFRadius( self.RocketRadius )
 				rocket:SetTFForce( self.Primary.Force )
 				rocket.ExplodeSound = self.RocketSound
+				rocket.OwnerHitMult = self.RocketOwnerHitMult
+				rocket.OwnerEnemyHitMult = self.RocketOwnerEnemyHitMult
 				rocket:Spawn()
 				
 				local rockettrace = util.TraceLine( { start = starttrace.HitPos, endpos = rocket:GetPos() + ( rocket:GetAngles():Forward() * 32 ), filter = tracefilter } )

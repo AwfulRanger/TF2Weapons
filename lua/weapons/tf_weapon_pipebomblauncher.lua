@@ -139,6 +139,9 @@ SWEP.PipebombSpeed = 900
 SWEP.PipebombSpeedCharged = 2400
 SWEP.PipebombTime = 0.7
 
+SWEP.PipebombOwnerHitMult = 0.8
+SWEP.PipebombOwnerEnemyHitMult = 1
+
 SWEP.PipebombClass = "tf_projectile_pipebomb"
 
 function SWEP:Initialize()
@@ -331,6 +334,8 @@ function SWEP:PrimaryAttack( charged, charge )
 				pipebomb:SetTFRadius( self.PipebombRadius )
 				pipebomb:SetTFForce( self.Primary.Force )
 				pipebomb:SetTFTime( CurTime() + self.PipebombTime )
+				pipebomb.OwnerHitMult = self.PipebombOwnerHitMult
+				pipebomb.OwnerEnemyHitMult = self.PipebombOwnerEnemyHitMult
 				pipebomb:Spawn()
 				pipebomb:PhysWake()
 				if IsValid( pipebomb:GetPhysicsObject() ) == true then

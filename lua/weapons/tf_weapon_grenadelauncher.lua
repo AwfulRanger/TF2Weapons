@@ -92,6 +92,9 @@ SWEP.GrenadeRadius = 146
 SWEP.GrenadeTime = 2.3
 SWEP.GrenadeSpeed = 1200
 
+SWEP.GrenadeOwnerHitMult = 1
+SWEP.GrenadeOwnerEnemyHitMult = 1
+
 SWEP.GrenadeClass = "tf_projectile_grenade"
 
 function SWEP:Initialize()
@@ -247,6 +250,8 @@ function SWEP:PrimaryAttack()
 				grenade:SetTFRadius( self.GrenadeRadius )
 				grenade:SetTFForce( self.Primary.Force )
 				grenade:SetTFTime( self.GrenadeTime )
+				grenade.OwnerHitMult = self.GrenadeOwnerHitMult
+				grenade.OwnerEnemyHitMult = self.GrenadeOwnerEnemyHitMult
 				grenade:Spawn()
 				grenade:PhysWake()
 				if IsValid( grenade:GetPhysicsObject() ) == true then
