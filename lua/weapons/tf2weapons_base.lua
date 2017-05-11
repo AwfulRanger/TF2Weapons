@@ -1109,7 +1109,7 @@ function SWEP:GetInspectAnim( key )
 		
 		if istable( self:GetInspect()[ key ] ) == true then
 			
-			anim = self:GetInspect()[ key ][ math.random( 1, #self:GetAnimations()[ key ] ) ]
+			anim = self:GetInspect()[ key ][ math.random( 1, #self:GetInspect()[ key ] ) ]
 			
 		else
 			
