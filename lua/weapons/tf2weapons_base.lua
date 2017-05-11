@@ -1976,8 +1976,6 @@ end
 ]]--
 function SWEP:Equip( ent )
 	
-	print( self, "equipped by", ent )
-	print( self:Ammo1() )
 	self:PlayerClassSet( self:GetPlayerClass() )
 	
 	self:AddAttributes()
