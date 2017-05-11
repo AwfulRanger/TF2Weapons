@@ -1,3 +1,22 @@
+local projectilespeed = {
+	
+	"FlameStartSpeed",
+	"FlameEndSpeed",
+	"GrenadeSpeed",
+	"PipebombSpeed",
+	"PipebombSpeedCharged",
+	"RocketSpeed",
+	"SyringeSpeed",
+	
+}
+local ownerhitmult = {
+	
+	"GrenadeOwnerHitMult",
+	"PipebombOwnerHitMult",
+	"RocketOwnerHitMult",
+	
+}
+
 --[[
 --template
 TF2Weapons:AddAttribute( {
@@ -749,6 +768,56 @@ TF2Weapons:AddAttribute( {
 } )
 TF2Weapons:AddAttribute( {
 	
+	id = 103,
+	name = "Projectile speed increased",
+	desc = "+%s1% projectile speed",
+	color = TF2Weapons.Color.POSITIVE,
+	type = "percentage",
+	class = "mult_projectile_speed",
+	hidden = false,
+	func = function( weapon, values )
+		
+		if values[ 1 ] == nil or IsValid( weapon ) != true then return values end
+		
+		for i = 1, #projectilespeed do
+			
+			local v = projectilespeed[ i ]
+			if weapon[ v ] != nil then weapon[ v ] = weapon[ v ] * values[ 1 ] end
+			
+		end
+		
+		return values
+		
+	end,
+	
+} )
+TF2Weapons:AddAttribute( {
+	
+	id = 104,
+	name = "Projectile speed decreased",
+	desc = "%s1% projectile speed",
+	color = TF2Weapons.Color.NEGATIVE,
+	type = "percentage",
+	class = "mult_projectile_speed",
+	hidden = false,
+	func = function( weapon, values )
+		
+		if values[ 1 ] == nil or IsValid( weapon ) != true then return values end
+		
+		for i = 1, #projectilespeed do
+			
+			local v = projectilespeed[ i ]
+			if weapon[ v ] != nil then weapon[ v ] = weapon[ v ] * values[ 1 ] end
+			
+		end
+		
+		return values
+		
+	end,
+	
+} )
+TF2Weapons:AddAttribute( {
+	
 	id = 106,
 	name = "weapon spread bonus",
 	desc = "%s1% more accurate",
@@ -810,6 +879,31 @@ TF2Weapons:AddAttribute( {
 	class = "provide_on_active",
 	hidden = false,
 	func = function( weapon, values )
+		
+		return values
+		
+	end,
+	
+} )
+TF2Weapons:AddAttribute( {
+	
+	id = 135,
+	name = "rocket jump damage reduction",
+	desc = "%s1% blast damage from rocket jumps",
+	color = TF2Weapons.Color.POSITIVE,
+	type = "percentage",
+	class = "rocket_jump_dmg_reduction",
+	hidden = false,
+	func = function( weapon, values )
+		
+		if values[ 1 ] == nil or IsValid( weapon ) != true then return values end
+		
+		for i = 1, #ownerhitmult do
+			
+			local v = ownerhitmult[ i ]
+			if weapon[ v ] != nil then weapon[ v ] = weapon[ v ] * values[ 1 ] end
+			
+		end
 		
 		return values
 		
