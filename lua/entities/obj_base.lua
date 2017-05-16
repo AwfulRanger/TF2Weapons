@@ -504,15 +504,15 @@ function ENT:CreateGibs()
 			local gib = ents.Create( "tf_obj_gib" )
 			gib:SetPos( self:GetPos() )
 			gib:SetAngles( self:GetAngles() )
-			if gibstat.Model != nil then gib:SetGibModel( gibstat.Model ) end
-			if gibstat.Scrap != nil then gib:SetGibScrap( gibstat.Scrap ) end
+			if gibstat.Model != nil then gib:SetModel( gibstat.Model ) end
+			if gibstat.Scrap != nil then gib:SetTFScrap( gibstat.Scrap ) end
 			if self:GetTFBLU() != true then
 				
-				if gibstat.SkinRED != nil then gib:SetGibSkin( gibstat.SkinRED ) end
+				if gibstat.SkinRED != nil then gib:SetSkin( gibstat.SkinRED ) end
 				
 			else
 				
-				if gibstat.SkinBLU != nil then gib:SetGibSkin( gibstat.SkinBLU ) end
+				if gibstat.SkinBLU != nil then gib:SetSkin( gibstat.SkinBLU ) end
 				
 			end
 			gib:Spawn()
