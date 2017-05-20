@@ -515,6 +515,22 @@ TF2Weapons:AddAttribute( {
 } )
 TF2Weapons:AddAttribute( {
 	
+	id = 54,
+	name = "move speed penalty",
+	desc = "+%s1% slower move speed on wearer",
+	color = TF2Weapons.Color.NEGATIVE,
+	type = "percentage",
+	class = "mult_player_movespeed",
+	hidden = false,
+	func = function( weapon, values )
+		
+		return values
+		
+	end,
+	
+} )
+TF2Weapons:AddAttribute( {
+	
 	id = 72,
 	name = "weapon burn dmg reduced",
 	desc = "%s1% afterburn damage penalty",
@@ -1201,6 +1217,29 @@ TF2Weapons:AddAttribute( {
 	class = "mult_dmg_vs_buildings",
 	hidden = false,
 	func = function( weapon, values )
+		
+		return values
+		
+	end,
+	
+} )
+TF2Weapons:AddAttribute( {
+	
+	id = 781,
+	name = "is_a_sword",
+	desc = "This Weapon has a large melee range and\ndeploys and holsters slower",
+	color = TF2Weapons.Color.NEUTRAL,
+	type = "additive",
+	class = "is_a_sword",
+	hidden = false,
+	func = function( weapon, values )
+		
+		if values[ 1 ] == nil or IsValid( weapon ) != true then return values end
+		
+		if weapon.Primary != nil and weapon.Primary.Range != nil then weapon.Primary.Range = weapon.Primary.Range + values[ 1 ] end
+		--i'm just guessing here
+		if weapon.DeployTime != nil then weapon.DeployTime = weapon.DeployTime * 2 end
+		if weapon.NextDeploySpeed != nil then weapon.NextDeploySpeed = weapon.NextDeploySpeed * 2 end
 		
 		return values
 		

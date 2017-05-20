@@ -911,19 +911,24 @@ function SWEP:PrintWeaponInfo( x, y, a )
 					
 				end
 				
-				w, h = surface.GetTextSize( text )
-				surface.SetTextColor( attribute.color )
-				if width > w then
+				local explode = string.Explode( "\n", text )
+				for i = 1, #explode do
 					
-					surface.SetTextPos( x + ( 10 * ( ScrH() / 480 ) ) + ( ( width - w ) * 0.5 ), y + ( 10 * ( ScrH() / 480 ) ) + height_ )
-					
-				else
-					
-					surface.SetTextPos( x + ( 10 * ( ScrH() / 480 ) ), y + ( 10 * ( ScrH() / 480 ) ) + height_ )
+					w, h = surface.GetTextSize( explode[ i ] )
+					surface.SetTextColor( attribute.color )
+					if width > w then
+						
+						surface.SetTextPos( x + ( 10 * ( ScrH() / 480 ) ) + ( ( width - w ) * 0.5 ), y + ( 10 * ( ScrH() / 480 ) ) + height_ )
+						
+					else
+						
+						surface.SetTextPos( x + ( 10 * ( ScrH() / 480 ) ), y + ( 10 * ( ScrH() / 480 ) ) + height_ )
+						
+					end
+					surface.DrawText( explode[ i ] )
+					height_ = height_ + h
 					
 				end
-				surface.DrawText( text )
-				height_ = height_ + h
 				
 			end
 			
@@ -946,19 +951,24 @@ function SWEP:PrintWeaponInfo( x, y, a )
 						
 					end
 					
-					w, h = surface.GetTextSize( text )
-					surface.SetTextColor( attribute.color )
-					if width > w then
+					local explode = string.Explode( "\n", text )
+					for i = 1, #explode do
 						
-						surface.SetTextPos( x + ( 10 * ( ScrH() / 480 ) ) + ( ( width - w ) * 0.5 ), y + ( 10 * ( ScrH() / 480 ) ) + height_ )
-						
-					else
-						
-						surface.SetTextPos( x + ( 10 * ( ScrH() / 480 ) ), y + ( 10 * ( ScrH() / 480 ) ) + height_ )
+						w, h = surface.GetTextSize( explode[ i ] )
+						surface.SetTextColor( attribute.color )
+						if width > w then
+							
+							surface.SetTextPos( x + ( 10 * ( ScrH() / 480 ) ) + ( ( width - w ) * 0.5 ), y + ( 10 * ( ScrH() / 480 ) ) + height_ )
+							
+						else
+							
+							surface.SetTextPos( x + ( 10 * ( ScrH() / 480 ) ), y + ( 10 * ( ScrH() / 480 ) ) + height_ )
+							
+						end
+						surface.DrawText( explode[ i ] )
+						height_ = height_ + h
 						
 					end
-					surface.DrawText( text )
-					height_ = height_ + h
 					
 				end
 				
