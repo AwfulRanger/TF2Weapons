@@ -9,12 +9,13 @@ SWEP.KillIconX = 0
 SWEP.KillIconY = 288
 
 if CLIENT then SWEP.WepSelectIcon = surface.GetTextureID( "backpack/weapons/c_models/c_acr_hookblade/c_acr_hookblade_large" ) end
-SWEP.PrintName = "Sharp Dresser"
-SWEP.HUDName = "The Sharp Dresser"
+SWEP.ProperName = true
+SWEP.PrintName = "#TF_SharpDresser"
 SWEP.Author = "AwfulRanger"
+SWEP.Description = "#TF_SharpDresser_Desc"
 SWEP.Category = "Team Fortress 2 - Spy"
 SWEP.Level = 1
-SWEP.Type = "Knife"
+SWEP.Type = "#TF_Weapon_Knife"
 SWEP.Base = "tf_weapon_knife"
 SWEP.Classes = { [ TF2Weapons.Class.SPY ] = true }
 SWEP.Quality = TF2Weapons.Quality.UNIQUE

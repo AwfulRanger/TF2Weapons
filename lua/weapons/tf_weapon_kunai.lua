@@ -8,14 +8,12 @@ SWEP.KillIconX = 388
 SWEP.KillIconY = 64
 
 if CLIENT then SWEP.WepSelectIcon = surface.GetTextureID( "backpack/weapons/c_models/c_shogun_kunai/c_shogun_kunai_large" ) end
-SWEP.PrintName = "Conniver's Kunai"
+SWEP.PrintName = "#TF_Weapon_Kunai"
 SWEP.Author = "AwfulRanger"
-SWEP.Description = [[Start off with low health
-Kill somebody with this knife
-Steal all of their health]]
+SWEP.Description = "#TF_Kunai_Desc"
 SWEP.Category = "Team Fortress 2 - Spy"
 SWEP.Level = 1
-SWEP.Type = "Kunai"
+SWEP.Type = "#TF_Kunai"
 SWEP.Base = "tf_weapon_knife"
 SWEP.Classes = { [ TF2Weapons.Class.SPY ] = true }
 SWEP.Quality = TF2Weapons.Quality.UNIQUE

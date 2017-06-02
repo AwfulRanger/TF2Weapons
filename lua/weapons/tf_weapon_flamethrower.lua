@@ -97,11 +97,12 @@ SWEP.KillIconX = 0
 SWEP.KillIconY = 416
 
 if CLIENT then SWEP.WepSelectIcon = surface.GetTextureID( "backpack/weapons/w_models/w_flamethrower_large" ) end
-SWEP.PrintName = "Flame Thrower"
+SWEP.PrintName = "#TF_Weapon_FlameThrower"
 SWEP.Author = "AwfulRanger"
+SWEP.Description = "#TF_Weapon_FlameThrower_desc"
 SWEP.Category = "Team Fortress 2 - Pyro"
 SWEP.Level = 1
-SWEP.Type = "Flame Thrower"
+SWEP.Type = "#TF_Weapon_FlameThrower"
 SWEP.Base = "tf2weapons_base"
 SWEP.Classes = { [ TF2Weapons.Class.PYRO ] = true }
 SWEP.Quality = TF2Weapons.Quality.NORMAL

@@ -8,12 +8,13 @@ SWEP.KillIconX = 0
 SWEP.KillIconY = 96
 
 if CLIENT then SWEP.WepSelectIcon = surface.GetTextureID( "backpack/weapons/c_models/c_csgo_awp/c_csgo_awp_large" ) end
-SWEP.PrintName = "AWPer Hand"
-SWEP.HUDName = "The AWPer Hand"
+SWEP.ProperName = true
+SWEP.PrintName = "#TF_CSGO_AWP"
 SWEP.Author = "AwfulRanger"
+SWEP.Description = "#TF_CSGO_AWP_Desc"
 SWEP.Category = "Team Fortress 2 - Sniper"
 SWEP.Level = 1
-SWEP.Type = "Sniper Rifle"
+SWEP.Type = "#TF_Weapon_SniperRifle"
 SWEP.Base = "tf_weapon_sniperrifle"
 SWEP.Classes = { [ TF2Weapons.Class.SNIPER ] = true }
 SWEP.Quality = TF2Weapons.Quality.UNIQUE

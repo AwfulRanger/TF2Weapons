@@ -9,13 +9,13 @@ SWEP.KillIconY = 864
 SWEP.KillIconW = 64
 
 if CLIENT then SWEP.WepSelectIcon = surface.GetTextureID( "backpack/workshop/weapons/c_models/c_jag/c_jag_large" ) end
-SWEP.PrintName = "Jag"
-SWEP.HUDName = "The Jag"
+SWEP.ProperName = true
+SWEP.PrintName = "#TF_Jag"
 SWEP.Author = "AwfulRanger"
 SWEP.Description = ""
 SWEP.Category = "Team Fortress 2 - Engineer"
 SWEP.Level = 15
-SWEP.Type = "Wrench"
+SWEP.Type = "#TF_Weapon_Wrench"
 SWEP.Base = "tf_weapon_wrench"
 SWEP.Classes = { [ TF2Weapons.Class.ENGINEER ] = true }
 SWEP.Quality = TF2Weapons.Quality.UNIQUE

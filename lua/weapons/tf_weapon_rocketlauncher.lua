@@ -16,11 +16,11 @@ SWEP.KillIconX = 0
 SWEP.KillIconY = 224
 
 if CLIENT then SWEP.WepSelectIcon = surface.GetTextureID( "backpack/weapons/w_models/w_rocketlauncher_large" ) end
-SWEP.PrintName = "Rocket Launcher"
+SWEP.PrintName = "#TF_Weapon_RocketLauncher"
 SWEP.Author = "AwfulRanger"
 SWEP.Category = "Team Fortress 2 - Soldier"
 SWEP.Level = 1
-SWEP.Type = "Rocket Launcher"
+SWEP.Type = "#TF_Weapon_RocketLauncher"
 SWEP.Base = "tf2weapons_base"
 SWEP.Classes = { [ TF2Weapons.Class.SOLDIER ] = true }
 SWEP.Quality = TF2Weapons.Quality.NORMAL

@@ -8,11 +8,11 @@ SWEP.KillIconX = 96
 SWEP.KillIconY = 128
 
 if CLIENT then SWEP.WepSelectIcon = surface.GetTextureID( "backpack/weapons/w_models/w_bonesaw_large" ) end
-SWEP.PrintName = "Bonesaw"
+SWEP.PrintName = "#TF_Weapon_Bonesaw"
 SWEP.Author = "AwfulRanger"
 SWEP.Category = "Team Fortress 2 - Medic"
 SWEP.Level = 1
-SWEP.Type = "Bonesaw"
+SWEP.Type = "#TF_Weapon_Bonesaw"
 SWEP.Base = "tf2weapons_base_melee"
 SWEP.Classes = { [ TF2Weapons.Class.MEDIC ] = true }
 SWEP.Quality = TF2Weapons.Quality.NORMAL

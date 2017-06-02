@@ -8,12 +8,11 @@ SWEP.KillIconX = 0
 SWEP.KillIconY = 256
 
 if CLIENT then SWEP.WepSelectIcon = surface.GetTextureID( "backpack/weapons/w_models/w_shotgun_large" ) end
-SWEP.PrintName = "Shotgun (Engineer)"
-SWEP.HUDName = "Shotgun"
+SWEP.PrintName = "#TF_Weapon_Shotgun"
 SWEP.Author = "AwfulRanger"
 SWEP.Category = "Team Fortress 2 - Engineer"
 SWEP.Level = 1
-SWEP.Type = "Shotgun"
+SWEP.Type = "#TF_Weapon_Shotgun"
 SWEP.Base = "tf2weapons_base"
 SWEP.Classes = { [ TF2Weapons.Class.ENGINEER ] = true }
 SWEP.Quality = TF2Weapons.Quality.NORMAL

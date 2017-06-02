@@ -8,11 +8,11 @@ SWEP.KillIconX = 0
 SWEP.KillIconY = 0
 
 if CLIENT then SWEP.WepSelectIcon = surface.GetTextureID( "backpack/weapons/c_models/c_bat_large" ) end
-SWEP.PrintName = "Bat"
+SWEP.PrintName = "#TF_Weapon_Bat"
 SWEP.Author = "AwfulRanger"
 SWEP.Category = "Team Fortress 2 - Scout"
 SWEP.Level = 1
-SWEP.Type = "Bat"
+SWEP.Type = "#TF_Weapon_Bat"
 SWEP.Base = "tf2weapons_base_melee"
 SWEP.Classes = { [ TF2Weapons.Class.SCOUT ] = true }
 SWEP.Quality = TF2Weapons.Quality.NORMAL

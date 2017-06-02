@@ -53,11 +53,11 @@ SWEP.KillIconX = 0
 SWEP.KillIconY = 96
 
 if CLIENT then SWEP.WepSelectIcon = surface.GetTextureID( "backpack/weapons/w_models/w_sniperrifle_large" ) end
-SWEP.PrintName = "Sniper Rifle"
+SWEP.PrintName = "#TF_Weapon_SniperRifle"
 SWEP.Author = "AwfulRanger"
 SWEP.Category = "Team Fortress 2 - Sniper"
 SWEP.Level = 1
-SWEP.Type = "Sniper Rifle"
+SWEP.Type = "#TF_Weapon_SniperRifle"
 SWEP.Base = "tf2weapons_base"
 SWEP.Classes = { [ TF2Weapons.Class.SNIPER ] = true }
 SWEP.Quality = TF2Weapons.Quality.NORMAL

@@ -8,12 +8,12 @@ SWEP.KillIconX = 0
 SWEP.KillIconY = 928
 
 if CLIENT then SWEP.WepSelectIcon = surface.GetTextureID( "backpack/weapons/c_models/c_powerjack/c_powerjack_large" ) end
-SWEP.PrintName = "Powerjack"
-SWEP.HUDName = "The Powerjack"
+SWEP.ProperName = true
+SWEP.PrintName = "#TF_ThePowerjack"
 SWEP.Author = "AwfulRanger"
 SWEP.Category = "Team Fortress 2 - Pyro"
 SWEP.Level = 5
-SWEP.Type = "Sledgehammer"
+SWEP.Type = "#TF_Weapon_SledgeHammer"
 SWEP.Base = "tf_weapon_fireaxe"
 SWEP.Classes = { [ TF2Weapons.Class.PYRO ] = true }
 SWEP.Quality = TF2Weapons.Quality.UNIQUE

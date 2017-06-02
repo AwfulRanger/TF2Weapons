@@ -27,11 +27,12 @@ SWEP.KillIconX = 96
 SWEP.KillIconY = 224
 
 if CLIENT then SWEP.WepSelectIcon = surface.GetTextureID( "backpack/weapons/w_models/w_stickybomb_launcher_large" ) end
-SWEP.PrintName = "Stickybomb Launcher"
+SWEP.PrintName = "#TF_Weapon_PipebombLauncher"
 SWEP.Author = "AwfulRanger"
+SWEP.Description = "#TF_Weapon_PipebombLauncher_desc"
 SWEP.Category = "Team Fortress 2 - Demoman"
 SWEP.Level = 1
-SWEP.Type = "Stickybomb Launcher"
+SWEP.Type = "#TF_Weapon_PipebombLauncher"
 SWEP.Base = "tf2weapons_base"
 SWEP.Classes = { [ TF2Weapons.Class.DEMOMAN ] = true }
 SWEP.Quality = TF2Weapons.Quality.NORMAL

@@ -29,6 +29,7 @@ SWEP.KillIconY = 32
 SWEP.KillIconW = 96
 SWEP.KillIconH = 32
 
+SWEP.ProperName = false
 SWEP.PrintName = "TF2Weapons Base"
 SWEP.HUDName = nil
 SWEP.Author = "AwfulRanger"
@@ -784,11 +785,20 @@ function SWEP:PrintWeaponInfo( x, y, a )
 	if self.DrawWeaponInfoBox == false then return end
 	
 	local name = self.HUDName
+	if name[ 1 ] == "#" then name = string.Replace( language.GetPhrase( name ), "\\n", "\n" ) end
+	if self.ProperName == true then name = language.GetPhrase( "TF_Unique_Prepend_Proper" ) .. name end
 	local prefix = TF2Weapons.QualityPrefix[ self.Quality ]
+	if prefix[ 1 ] == "#" then prefix = string.Replace( language.GetPhrase( prefix ), "\\n", "\n" ) end
 	if prefix != nil and prefix != "" then name = prefix .. " " .. name end
 	
 	local level = self.Level
 	if self.HUDLevel != nil then level = self.HUDLevel end
+	
+	local wtype = self.Type
+	if wtype[ 1 ] == "#" then wtype = string.Replace( language.GetPhrase( wtype ), "\\n", "\n" ) end
+	
+	local desc = self.Description
+	if desc != nil and desc[ 1 ] == "#" then desc = string.Replace( language.GetPhrase( desc ), "\\n", "\n" ) end
 	
 	--size
 	local width = 0
@@ -802,13 +812,13 @@ function SWEP:PrintWeaponInfo( x, y, a )
 	height = height + h
 	
 	surface.SetFont( "TF2Weapons_InfoSecondary" )
-	w, h = surface.GetTextSize( "Level " .. level .. " " .. self.Type, "TF2Weapons_InfoSecondary" )
+	w, h = surface.GetTextSize( "Level " .. level .. " " .. wtype, "TF2Weapons_InfoSecondary" )
 	if w > width then width = w end
 	height = height + h
 	
-	if self.Description != nil and self.Description != "" then
+	if desc != nil and desc != "" then
 		
-		local explode = string.Explode( "\n", self.Description )
+		local explode = string.Explode( "\n", desc )
 		for i = 1, #explode do
 			
 			w, h = surface.GetTextSize( explode[ i ] )
@@ -880,7 +890,7 @@ function SWEP:PrintWeaponInfo( x, y, a )
 	height_ = height_ + h
 	
 	surface.SetFont( "TF2Weapons_InfoSecondary" )
-	w, h = surface.GetTextSize( "Level " .. level .. " " .. self.Type, "TF2Weapons_InfoSecondary" )
+	w, h = surface.GetTextSize( "Level " .. level .. " " .. wtype, "TF2Weapons_InfoSecondary" )
 	surface.SetTextColor( TF2Weapons.Color.LEVEL )
 	if width > w then
 		
@@ -891,7 +901,7 @@ function SWEP:PrintWeaponInfo( x, y, a )
 		surface.SetTextPos( x + ( 10 * ( ScrH() / 480 ) ), y + ( 10 * ( ScrH() / 480 ) ) + height_ )
 		
 	end
-	surface.DrawText( "Level " .. level .. " " .. self.Type, "TF2Weapons_InfoSecondary" )
+	surface.DrawText( "Level " .. level .. " " .. wtype, "TF2Weapons_InfoSecondary" )
 	height_ = height_ + h
 	
 	if self.AttributesOrder[ 1 ] != nil then
@@ -978,9 +988,9 @@ function SWEP:PrintWeaponInfo( x, y, a )
 		
 	end
 	
-	if self.Description != nil and self.Description != "" then
+	if desc != nil and desc != "" then
 		
-		local explode = string.Explode( "\n", self.Description )
+		local explode = string.Explode( "\n", desc )
 		for i = 1, #explode do
 			
 			w, h = surface.GetTextSize( explode[ i ] )

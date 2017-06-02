@@ -8,12 +8,13 @@ SWEP.KillIconX = 256
 SWEP.KillIconY = 448
 
 if CLIENT then SWEP.WepSelectIcon = surface.GetTextureID( "backpack/weapons/c_models/c_backburner/c_backburner_large" ) end
-SWEP.PrintName = "Backburner"
-SWEP.HUDName = "The Backburner"
+SWEP.ProperName = true
+SWEP.PrintName = "#TF_Unique_Achievement_Flamethrower"
 SWEP.Author = "AwfulRanger"
+SWEP.Description = ""
 SWEP.Category = "Team Fortress 2 - Pyro"
 SWEP.Level = 10
-SWEP.Type = "Flame Thrower"
+SWEP.Type = "#TF_Weapon_Flamethrower"
 SWEP.Base = "tf_weapon_flamethrower"
 SWEP.Classes = { [ TF2Weapons.Class.PYRO ] = true }
 SWEP.Quality = TF2Weapons.Quality.UNIQUE

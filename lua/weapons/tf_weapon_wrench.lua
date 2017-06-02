@@ -10,13 +10,12 @@ SWEP.KillIconX = 96
 SWEP.KillIconY = 96
 
 if CLIENT then SWEP.WepSelectIcon = surface.GetTextureID( "backpack/weapons/w_models/w_wrench_large" ) end
-SWEP.PrintName = "Wrench"
+SWEP.PrintName = "#TF_Weapon_Wrench"
 SWEP.Author = "AwfulRanger"
-SWEP.Description = [[Upgrades, repairs and speeds up
-construction of friendly buildings on hit.]]
+SWEP.Description = "#TF_Weapon_Wrench_Desc"
 SWEP.Category = "Team Fortress 2 - Engineer"
 SWEP.Level = 1
-SWEP.Type = "Wrench"
+SWEP.Type = "#TF_Weapon_Wrench"
 SWEP.Base = "tf2weapons_base_melee"
 SWEP.Classes = { [ TF2Weapons.Class.ENGINEER ] = true }
 SWEP.Quality = TF2Weapons.Quality.NORMAL

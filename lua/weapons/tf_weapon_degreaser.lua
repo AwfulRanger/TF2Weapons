@@ -8,12 +8,13 @@ SWEP.KillIconX = 0
 SWEP.KillIconY = 896
 
 if CLIENT then SWEP.WepSelectIcon = surface.GetTextureID( "backpack/weapons/c_models/c_degreaser/c_degreaser_large" ) end
-SWEP.PrintName = "Degreaser"
-SWEP.HUDName = "The Degreaser"
+SWEP.ProperName = true
+SWEP.PrintName = "#TF_TheDegreaser"
 SWEP.Author = "AwfulRanger"
+SWEP.Description = ""
 SWEP.Category = "Team Fortress 2 - Pyro"
 SWEP.Level = 10
-SWEP.Type = "Flame Thrower"
+SWEP.Type = "#TF_Weapon_Flamethrower"
 SWEP.Base = "tf_weapon_flamethrower"
 SWEP.Classes = { [ TF2Weapons.Class.PYRO ] = true }
 SWEP.Quality = TF2Weapons.Quality.UNIQUE

@@ -8,11 +8,11 @@ SWEP.KillIconX = 0
 SWEP.KillIconY = 352
 
 if CLIENT then SWEP.WepSelectIcon = surface.GetTextureID( "backpack/weapons/w_models/w_syringegun_large" ) end
-SWEP.PrintName = "Syringe Gun"
+SWEP.PrintName = "#TF_Weapon_SyringeGun"
 SWEP.Author = "AwfulRanger"
 SWEP.Category = "Team Fortress 2 - Medic"
 SWEP.Level = 1
-SWEP.Type = "Syringe Gun"
+SWEP.Type = "#TF_Weapon_SyringeGun"
 SWEP.Base = "tf2weapons_base"
 SWEP.Classes = { [ TF2Weapons.Class.MEDIC ] = true }
 SWEP.Quality = TF2Weapons.Quality.NORMAL

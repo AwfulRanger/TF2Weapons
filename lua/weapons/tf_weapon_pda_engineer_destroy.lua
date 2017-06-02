@@ -12,11 +12,11 @@ SWEP.KillIconW = 0
 SWEP.KillIconH = 0
 
 if CLIENT then SWEP.WepSelectIcon = surface.GetTextureID( "backpack/weapons/w_models/w_pda_engineer_large" ) end
-SWEP.PrintName = "Destruction PDA"
+SWEP.PrintName = "#TF_Weapon_PDA_Engineer_Destroyer"
 SWEP.Author = "AwfulRanger"
 SWEP.Category = "Team Fortress 2 - Engineer"
 SWEP.Level = 1
-SWEP.Type = "PDA"
+SWEP.Type = "#TF_Weapon_PDA_Engineer"
 SWEP.Base = "tf2weapons_base"
 SWEP.Classes = { [ TF2Weapons.Class.ENGINEER ] = true }
 SWEP.Quality = TF2Weapons.Quality.NORMAL

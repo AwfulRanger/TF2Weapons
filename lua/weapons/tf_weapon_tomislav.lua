@@ -8,11 +8,11 @@ SWEP.KillIconX = 384
 SWEP.KillIconY = 352
 
 if CLIENT then SWEP.WepSelectIcon = surface.GetTextureID( "backpack/weapons/c_models/c_tomislav/c_tomislav_large" ) end
-SWEP.PrintName = "Tomislav"
+SWEP.PrintName = "#TF_Tomislav"
 SWEP.Author = "AwfulRanger"
 SWEP.Category = "Team Fortress 2 - Heavy"
 SWEP.Level = 5
-SWEP.Type = "Minigun"
+SWEP.Type = "#TF_Weapon_Minigun"
 SWEP.Base = "tf_weapon_minigun"
 SWEP.Classes = { [ TF2Weapons.Class.HEAVY ] = true }
 SWEP.Quality = TF2Weapons.Quality.UNIQUE

@@ -9,12 +9,12 @@ SWEP.KillIconY = 832
 SWEP.KillIconW = 128
 
 if CLIENT then SWEP.WepSelectIcon = surface.GetTextureID( "backpack/weapons/c_models/c_bear_claw/c_bear_claw_large" ) end
-SWEP.PrintName = "Warrior's Spirit"
-SWEP.HUDName = "The Warrior's Spirit"
+SWEP.ProperName = true
+SWEP.PrintName = "#TF_WarriorsSpirit"
 SWEP.Author = "AwfulRanger"
 SWEP.Category = "Team Fortress 2 - Heavy"
 SWEP.Level = 10
-SWEP.Type = "Boxing Gloves"
+SWEP.Type = "#TF_Weapon_Gloves"
 SWEP.Base = "tf_weapon_fists"
 SWEP.Classes = { [ TF2Weapons.Class.HEAVY ] = true }
 SWEP.Quality = TF2Weapons.Quality.UNIQUE

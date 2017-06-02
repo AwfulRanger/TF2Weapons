@@ -8,11 +8,11 @@ SWEP.KillIconX = 96
 SWEP.KillIconY = 192
 
 if CLIENT then SWEP.WepSelectIcon = surface.GetTextureID( "backpack/weapons/c_models/c_scattergun_large" ) end
-SWEP.PrintName = "Scattergun"
+SWEP.PrintName = "#TF_Weapon_Scattergun"
 SWEP.Author = "AwfulRanger"
 SWEP.Category = "Team Fortress 2 - Scout"
 SWEP.Level = 1
-SWEP.Type = "Scattergun"
+SWEP.Type = "#TF_Weapon_Scattergun"
 SWEP.Base = "tf2weapons_base"
 SWEP.Classes = { [ TF2Weapons.Class.SCOUT ] = true }
 SWEP.Quality = TF2Weapons.Quality.NORMAL

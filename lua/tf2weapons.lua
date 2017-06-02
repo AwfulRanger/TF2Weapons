@@ -1,3 +1,5 @@
+AddCSLuaFile( "tf2weapons/language.lua" )
+
 if SERVER then
 	
 	util.AddNetworkString( "tf2weapons_anim" )
@@ -11,6 +13,8 @@ if SERVER then
 	end )
 	
 else
+	
+	include( "tf2weapons/language.lua" )
 	
 	game.AddParticles( "particles/muzzle_flash.pcf" )
 	

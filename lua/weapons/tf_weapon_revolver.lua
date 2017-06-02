@@ -8,11 +8,11 @@ SWEP.KillIconX = 96
 SWEP.KillIconY = 32
 
 if CLIENT then SWEP.WepSelectIcon = surface.GetTextureID( "backpack/weapons/w_models/w_revolver_large" ) end
-SWEP.PrintName = "Revolver"
+SWEP.PrintName = "#TF_Weapon_Revolver"
 SWEP.Author = "AwfulRanger"
 SWEP.Category = "Team Fortress 2 - Spy"
 SWEP.Level = 1
-SWEP.Type = "Revolver"
+SWEP.Type = "#TF_Weapon_Revolver"
 SWEP.Base = "tf2weapons_base"
 SWEP.Classes = { [ TF2Weapons.Class.SPY ] = true }
 SWEP.Quality = TF2Weapons.Quality.NORMAL

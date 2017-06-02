@@ -8,12 +8,12 @@ SWEP.KillIconX = 384
 SWEP.KillIconY = 320
 
 if CLIENT then SWEP.WepSelectIcon = surface.GetTextureID( "backpack/weapons/c_models/c_winger_pistol/c_winger_pistol_large" ) end
-SWEP.PrintName = "Winger"
-SWEP.HUDName = "The Winger"
+SWEP.ProperName = true
+SWEP.PrintName = "#TF_Winger"
 SWEP.Author = "AwfulRanger"
 SWEP.Category = "Team Fortress 2 - Scout"
 SWEP.Level = 15
-SWEP.Type = "Pistol"
+SWEP.Type = "#TF_Weapon_Pistol"
 SWEP.Base = "tf_weapon_pistol_scout"
 SWEP.Classes = { [ TF2Weapons.Class.SCOUT ] = true }
 SWEP.Quality = TF2Weapons.Quality.UNIQUE

@@ -8,12 +8,13 @@ SWEP.KillIconX = 192
 SWEP.KillIconY = 704
 
 if CLIENT then SWEP.WepSelectIcon = surface.GetTextureID( "backpack/weapons/c_models/c_battleaxe/c_battleaxe_large" ) end
-SWEP.PrintName = "Scotsman's Skullcutter"
-SWEP.HUDName = "The Scotsman's Skullcutter"
+SWEP.ProperName = true
+SWEP.PrintName = "#TF_Unique_BattleAxe"
 SWEP.Author = "AwfulRanger"
+--SWEP.Description = "#TF_Unique_BattleAxe_desc"
 SWEP.Category = "Team Fortress 2 - Demoman"
 SWEP.Level = 5
-SWEP.Type = "Axe"
+SWEP.Type = "#TF_Weapon_Axe"
 SWEP.Base = "tf_weapon_sword"
 SWEP.Classes = { [ TF2Weapons.Class.DEMOMAN ] = true }
 SWEP.Quality = TF2Weapons.Quality.UNIQUE

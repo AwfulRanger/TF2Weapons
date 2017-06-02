@@ -8,12 +8,12 @@ SWEP.KillIconX = 384
 SWEP.KillIconY = 736
 
 if CLIENT then SWEP.WepSelectIcon = surface.GetTextureID( "backpack/weapons/c_models/c_scimitar/c_scimitar_large" ) end
-SWEP.PrintName = "Shahanshah"
-SWEP.HUDName = "The Shahanshah"
+SWEP.ProperName = true
+SWEP.PrintName = "#TF_Shahanshah"
 SWEP.Author = "AwfulRanger"
 SWEP.Category = "Team Fortress 2 - Sniper"
 SWEP.Level = 5
-SWEP.Type = "Kukri"
+SWEP.Type = "#TF_Weapon_Club"
 SWEP.Base = "tf_weapon_club"
 SWEP.Classes = { [ TF2Weapons.Class.SNIPER ] = true }
 SWEP.Quality = TF2Weapons.Quality.UNIQUE

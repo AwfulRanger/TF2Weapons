@@ -19,11 +19,11 @@ SWEP.KillIconX = 0
 SWEP.KillIconY = 288
 
 if CLIENT then SWEP.WepSelectIcon = surface.GetTextureID( "backpack/weapons/w_models/w_grenadelauncher_large" ) end
-SWEP.PrintName = "Grenade Launcher"
+SWEP.PrintName = "#TF_Weapon_GrenadeLauncher"
 SWEP.Author = "AwfulRanger"
 SWEP.Category = "Team Fortress 2 - Demoman"
 SWEP.Level = 1
-SWEP.Type = "Grenade Launcher"
+SWEP.Type = "#TF_Weapon_GrenadeLauncher"
 SWEP.Base = "tf2weapons_base"
 SWEP.Classes = { [ TF2Weapons.Class.DEMOMAN ] = true }
 SWEP.Quality = TF2Weapons.Quality.NORMAL

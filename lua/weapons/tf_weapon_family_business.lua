@@ -8,12 +8,12 @@ SWEP.KillIconX = 384
 SWEP.KillIconY = 576
 
 if CLIENT then SWEP.WepSelectIcon = surface.GetTextureID( "backpack/weapons/c_models/c_russian_riot/c_russian_riot_large" ) end
-SWEP.PrintName = "Family Business"
-SWEP.HUDName = "The Family Business"
+SWEP.ProperName = true
+SWEP.PrintName = "#TF_RussianRiot"
 SWEP.Author = "AwfulRanger"
 SWEP.Category = "Team Fortress 2 - Heavy"
 SWEP.Level = 10
-SWEP.Type = "Shotgun"
+SWEP.Type = "#TF_Weapon_Shotgun"
 SWEP.Base = "tf_weapon_shotgun_hwg"
 SWEP.Classes = { [ TF2Weapons.Class.HEAVY ] = true }
 SWEP.Quality = TF2Weapons.Quality.UNIQUE

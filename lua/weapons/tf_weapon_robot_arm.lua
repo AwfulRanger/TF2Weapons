@@ -8,13 +8,13 @@ SWEP.KillIconX = 0
 SWEP.KillIconY = 801
 
 if CLIENT then SWEP.WepSelectIcon = surface.GetTextureID( "backpack/weapons/gunslinger_large" ) end
-SWEP.PrintName = "Gunslinger"
-SWEP.HUDName = "The Gunslinger"
+SWEP.ProperName = true
+SWEP.PrintName = "#TF_Unique_Robot_Arm"
 SWEP.Author = "AwfulRanger"
 SWEP.Description = ""
 SWEP.Category = "Team Fortress 2 - Engineer"
 SWEP.Level = 15
-SWEP.Type = "Robot Arm"
+SWEP.Type = "TF_Weapon_Robot_Arm"
 SWEP.Base = "tf_weapon_wrench"
 SWEP.Classes = { [ TF2Weapons.Class.ENGINEER ] = true }
 SWEP.Quality = TF2Weapons.Quality.UNIQUE

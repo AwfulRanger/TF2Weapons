@@ -22,11 +22,11 @@ SWEP.KillIconX = 0
 SWEP.KillIconY = 320
 
 if CLIENT then SWEP.WepSelectIcon = surface.GetTextureID( "backpack/weapons/w_models/w_bottle_large" ) end
-SWEP.PrintName = "Bottle"
+SWEP.PrintName = "#TF_Weapon_Bottle"
 SWEP.Author = "AwfulRanger"
 SWEP.Category = "Team Fortress 2 - Demoman"
 SWEP.Level = 1
-SWEP.Type = "Bottle"
+SWEP.Type = "#TF_Weapon_Bottle"
 SWEP.Base = "tf2weapons_base_melee"
 SWEP.Classes = { [ TF2Weapons.Class.DEMOMAN ] = true }
 SWEP.Quality = TF2Weapons.Quality.NORMAL
