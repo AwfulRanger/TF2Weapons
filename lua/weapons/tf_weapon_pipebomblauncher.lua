@@ -1,5 +1,7 @@
 AddCSLuaFile()
 
+DEFINE_BASECLASS( "tf2weapons_base" )
+
 if SERVER then
 	
 	util.AddNetworkString( "tf2weapons_pipebomblauncher_insert" )
@@ -275,11 +277,7 @@ function SWEP:Think()
 	
 	if IsValid( self:GetOwner() ) == false then return end
 	
-	self.LastOwner = self:GetOwner()
-	
-	self:CheckHands()
-	
-	self:DoReload()
+	BaseClass.Think( self )
 	
 	if self:GetTFPipebombs() > self.MaxPipebombs then
 		
@@ -296,12 +294,6 @@ function SWEP:Think()
 	end
 	
 	self:Charge()
-	
-	self:Idle()
-	
-	self:HandleCritStreams()
-	
-	self:Inspect()
 	
 end
 

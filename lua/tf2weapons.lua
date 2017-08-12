@@ -104,13 +104,10 @@ else
 		
 		local weapon = net.ReadEntity()
 		if IsValid( weapon ) != true then return end
-		local ent = net.ReadEntity()
+		
 		local particle = net.ReadString()
-		local attachment = net.ReadInt( 32 )
-		local pattach = net.ReadInt( 32 )
 		
 		local options = {}
-		
 		local amount = net.ReadInt( 32 )
 		if amount > 0 then
 			
@@ -129,20 +126,9 @@ else
 			
 		end
 		
-		/*
-		local newparticle = ent:CreateParticleEffect( particle, attachment )
-		for i = 0, #options - 1 do
-			
-			local option = options[ i ]
-			
-			newparticle:AddControlPoint( i, option.ent, option.pattach, option.attach, option.offset )
-			
-		end
-		*/
-		
 		if weapon.AddParticle != nil then
 			
-			weapon:AddParticle( particle, attachment, ent, pattach, options, true )
+			weapon:AddParticle( particle, options )
 			
 		end
 		

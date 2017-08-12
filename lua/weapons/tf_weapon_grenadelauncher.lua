@@ -1,5 +1,7 @@
 AddCSLuaFile()
 
+DEFINE_BASECLASS( "tf2weapons_base" )
+
 if SERVER then
 	
 	util.AddNetworkString( "tf2weapons_grenadelauncher_spinreset" )
@@ -203,19 +205,9 @@ function SWEP:Think()
 	
 	if IsValid( self:GetOwner() ) == false then return end
 	
-	self:SetTFLastOwner( self:GetOwner() )
-	
-	self:CheckHands()
-	
-	self:DoReload()
+	BaseClass.Think( self )
 	
 	--self:Spin()
-	
-	self:Idle()
-	
-	self:HandleCritStreams()
-	
-	self:Inspect()
 	
 end
 

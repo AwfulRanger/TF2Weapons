@@ -1,5 +1,7 @@
 AddCSLuaFile()
 
+DEFINE_BASECLASS( "tf2weapons_base" )
+
 if SERVER then
 	
 	util.AddNetworkString( "tf2weapons_building_upgrade" )
@@ -543,17 +545,7 @@ function SWEP:Think()
 	
 	if IsValid( self:GetOwner() ) == false then return end
 	
-	self:SetTFLastOwner( self:GetOwner() )
-	
-	self:CheckHands()
-	
-	self:DoReload()
-	
-	self:Idle()
-	
-	self:HandleCritStreams()
-	
-	self:Inspect()
+	BaseClass.Think( self )
 	
 	self:ManageGhostBuilding()
 	

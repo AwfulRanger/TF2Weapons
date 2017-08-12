@@ -1,5 +1,7 @@
 AddCSLuaFile()
 
+DEFINE_BASECLASS( "tf2weapons_base" )
+
 if SERVER then
 	
 	util.AddNetworkString( "tf2weapons_minigun_spinreset" )
@@ -236,15 +238,25 @@ function SWEP:Spool()
 				self:SetVMAnimation( self:GetHandAnim( "spool_idle" ) )
 				if self:GetTFMuzzleParticleActive() == true and CurTime() > self:GetTFMuzzleParticleRemove() then
 					
-					self:StopParticles()
-					if IsValid( self:GetOwner() ) == true and IsValid( weapon ) == true then weapon:StopParticles() end
+					self:RemoveParticles()
 					if self.ViewModelParticles == true then
 						
-						self:AddParticle( self.EndMuzzleParticle, "muzzle", weapon )
+						self:AddParticle( self.EndMuzzleParticle, { {
+							
+							entity = weapon,
+							attachtype = PATTACH_POINT_FOLLOW,
+							attachment = "muzzle",
+							
+						} } )
 						
 					else
 						
-						self:AddParticle( self.EndMuzzleParticle, "muzzle" )
+						self:AddParticle( self.EndMuzzleParticle, { {
+							
+							attachtype = PATTACH_POINT_FOLLOW,
+							attachment = "muzzle",
+							
+						} } )
 						
 					end
 					
@@ -259,15 +271,25 @@ function SWEP:Spool()
 				self:SetVMAnimation( self:GetHandAnim( "spool_idle" ) )
 				if self:GetTFMuzzleParticleActive() == true and CurTime() > self:GetTFMuzzleParticleRemove() then
 					
-					self:StopParticles()
-					if IsValid( self:GetOwner() ) == true and IsValid( weapon ) == true then weapon:StopParticles() end
+					self:RemoveParticles()
 					if self.ViewModelParticles == true then
 						
-						self:AddParticle( self.EndMuzzleParticle, "muzzle", weapon )
+						self:AddParticle( self.EndMuzzleParticle, { {
+							
+							entity = weapon,
+							attachtype = PATTACH_POINT_FOLLOW,
+							attachment = "muzzle",
+							
+						} } )
 						
 					else
 						
-						self:AddParticle( self.EndMuzzleParticle, "muzzle" )
+						self:AddParticle( self.EndMuzzleParticle, { {
+							
+							attachtype = PATTACH_POINT_FOLLOW,
+							attachment = "muzzle",
+							
+						} } )
 						
 					end
 					
@@ -288,15 +310,25 @@ function SWEP:Spool()
 		
 		if self:GetTFMuzzleParticleActive() == true and CurTime() > self:GetTFMuzzleParticleRemove() then
 			
-			self:StopParticles()
-			if IsValid( self:GetOwner() ) == true and IsValid( weapon ) == true then weapon:StopParticles() end
+			self:RemoveParticles()
 			if self.ViewModelParticles == true then
 				
-				self:AddParticle( self.EndMuzzleParticle, "muzzle", weapon )
+				self:AddParticle( self.EndMuzzleParticle, { {
+					
+					entity = weapon,
+					attachtype = PATTACH_POINT_FOLLOW,
+					attachment = "muzzle",
+					
+				} } )
 				
 			else
 				
-				self:AddParticle( self.EndMuzzleParticle, "muzzle" )
+				self:AddParticle( self.EndMuzzleParticle, { {
+					
+					attachtype = PATTACH_POINT_FOLLOW,
+					attachment = "muzzle",
+					
+				} } )
 				
 			end
 			
@@ -361,17 +393,9 @@ function SWEP:Think()
 	
 	if IsValid( self:GetOwner() ) == false then return end
 	
-	self:SetTFLastOwner( self:GetOwner() )
-	
-	self:CheckHands()
+	BaseClass.Think( self )
 	
 	self:Spool()
-	
-	self:Idle()
-	
-	self:HandleCritStreams()
-	
-	self:Inspect()
 	
 end
 
@@ -423,11 +447,22 @@ function SWEP:DoPrimaryAttack( bullet, crit )
 		if self.ViewModelParticles == true then
 			
 			local hands, weapon = self:GetViewModels()
-			self:AddParticle( self.MuzzleParticle, "muzzle", weapon )
+			self:AddParticle( self.MuzzleParticle, { {
+				
+				entity = weapon,
+				attachtype = PATTACH_POINT_FOLLOW,
+				attachment = "muzzle",
+				
+			} } )
 			
 		else
 			
-			self:AddParticle( self.MuzzleParticle, "muzzle" )
+			self:AddParticle( self.MuzzleParticle, { {
+				
+				attachtype = PATTACH_POINT_FOLLOW,
+				attachment = "muzzle",
+				
+			} } )
 			
 		end
 		

@@ -1,5 +1,7 @@
 AddCSLuaFile()
 
+DEFINE_BASECLASS( "tf2weapons_base" )
+
 SWEP.TF2Weapons_SniperRifleDot = true
 
 hook.Add( "OnEntityCreated", "TF2Weapons_SniperRifle_OnCreated", function( ent )
@@ -202,9 +204,9 @@ function SWEP:Think()
 	
 	if IsValid( self:GetOwner() ) == false then return end
 	
-	local hands, weapon = self:GetViewModels()
+	BaseClass.Think( self )
 	
-	self:CheckHands()
+	local hands, weapon = self:GetViewModels()
 	
 	local fire = self:GetHandAnim( "fire" )
 	
@@ -286,8 +288,6 @@ function SWEP:Think()
 		self:SetTFNextIdle( CurTime() + hands:SequenceDuration( idle ) )
 		
 	end
-	
-	self:Inspect()
 	
 end
 

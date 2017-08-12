@@ -1,5 +1,7 @@
 AddCSLuaFile()
 
+DEFINE_BASECLASS( "tf2weapons_base_melee" )
+
 if SERVER then
 	
 	util.AddNetworkString( "tf2weapons_bottle_break" )
@@ -112,8 +114,6 @@ end
 function SWEP:Think()
 	
 	if IsValid( self:GetOwner() ) == false then return end
-	
-	local hands, weapon = self:GetViewModels()
 	
 	self:CheckHands()
 	

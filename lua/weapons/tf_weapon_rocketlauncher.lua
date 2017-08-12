@@ -234,7 +234,12 @@ function SWEP:PrimaryAttack()
 		
 	end
 	
-	self:AddParticle( self.BackBlastParticle, "backblast" )
+	self:AddParticle( self.BackBlastParticle, {
+		
+		attachtype = PATTACH_POINT_FOLLOW,
+		attachment = "backblast",
+		
+	} )
 	
 	self:DoPrimaryAttack()
 	

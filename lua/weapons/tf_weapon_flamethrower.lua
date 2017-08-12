@@ -1,5 +1,7 @@
 AddCSLuaFile()
 
+DEFINE_BASECLASS( "tf2weapons_base" )
+
 if SERVER then
 	
 	util.AddNetworkString( "tf2weapons_airblast" )
@@ -263,11 +265,22 @@ function SWEP:StartFlames()
 	if self.ViewModelParticles == true then
 		
 		local hands, weapon = self:GetViewModels()
-		self:AddParticle( particle, "muzzle", weapon )
+		self:AddParticle( particle, { {
+			
+			entity = weapon,
+			attachtype = PATTACH_POINT_FOLLOW,
+			attachment = "muzzle",
+			
+		} } )
 		
 	else
 		
-		self:AddParticle( particle, "muzzle" )
+		self:AddParticle( particle, { {
+			
+			attachtype = PATTACH_POINT_FOLLOW,
+			attachment = "muzzle",
+			
+		} } )
 		
 	end
 	
@@ -281,7 +294,7 @@ function SWEP:StopFlames()
 	
 	local hands, weapon = self:GetViewModels()
 	if IsValid( self:GetOwner() ) == true and IsValid( weapon ) == true then weapon:StopParticles() end
-	self:StopParticles()
+	self:RemoveParticles()
 	
 end
 
@@ -465,6 +478,8 @@ function SWEP:Think()
 	
 	if IsValid( self:GetOwner() ) == false then return end
 	
+	BaseClass.Think( self )
+	
 	local hands, weapon = self:GetViewModels()
 	
 	if self:GetOwner():KeyDown( IN_ATTACK ) == true and self:CanCreateFlame() == true and self:TooClose() != true and CurTime() > self:GetNextSecondaryFire() then
@@ -543,14 +558,6 @@ function SWEP:Think()
 	
 	self:ManageFlames()
 	
-	self:CheckHands()
-	
-	self:Idle()
-	
-	self:HandleCritStreams()
-	
-	self:Inspect()
-	
 end
 
 function SWEP:CanCreateFlame()
@@ -599,11 +606,22 @@ function SWEP:SecondaryAttack()
 	if self.ViewModelParticles == true then
 		
 		local hands, weapon = self:GetViewModels()
-		self:AddParticle( airblast, "muzzle", weapon )
+		self:AddParticle( airblast, { {
+			
+			entity = weapon,
+			attachtype = PATTACH_POINT_FOLLOW,
+			attachment = "muzzle",
+			
+		} } )
 		
 	else
 		
-		self:AddParticle( airblast, "muzzle" )
+		self:AddParticle( airblast, { {
+			
+			attachtype = PATTACH_POINT_FOLLOW,
+			attachment = "muzzle",
+			
+		} } )
 		
 	end
 	

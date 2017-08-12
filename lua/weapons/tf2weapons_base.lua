@@ -1413,28 +1413,22 @@ end
 SWEP.CreatedParticles = {}
 
 --[[
-	Name:	SWEP:AddParticle( particle, attachment, ent, pattach, options )
+	Name:	SWEP:AddParticle( particle, options )
 	
 	Desc:	Attaches particles to the weapon
 	
 	Arg1:	Particle to attach to the weapon
 	
-	Arg2:	Attachment to parent the particle to
-	
-	Arg3:	Entity to attach the particle to. If unspecified, this will be the weapon
-	
-	Arg4:	PATTACH enum to use for the particle
-	
-	Arg5:	Table containing tables with control point options. Example:
+	Arg2:	Table containing tables with control point options. Example:
 			{
 				
 				--Control point 0
 				{
 					
-					ent = self,
-					pattach = PATTACH_POINT_FOLLOW,
-					attach = 0,
-					offset = Vector( 0, 0, 0 ),
+					entity = self,
+					attachtype = PATTACH_POINT_FOLLOW,
+					attachment = 0,
+					position = Vector( 0, 0, 0 ),
 					
 				},
 				
@@ -1442,117 +1436,172 @@ SWEP.CreatedParticles = {}
 				
 			}
 ]]--
-function SWEP:AddParticle( particle, attachment, ent, pattach, options )
+function SWEP:AddParticle( particle, options )
 	
-	if particle == nil or particle == "" then return end
-	if ent == nil then ent = self end
+	if IsFirstTimePredicted() != true or particle == nil or particle == "" or options == nil then return end
 	
-	if ent:LookupAttachment( attachment ) != nil then
+	if SERVER then
 		
-		if pattach == nil then pattach = PATTACH_POINT_FOLLOW end
-		attachment = ent:LookupAttachment( attachment )
-		
-	else
-		
-		if pattach == nil then pattach = PATTACH_ABSORIGIN_FOLLOW end
-		attachment = -1
-		
-	end
-	
-	if options != nil then
-		
-		if SERVER then
+		net.Start( "tf2weapons_addparticle" )
 			
-			net.Start( "tf2weapons_addparticle" )
+			net.WriteEntity( self )
+			
+			net.WriteString( particle )
+			
+			net.WriteInt( #options, 32 )
+			if #options > 0 then
 				
-				net.WriteEntity( self )
-				net.WriteEntity( ent )
-				net.WriteString( particle )
-				net.WriteInt( attachment, 32 )
-				net.WriteInt( pattach, 32 )
-				
-				net.WriteInt( #options, 32 )
-				if #options > 0 then
+				for i = 1, #options do
 					
-					for i = 1, #options do
-						
-						net.WriteType( options[ i ].entity )
-						net.WriteType( options[ i ].attachtype )
-						net.WriteType( options[ i ].attachment )
-						net.WriteType( options[ i ].position )
-						
-					end
-					
-				end
-				
-			net.Broadcast()
-			
-		else
-			
-			local hands, weapon = self:GetViewModels()
-			
-			local newparticle = ent:CreateParticleEffect( particle, attachment )
-			
-			if IsValid( newparticle ) == true and istable( options ) == true then
-				
-				for i = 0, #options - 1 do
-					
-					local option = options[ i + 1 ]
-					
-					newparticle:AddControlPoint( i, option.entity, option.attachtype, option.attachment, option.position )
+					net.WriteType( options[ i ].entity )
+					net.WriteType( options[ i ].attachtype )
+					net.WriteType( options[ i ].attachment )
+					net.WriteType( options[ i ].position )
 					
 				end
 				
 			end
 			
-		end
+		net.Broadcast()
 		
 	else
 		
-		if self:LookupAttachment( attachment ) != nil then
+		local mdls = {}
+		
+		for i = 1, #options do
 			
-			ParticleEffectAttach( particle, pattach, ent, attachment )
+			local option = options[ i ]
+			
+			if option.entity == nil then option.entity = self end
+			
+			if IsValid( option.entity ) == true and isstring( option.attachment ) == true then option.attachment = option.entity:LookupAttachment( option.attachment ) end
+			
+			if option.attachtype == PATTACH_POINT_FOLLOW and option.attachment != nil and IsValid( option.entity ) == true then
+				
+				local num = #self.CreatedParticles
+				
+				local mdl = ClientsideModel( "models/weapons/w_models/w_drg_ball.mdl" )
+				mdl:SetNoDraw( true )
+				mdl:SetPos( option.entity:GetPos() )
+				mdl:SetAngles( option.entity:GetAttachment( option.attachment ).Ang )
+				mdl:SetParent( option.entity, option.attachment )
+				option.entity = mdl
+				
+				table.insert( mdls, mdl )
+				
+				option.attachtype = PATTACH_ABSORIGIN
+				
+			end
+			
+		end
+		
+		local newparticle = self:CreateParticleEffect( particle, options )
+		
+		for i = 1, #mdls do
+			
+			mdls[ i ].particle = newparticle
+			
+		end
+		
+		table.insert( self.CreatedParticles, {
+			
+			particle = newparticle,
+			models = mdls,
+			
+		} )
+		
+		return newparticle
+		
+	end
+	
+end
+
+--[[
+	Name:	SWEP:RemoveParticle( particletbl, force )
+	
+	Desc:	Remove a particle
+	
+	Arg1:	Particle table
+	
+	Arg2:	Force
+]]--
+function SWEP:RemoveParticle( particletbl, force )
+	
+	local remove = {}
+	
+	local particle = particletbl.particle
+	local models = particletbl.models
+	
+	if IsValid( particle ) == true then
+		
+		if force == true then
+			
+			particle:StopEmissionAndDestroyImmediately()
 			
 		else
 			
-			ParticleEffectAttach( particle, pattach, ent, -1 )
+			particle:StopEmission()
 			
 		end
 		
 	end
 	
-	--[[
-	if particle == nil or particle == "" then return end
-	if ent == nil then ent = self end
-	
-	local pattach = options
-	
-	if pattach == nil then
+	if force == true then
 		
-		if self:LookupAttachment( attachment ) != nil then
+		for i_ = 1, #models do
 			
-			ParticleEffectAttach( particle, PATTACH_POINT_FOLLOW, ent, ent:LookupAttachment( attachment ) )
-			
-		else
-			
-			ParticleEffectAttach( particle, PATTACH_ABSORIGIN_FOLLOW, ent, -1 )
-			
-		end
-		
-	else
-		
-		if self:LookupAttachment( attachment ) != nil then
-			
-			ParticleEffectAttach( particle, pattach, ent, ent:LookupAttachment( attachment ) )
-			
-		else
-			
-			ParticleEffectAttach( particle, pattach, ent, -1 )
+			if IsValid( models[ i_ ] ) == true then models[ i_ ]:Remove() end
 			
 		end
 		
 	end
-	]]--
+	
+end
+
+--[[
+	Name:	SWEP:RemoveParticles( force )
+	
+	Desc:	Removes all particles
+	
+	Arg1:	Force
+]]--
+function SWEP:RemoveParticles( force )
+	
+	for i = 1, #self.CreatedParticles do
+		
+		self:RemoveParticle( self.CreatedParticles[ i ], force )
+		if force == true then self.CreatedParticles[ i ] = nil end
+		
+	end
+	
+end
+
+--[[
+	Name:	SWEP:HandleParticles()
+	
+	Desc:	Handles particles
+]]--
+function SWEP:HandleParticles()
+	
+	local remove = {}
+	
+	for i = 1, #self.CreatedParticles do
+		
+		local tbl = self.CreatedParticles[ i ]
+		if IsValid( tbl.particle ) != true then
+			
+			self:RemoveParticle( tbl, true )
+			table.insert( remove, i )
+			
+		end
+		
+	end
+	
+	for i = 1, #remove do
+		
+		table.remove( self.CreatedParticles, remove[ i ] )
+		
+	end
 	
 end
 
@@ -1691,6 +1740,8 @@ end
 function SWEP:Think()
 	
 	if IsValid( self:GetOwner() ) == false then return end
+	
+	self:HandleParticles()
 	
 	self:SetTFLastOwner( self:GetOwner() )
 	
@@ -1862,6 +1913,7 @@ function SWEP:DoHolster()
 	
 	self:RemoveActiveAttributes()
 	
+	self:RemoveParticles( true )
 	self:RemoveHands()
 	self:SetTFReloading( false )
 	self:SetTFInspecting( false )
@@ -2142,14 +2194,29 @@ function SWEP:DoPrimaryAttack( bullet, crit )
 	local muzzle = self.MuzzleParticle
 	if crit == true and self.MuzzleParticleCrit != nil then muzzle = self.MuzzleParticleCrit end
 	
-	if self.ViewModelParticles == true then
+	if CLIENT then
 		
-		local hands, weapon = self:GetViewModels()
-		self:AddParticle( muzzle, "muzzle", weapon )
-		
-	else
-		
-		self:AddParticle( muzzle, "muzzle" )
+		if self.ViewModelParticles == true then
+			
+			local hands, weapon = self:GetViewModels()
+			self:AddParticle( muzzle, { {
+				
+				entity = weapon,
+				attachtype = PATTACH_POINT_FOLLOW,
+				attachment = "muzzle",
+				
+			} } )
+			
+		else
+			
+			self:AddParticle( muzzle, { {
+				
+				attachtype = PATTACH_POINT_FOLLOW,
+				attachment = "muzzle",
+				
+			} } )
+			
+		end
 		
 	end
 	

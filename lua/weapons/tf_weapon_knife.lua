@@ -1,5 +1,7 @@
 AddCSLuaFile()
 
+DEFINE_BASECLASS( "tf2weapons_base_melee" )
+
 SWEP.Slot = 2
 SWEP.SlotPos = 0
 
@@ -90,7 +92,7 @@ function SWEP:Think()
 	
 	if IsValid( self:GetOwner() ) == false then return end
 	
-	self:CheckHands()
+	BaseClass.Think( self )
 	
 	local trace = self:DoSwing( false )
 	
@@ -139,12 +141,6 @@ function SWEP:Think()
 		end
 		
 	end
-	
-	self:Idle()
-	
-	self:HandleCritStreams()
-	
-	self:Inspect()
 	
 end
 

@@ -1,5 +1,7 @@
 AddCSLuaFile()
 
+DEFINE_BASECLASS( "tf2weapons_base" )
+
 if CLIENT then
 	
 	game.AddParticles( "particles/medicgun_beam.pcf" )
@@ -249,7 +251,7 @@ function SWEP:StopHealing()
 		
 		local hands, weapon = self:GetViewModels()
 		if IsValid( self:GetOwner() ) == true and IsValid( weapon ) == true then weapon:StopParticles() end
-		self:StopParticles()
+		self:RemoveParticles()
 		
 		self:SetTFBeamDeployed( false )
 		
@@ -264,22 +266,27 @@ function SWEP:CreateBeamParticle()
 	local particle = self.MediGunBeamRed
 	if self:GetTeam() == true then particle = self.MediGunBeamBlue end
 	
-	local hands, weapon = self:GetViewModels()
-	if IsValid( self:GetOwner() ) == true and IsValid( weapon ) == true then weapon:StopParticles() end
-	self:StopParticles()
-	
 	if SERVER or IsFirstTimePredicted() != true then return end
 	
 	if self.ViewModelParticles == true then
 		
-		self:AddParticle( particle, "muzzle", weapon, nil, {
+		local hands, weapon = self:GetViewModels()
+		
+		self:AddParticle( muzzle, { {
+			
+			entity = weapon,
+			attachtype = PATTACH_POINT_FOLLOW,
+			attachment = "muzzle",
+			
+		} } )
+		
+		self:AddParticle( particle, {
 			
 			{
 				
 				entity = weapon,
 				attachtype = PATTACH_POINT_FOLLOW,
-				position = Vector( 0, 0, 0 ),
-				attachment = weapon:LookupAttachment( "muzzle" ),
+				attachment = "muzzle",
 				
 			},
 			
@@ -287,8 +294,7 @@ function SWEP:CreateBeamParticle()
 				
 				entity = self:GetTFPatient(),
 				attachtype = PATTACH_POINT_FOLLOW,
-				position = Vector( 0, 0, 0 ),
-				attachment = self:GetTFPatient():LookupAttachment( "chest" ),
+				attachment = "chest",
 				
 			},
 			
@@ -296,14 +302,12 @@ function SWEP:CreateBeamParticle()
 		
 	else
 		
-		self:AddParticle( particle, "muzzle", self, nil, {
+		self:AddParticle( particle, {
 			
 			{
 				
-				entity = self,
 				attachtype = PATTACH_POINT_FOLLOW,
-				position = Vector( 0, 0, 0 ),
-				attachment = self:LookupAttachment( "muzzle" ),
+				attachment = "muzzle",
 				
 			},
 			
@@ -311,8 +315,7 @@ function SWEP:CreateBeamParticle()
 				
 				entity = self:GetTFPatient(),
 				attachtype = PATTACH_POINT_FOLLOW,
-				position = Vector( 0, 0, 0 ),
-				attachment = self:GetTFPatient():LookupAttachment( "chest" ),
+				attachment = "chest",
 				
 			},
 			
@@ -426,19 +429,11 @@ function SWEP:Think()
 	
 	if IsValid( self:GetOwner() ) == false then return end
 	
-	self:SetTFLastOwner( self:GetOwner() )
-	
-	self:CheckHands()
+	BaseClass.Think( self )
 	
 	self:DoHealing()
 	
 	self:DoUbercharge()
-	
-	self:Idle()
-	
-	self:HandleCritStreams()
-	
-	self:Inspect()
 	
 end
 
