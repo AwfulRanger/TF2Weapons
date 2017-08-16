@@ -1480,10 +1480,14 @@ function SWEP:AddParticle( particle, options )
 				
 				local num = #self.CreatedParticles
 				
+				local attach = option.entity:GetAttachment( option.attachment )
+				local ang = Angle( 0, 0, 0 )
+				if attach != nil and attach.Ang != nil then ang = attach.Ang end
+				
 				local mdl = ClientsideModel( "models/weapons/w_models/w_drg_ball.mdl" )
 				mdl:SetNoDraw( true )
 				mdl:SetPos( option.entity:GetPos() )
-				mdl:SetAngles( option.entity:GetAttachment( option.attachment ).Ang )
+				mdl:SetAngles( ang )
 				mdl:SetParent( option.entity, option.attachment )
 				option.entity = mdl
 				
