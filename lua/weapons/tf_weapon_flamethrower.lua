@@ -520,7 +520,7 @@ function SWEP:Think()
 		
 		local fire = self:GetHandAnim( "fire" )
 		self:SetVMAnimation( fire )
-		self:GetOwner():SetAnimation( PLAYER_ATTACK1 )
+		self:SetPlayerAnimation( PLAYER_ATTACK1 )
 		
 		self:StartFlames()
 		
@@ -598,7 +598,7 @@ function SWEP:SecondaryAttack()
 	
 	local alt_fire = self:GetHandAnim( "alt_fire" )
 	self:SetVMAnimation( alt_fire )
-	self:GetOwner():SetAnimation( PLAYER_ATTACK1 )
+	self:SetPlayerAnimation( PLAYER_ATTACK1 )
 	
 	local airblast = self.AirblastParticleRed
 	if self:GetTeam() == true then airblast = self.AirblastParticleBlue end

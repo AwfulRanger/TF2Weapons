@@ -348,7 +348,7 @@ function SWEP:DoPrimaryAttack( anim, crit )
 		self:SetVMAnimation( swing )
 		
 	end
-	self:GetOwner():SetAnimation( PLAYER_ATTACK1 )
+	self:SetPlayerAnimation( PLAYER_ATTACK1 )
 	
 	local sound = self.SwingSound
 	if crit == true then sound = self.SwingSoundCrit end

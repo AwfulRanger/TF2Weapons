@@ -441,7 +441,7 @@ function SWEP:DoPrimaryAttack( bullet, crit )
 	
 	local fire = self:GetHandAnim( "fire" )
 	self:SetVMAnimation( fire )
-	self:GetOwner():SetAnimation( PLAYER_ATTACK1 )
+	self:SetPlayerAnimation( PLAYER_ATTACK1 )
 	if self:GetTFMuzzleParticleActive() == false then
 		
 		if self:DrawingVM() == true then
