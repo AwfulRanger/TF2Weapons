@@ -1285,6 +1285,8 @@ end
 ]]--
 function SWEP:RemoveHands( owner )
 	
+	if game.SinglePlayer() == true and CLIENT then return end
+	
 	if owner == nil then owner = self:GetOwner() end
 	if IsValid( owner ) == false then return end
 	
