@@ -279,7 +279,7 @@ function SWEP:Think()
 		
 	end
 	
-	if game.SinglePlayer() == false and self:GetTFNextIdle() != -1 and CurTime() > self:GetTFNextIdle() then
+	if self:GetTFNextIdle() != -1 and CurTime() > self:GetTFNextIdle() then
 		
 		local idle = self:GetHandAnim( "idle" )
 		

@@ -1690,7 +1690,7 @@ end
 ]]--
 function SWEP:Idle()
 	
-	if game.SinglePlayer() == false and self:GetTFNextIdle() != -1 and CurTime() > self:GetTFNextIdle() then
+	if self:GetTFNextIdle() != -1 and CurTime() > self:GetTFNextIdle() then
 		
 		local hands, weapon = self:GetViewModels()
 		
