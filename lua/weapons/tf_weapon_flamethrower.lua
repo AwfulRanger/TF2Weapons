@@ -262,7 +262,7 @@ function SWEP:StartFlames()
 		
 	end
 	
-	if self.ViewModelParticles == true then
+	if self:DrawingVM() == true then
 		
 		local hands, weapon = self:GetViewModels()
 		self:AddParticle( particle, { {
@@ -603,7 +603,7 @@ function SWEP:SecondaryAttack()
 	local airblast = self.AirblastParticleRed
 	if self:GetTeam() == true then airblast = self.AirblastParticleBlue end
 	
-	if self.ViewModelParticles == true then
+	if self:DrawingVM() == true then
 		
 		local hands, weapon = self:GetViewModels()
 		self:AddParticle( airblast, { {

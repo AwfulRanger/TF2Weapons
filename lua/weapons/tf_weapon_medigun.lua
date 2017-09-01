@@ -268,7 +268,7 @@ function SWEP:CreateBeamParticle()
 	
 	if SERVER or IsFirstTimePredicted() != true then return end
 	
-	if self.ViewModelParticles == true then
+	if self:DrawingVM() == true then
 		
 		local hands, weapon = self:GetViewModels()
 		
@@ -373,11 +373,11 @@ function SWEP:DoHealing()
 			self:Heal( self:GetPatient() )
 			
 			/*
-			if CLIENT and self.BeamViewModel != self.ViewModelParticles then
+			if CLIENT and self.BeamViewModel != self:DrawingVM() then
 				
 				self:CreateBeamParticle()
 				
-				self.BeamViewModel = self.ViewModelParticles
+				self.BeamViewModel = self:DrawingVM()
 				
 			end
 			*/

@@ -1412,6 +1412,12 @@ function SWEP:PrecacheParticles( particles )
 	
 end
 
+function SWEP:SetPlayerAnimation( anim )
+	
+	if IsValid( self:GetOwner() ) == true and ( ( CLIENT and self:DrawingVM() != true ) or ( SERVER and game.SinglePlayer() != true ) ) then self:GetOwner():SetAnimation( anim ) end
+	
+end
+
 SWEP.CreatedParticles = {}
 
 --[[
@@ -1825,7 +1831,7 @@ function SWEP:DoReload()
 					
 				else
 					
-					self:GetOwner():SetAnimation( PLAYER_RELOAD )
+					self:SetPlayerAnimation( PLAYER_RELOAD )
 					local id, dur = self:SetVMAnimation( reload_loop, self.ReloadSpeed )
 					self:SetTFReloadTime( CurTime() + dur )
 					
@@ -2195,14 +2201,15 @@ function SWEP:DoPrimaryAttack( bullet, crit )
 	
 	local fire = self:GetHandAnim( "fire" )
 	self:SetVMAnimation( fire )
-	self:GetOwner():SetAnimation( PLAYER_ATTACK1 )
+	self:SetPlayerAnimation( PLAYER_ATTACK1 )
+	if game.SinglePlayer() == true then self:CallOnClient( "SetPlayerAnimation", PLAYER_ATTACK1 ) end
 	
 	local muzzle = self.MuzzleParticle
 	if crit == true and self.MuzzleParticleCrit != nil then muzzle = self.MuzzleParticleCrit end
 	
 	if CLIENT then
 		
-		if self.ViewModelParticles == true then
+		if self:DrawingVM() == true then
 			
 			local hands, weapon = self:GetViewModels()
 			self:AddParticle( muzzle, { {
@@ -2439,7 +2446,7 @@ function SWEP:Reload()
 		local reload = self:GetHandAnim( "reload" )
 		
 		local id, dur = self:SetVMAnimation( reload, self.ReloadSpeed )
-		self:GetOwner():SetAnimation( PLAYER_RELOAD )
+		self:SetPlayerAnimation( PLAYER_RELOAD )
 		self:SetTFReloadTime( CurTime() + dur )
 		self:SetTFReloading( true )
 		self:SetTFInspecting( false )
@@ -2681,7 +2688,7 @@ function SWEP:GetDamageMods( damage, mod, target, crit )
 	
 end
 
-SWEP.ViewModelParticles = false
+SWEP.DrawingViewModel = false
 
 --[[
 	Name:	SWEP:ViewModelDrawn( vm )
@@ -2692,7 +2699,7 @@ SWEP.ViewModelParticles = false
 ]]--
 function SWEP:ViewModelDrawn( vm )
 	
-	self.ViewModelParticles = true
+	self.DrawingViewModel = true
 	
 end
 
@@ -2705,6 +2712,12 @@ function SWEP:DrawWorldModel()
 	
 	self:DrawModel()
 	
-	self.ViewModelParticles = false
+	self.DrawingViewModel = false
+	
+end
+
+function SWEP:DrawingVM()
+	
+	return self.DrawingViewModel
 	
 end

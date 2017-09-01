@@ -239,7 +239,7 @@ function SWEP:Spool()
 				if self:GetTFMuzzleParticleActive() == true and CurTime() > self:GetTFMuzzleParticleRemove() then
 					
 					self:RemoveParticles()
-					if self.ViewModelParticles == true then
+					if self:DrawingVM() == true then
 						
 						self:AddParticle( self.EndMuzzleParticle, { {
 							
@@ -272,7 +272,7 @@ function SWEP:Spool()
 				if self:GetTFMuzzleParticleActive() == true and CurTime() > self:GetTFMuzzleParticleRemove() then
 					
 					self:RemoveParticles()
-					if self.ViewModelParticles == true then
+					if self:DrawingVM() == true then
 						
 						self:AddParticle( self.EndMuzzleParticle, { {
 							
@@ -311,7 +311,7 @@ function SWEP:Spool()
 		if self:GetTFMuzzleParticleActive() == true and CurTime() > self:GetTFMuzzleParticleRemove() then
 			
 			self:RemoveParticles()
-			if self.ViewModelParticles == true then
+			if self:DrawingVM() == true then
 				
 				self:AddParticle( self.EndMuzzleParticle, { {
 					
@@ -444,7 +444,7 @@ function SWEP:DoPrimaryAttack( bullet, crit )
 	self:GetOwner():SetAnimation( PLAYER_ATTACK1 )
 	if self:GetTFMuzzleParticleActive() == false then
 		
-		if self.ViewModelParticles == true then
+		if self:DrawingVM() == true then
 			
 			local hands, weapon = self:GetViewModels()
 			self:AddParticle( self.MuzzleParticle, { {
