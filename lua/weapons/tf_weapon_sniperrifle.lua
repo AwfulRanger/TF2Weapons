@@ -6,7 +6,10 @@ SWEP.TF2Weapons_SniperRifleDot = true
 
 hook.Add( "OnEntityCreated", "TF2Weapons_SniperRifle_OnCreated", function( ent )
 	
-	timer.Simple( 0, function()
+	local time = 0
+	if game.SinglePlayer() == true then time = math.max( 0.1, FrameTime() * 4 ) end
+	
+	timer.Simple( time, function()
 		
 		if IsValid( ent ) != true then return end
 		if ent.TF2Weapons_SniperRifleDot != true then return end
