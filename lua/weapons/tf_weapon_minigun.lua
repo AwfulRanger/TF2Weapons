@@ -405,25 +405,9 @@ function SWEP:CanPrimaryAttack()
 		
 		return false
 		
-	elseif self.Primary.ClipSize >= 0 and self:Clip1() <= 0 then
-		
-		self:SetNextPrimaryFire( CurTime() + self.Primary.Delay )
-		self:Reload()
-		return false
-		
-	elseif self.Primary.ClipSize < 0 and self:Ammo1() <= 0 then
-		
-		self:SetNextPrimaryFire( CurTime() + self.Primary.Delay )
-		self:PlaySound( self.EmptySound )
-		return false
-		
-	elseif CurTime() < self:GetNextPrimaryFire() then
-		
-		return false
-		
 	end
 	
-	return true
+	return BaseClass.CanPrimaryAttack( self )
 	
 end
 

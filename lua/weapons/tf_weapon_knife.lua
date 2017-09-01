@@ -154,7 +154,9 @@ function SWEP:PrimaryAttack()
 	
 	if self:CanPrimaryAttack() == false then return end
 	
-	self:DoPrimaryAttack( "" )
+	if game.SinglePlayer() == true then self:CallOnClient( "PrimaryAttack" ) end
+	
+	self:DoPrimaryAttack()
 	
 	local trace = self:DoSwing( false )
 	

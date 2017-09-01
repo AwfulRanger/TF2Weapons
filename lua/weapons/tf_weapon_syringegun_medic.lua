@@ -111,6 +111,8 @@ function SWEP:PrimaryAttack()
 	
 	if self:CanPrimaryAttack() == false then return end
 	
+	if game.SinglePlayer() == true then self:CallOnClient( "PrimaryAttack" ) end
+	
 	if SERVER then
 		
 		for i = 1, self.Primary.Shots do

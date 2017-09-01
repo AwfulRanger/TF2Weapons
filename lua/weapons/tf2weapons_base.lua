@@ -1446,7 +1446,7 @@ SWEP.CreatedParticles = {}
 ]]--
 function SWEP:AddParticle( particle, options )
 	
-	if IsFirstTimePredicted() != true or particle == nil or particle == "" or options == nil then return end
+	if ( game.SinglePlayer() != true and IsFirstTimePredicted() != true ) or particle == nil or particle == "" or options == nil then return end
 	
 	if SERVER then
 		
@@ -2113,6 +2113,8 @@ end
 ]]--
 function SWEP:CanPrimaryAttack()
 	
+	if game.SinglePlayer() == true and CLIENT then return true end
+	
 	if self.Primary.ClipSize >= 0 and self:Clip1() <= 0 then
 		
 		self:SetNextPrimaryFire( CurTime() + self.Primary.Delay )
@@ -2202,7 +2204,6 @@ function SWEP:DoPrimaryAttack( bullet, crit )
 	local fire = self:GetHandAnim( "fire" )
 	self:SetVMAnimation( fire )
 	self:SetPlayerAnimation( PLAYER_ATTACK1 )
-	if game.SinglePlayer() == true then self:CallOnClient( "SetPlayerAnimation", PLAYER_ATTACK1 ) end
 	
 	local muzzle = self.MuzzleParticle
 	if crit == true and self.MuzzleParticleCrit != nil then muzzle = self.MuzzleParticleCrit end
@@ -2238,7 +2239,7 @@ function SWEP:DoPrimaryAttack( bullet, crit )
 	
 	self:PlaySound( sound )
 	
-	self:TakePrimaryAmmo( self.Primary.TakeAmmo )
+	if game.SinglePlayer() != true or SERVER then self:TakePrimaryAmmo( self.Primary.TakeAmmo ) end
 	
 end
 
@@ -2297,6 +2298,8 @@ end
 function SWEP:PrimaryAttack()
 	
 	if self:CanPrimaryAttack() == false then return end
+	
+	if game.SinglePlayer() == true then self:CallOnClient( "PrimaryAttack" ) end
 	
 	local crit = self:DoCrit()
 	

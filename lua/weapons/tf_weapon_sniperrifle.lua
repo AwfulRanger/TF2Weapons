@@ -295,6 +295,8 @@ function SWEP:PrimaryAttack()
 	
 	if self:CanPrimaryAttack() == false then return end
 	
+	if game.SinglePlayer() == true then self:CallOnClient( "PrimaryAttack" ) end
+	
 	local bullet = {}
 	bullet.Src = self:GetOwner():GetShootPos()
 	bullet.Dir = self:GetOwner():GetAimVector()

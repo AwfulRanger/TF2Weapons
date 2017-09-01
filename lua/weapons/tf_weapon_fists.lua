@@ -65,6 +65,8 @@ function SWEP:PrimaryAttack()
 	
 	if self:CanPrimaryAttack() == false then return end
 	
+	if game.SinglePlayer() == true then self:CallOnClient( "PrimaryAttack" ) end
+	
 	local anim = "left"
 	if self:DoCrit() == true then anim = "crit" end
 	
@@ -77,6 +79,8 @@ end
 function SWEP:SecondaryAttack()
 	
 	if self:CanPrimaryAttack() == false then return end
+	
+	if game.SinglePlayer() == true then self:CallOnClient( "SecondaryAttack" ) end
 	
 	local anim = "right"
 	if self:DoCrit() == true then anim = "crit" end

@@ -301,6 +301,8 @@ function SWEP:PrimaryAttack( charged, charge )
 	
 	if charged != true or self:CanPrimaryAttack() == false then return end
 	
+	if game.SinglePlayer() == true then self:CallOnClient( tostring( charged ) .. " " .. tostring( charge ) ) end
+	
 	if SERVER then
 		
 		for i = 1, self.Primary.Shots do

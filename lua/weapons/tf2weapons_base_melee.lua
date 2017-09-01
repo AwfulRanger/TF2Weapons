@@ -303,6 +303,8 @@ end
 ]]--
 function SWEP:CanPrimaryAttack()
 	
+	if game.SinglePlayer() == true and CLIENT then return true end
+	
 	if CurTime() < self:GetNextPrimaryFire() then
 		
 		return false
@@ -365,6 +367,8 @@ end
 function SWEP:PrimaryAttack()
 	
 	if self:CanPrimaryAttack() == false then return end
+	
+	if game.SinglePlayer() == true then self:CallOnClient( "PrimaryAttack" ) end
 	
 	self:DoPrimaryAttack()
 	
