@@ -2,6 +2,8 @@ AddCSLuaFile()
 
 DEFINE_BASECLASS( "tf2weapons_base" )
 
+game.AddParticles( "particles/muzzle_flash.pcf" )
+
 if SERVER then
 	
 	util.AddNetworkString( "tf2weapons_minigun_spinreset" )

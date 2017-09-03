@@ -2,13 +2,13 @@ AddCSLuaFile()
 
 DEFINE_BASECLASS( "tf2weapons_base" )
 
+game.AddParticles( "particles/flamethrower.pcf" )
+
 if SERVER then
 	
 	util.AddNetworkString( "tf2weapons_airblast" )
 	
 else
-	
-	game.AddParticles( "particles/flamethrower.pcf" )
 	
 	net.Receive( "tf2weapons_airblast", function()
 		

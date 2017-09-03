@@ -1,5 +1,7 @@
 AddCSLuaFile()
 
+game.AddParticles( "particles/muzzle_flash.pcf" )
+
 SWEP.Slot = 1
 SWEP.SlotPos = 0
 

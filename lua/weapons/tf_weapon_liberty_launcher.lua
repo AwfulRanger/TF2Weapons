@@ -1,12 +1,8 @@
 AddCSLuaFile()
 
-if CLIENT then
-	
-	game.AddParticles( "particles/rockettrail.pcf" )
-	game.AddParticles( "particles/rocketbackblast.pcf" )
-	game.AddParticles( "particles/explosion.pcf" )
-	
-end
+game.AddParticles( "particles/explosion.pcf" )
+game.AddParticles( "particles/rocketbackblast.pcf" )
+game.AddParticles( "particles/rockettrail.pcf" )
 
 SWEP.Slot = 0
 SWEP.SlotPos = 0

@@ -2,6 +2,8 @@ AddCSLuaFile()
 
 DEFINE_BASECLASS( "tf2weapons_base" )
 
+game.AddParticles( "particles/muzzle_flash.pcf" )
+
 SWEP.TF2Weapons_SniperRifleDot = true
 
 hook.Add( "OnEntityCreated", "TF2Weapons_SniperRifle_OnCreated", function( ent )

@@ -1,5 +1,7 @@
 AddCSLuaFile()
 
+game.AddParticles( "particles/flamethrower.pcf" )
+
 SWEP.Slot = 0
 SWEP.SlotPos = 0
 

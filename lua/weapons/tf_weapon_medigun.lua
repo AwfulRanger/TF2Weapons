@@ -2,9 +2,9 @@ AddCSLuaFile()
 
 DEFINE_BASECLASS( "tf2weapons_base" )
 
+game.AddParticles( "particles/medicgun_beam.pcf" )
+
 if CLIENT then
-	
-	game.AddParticles( "particles/medicgun_beam.pcf" )
 	
 	local redoverlay = CreateMaterial( "TF2Weapons_MediGun_InvulnOverlay_Red", "Refract", {
 		

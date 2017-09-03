@@ -2,14 +2,13 @@ AddCSLuaFile()
 
 DEFINE_BASECLASS( "tf2weapons_base" )
 
+game.AddParticles( "particles/explosion.pcf" )
+game.AddParticles( "particles/muzzle_flash.pcf" )
+game.AddParticles( "particles/stickybomb.pcf" )
+
 if SERVER then
 	
 	util.AddNetworkString( "tf2weapons_grenadelauncher_spinreset" )
-	
-else
-	
-	game.AddParticles( "particles/explosion.pcf" )
-	game.AddParticles( "particles/stickybomb.pcf" )
 	
 end
 

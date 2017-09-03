@@ -2,14 +2,15 @@ AddCSLuaFile()
 
 DEFINE_BASECLASS( "tf2weapons_base" )
 
+game.AddParticles( "particles/explosion.pcf" )
+game.AddParticles( "particles/muzzle_flash.pcf" )
+game.AddParticles( "particles/stickybomb.pcf" )
+
 if SERVER then
 	
 	util.AddNetworkString( "tf2weapons_pipebomblauncher_insert" )
 	
 else
-	
-	game.AddParticles( "particles/explosion.pcf" )
-	game.AddParticles( "particles/stickybomb.pcf" )
 	
 	net.Receive( "tf2weapons_pipebomblauncher_insert", function()
 		

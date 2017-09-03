@@ -3,6 +3,8 @@ AddCSLuaFile()
 AddCSLuaFile( "tf2weapons.lua" )
 include( "tf2weapons.lua" )
 
+game.AddParticles( "particles/muzzle_flash.pcf" )
+
 SWEP.TF2Weapon = true
 
 SWEP.ClassBases = {}

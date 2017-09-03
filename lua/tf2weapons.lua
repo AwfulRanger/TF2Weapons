@@ -16,8 +16,6 @@ else
 	
 	include( "tf2weapons/language.lua" )
 	
-	game.AddParticles( "particles/muzzle_flash.pcf" )
-	
 	surface.CreateFont( "TF2Weapons_HudFontGiantBold", {
 		
 		font = "TF2 Build",
