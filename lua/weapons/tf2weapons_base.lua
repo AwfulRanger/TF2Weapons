@@ -2383,7 +2383,7 @@ function SWEP:PrimaryAttack()
 							
 							if IsValid( attacker ) == true and attacker:IsPlayer() == true then
 								
-								if self:GetAttributeClass( "add_onhit_addhealth" ) != nil then self:GiveHealth( self:GetAttributeClass( "add_onhit_addhealth" ), attacker:GetMaxHealth() ) end
+								if self:GetAttributeClass( "add_onhit_addhealth" ) != nil then self:GiveHealth( self:GetAttributeClass( "add_onhit_addhealth" ), attacker, attacker:GetMaxHealth() ) end
 								
 							end
 							
