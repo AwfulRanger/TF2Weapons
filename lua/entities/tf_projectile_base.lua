@@ -119,6 +119,8 @@ function ENT:AddParticle( particle, options )
 		
 	else
 		
+		local num = #self.CreatedParticles
+		
 		local mdls = {}
 		
 		for i = 1, #options do
@@ -130,8 +132,6 @@ function ENT:AddParticle( particle, options )
 			if IsValid( option.entity ) == true and isstring( option.attachment ) == true then option.attachment = option.entity:LookupAttachment( option.attachment ) end
 			
 			if option.attachtype == PATTACH_POINT_FOLLOW and option.attachment != nil and IsValid( option.entity ) == true then
-				
-				local num = #self.CreatedParticles
 				
 				local attach = option.entity:GetAttachment( option.attachment )
 				local ang = Angle( 0, 0, 0 )
@@ -160,16 +160,22 @@ function ENT:AddParticle( particle, options )
 			
 		end
 		
-		table.insert( self.CreatedParticles, {
+		self.CreatedParticles[ num ] = {
 			
 			particle = newparticle,
 			models = mdls,
 			
-		} )
+		}
 		
-		return newparticle
+		return newparticle, num
 		
 	end
+	
+end
+
+function ENT:GetParticle( id )
+	
+	return self.CreatedParticles[ id ]
 	
 end
 

@@ -1,5 +1,7 @@
 AddCSLuaFile()
 
+game.AddParticles( "particles/medicgun_beam.pcf" )
+
 local ammotypes = 27 + #game.BuildAmmoTypes()
 local metaltype = "tf2weapons_metal"
 
@@ -59,6 +61,9 @@ ENT.HealNonPlayers = false
 ENT.IdleSound = Sound( "weapons/dispenser_idle.wav" )
 ENT.GenerateSound = Sound( "weapons/dispenser_generate_metal.wav" )
 ENT.HealSound = Sound( "weapons/dispenser_heal.wav" )
+
+ENT.BeamRed = "dispenser_heal_red"
+ENT.BeamBlue = "dispenser_heal_blue"
 
 ENT.Range = 192
 ENT.StartMetal = 25
@@ -328,11 +333,17 @@ function ENT:GetBuildNum()
 	
 end
 
+function ENT:Initialize()
+	
+	if self.BeamRed != nil then PrecacheParticleSystem( self.BeamRed ) end
+	if self.BeamBlue != nil then PrecacheParticleSystem( self.BeamBlue ) end
+	
+end
+
 ENT.TargetsCached = nil
 
 function ENT:GetRegenTargets()
 	
-	if CLIENT then return end
 	if TF2Weapons == nil or TF2Weapons.DispenserTargets == nil then return end
 	
 	if self.TargetsCached != nil then return self.TargetsCached end
@@ -594,6 +605,80 @@ function ENT:HandleMetalRecharge()
 	
 end
 
+ENT.BeamTargets = {}
+
+function ENT:HandleBeam()
+	
+	if SERVER or self:GetTFUpgrading() == true then return end
+	
+	--check for beams not in targets
+	--if so remove
+	--check for targets not in beams
+	--if so add
+	
+	local beamparticle = self.BeamRed
+	if self:GetTFBLU() == true then beamparticle = self.BeamBlue end
+	
+	if beamparticle == nil or beamparticle == "" then return end
+	
+	local targets = table.Copy( self:GetRegenTargets() )
+	local beams = self.BeamTargets
+	local btargets = {}
+	
+	if targets != nil then
+		
+		for i = 1, #targets do
+			
+			local t = targets[ i ]
+			
+			if beams[ t ] == nil then
+				
+				local particle, num = self:AddParticle( beamparticle, {
+					
+					{
+						
+						attachtype = PATTACH_POINT_FOLLOW,
+						attachment = "heal_origin",
+						
+					},
+					
+					{
+						
+						entity = t,
+						attachtype = PATTACH_POINT_FOLLOW,
+						attachment = "chest",
+						
+					},
+					
+				} )
+				
+				beams[ t ] = num
+				
+			end
+			
+			btargets[ t ] = true
+			
+		end
+		
+	end
+	
+	if beams != nil then
+		
+		for _, v in pairs( beams ) do
+			
+			if btargets[ _ ] != true then
+				
+				self:RemoveParticle( self:GetParticle( v ) )
+				beams[ _ ] = nil
+				
+			end
+			
+		end
+		
+	end
+	
+end
+
 function ENT:Think()
 	
 	self:HandleLevel()
@@ -603,6 +688,8 @@ function ENT:Think()
 	self:HandleUpgradeHealth()
 	
 	self:HandleRegen()
+	
+	self:HandleBeam()
 	
 	local stats = self.Levels[ self:GetTFLevel() ]
 	

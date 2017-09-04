@@ -1,9 +1,9 @@
 AddCSLuaFile()
 
+game.AddParticles( "particles/sparks.pcf" )
+game.AddParticles( "particles/explosion.pcf" )
+
 if CLIENT then
-	
-	game.AddParticles( "particles/sparks.pcf" )
-	game.AddParticles( "particles/explosion.pcf" )
 	
 	net.Receive( "tf2weapons_building_destroy", function()
 		
@@ -324,6 +324,167 @@ function ENT:HandleUpgradeHealth()
 	
 end
 
+
+ENT.CreatedParticles = {}
+
+function ENT:AddParticle( particle, options )
+	
+	if particle == nil or particle == "" or options == nil then return end
+	
+	if SERVER then
+		
+		net.Start( "tf2weapons_addparticle" )
+			
+			net.WriteEntity( self )
+			
+			net.WriteString( particle )
+			
+			net.WriteInt( #options, 32 )
+			if #options > 0 then
+				
+				for i = 1, #options do
+					
+					net.WriteType( options[ i ].entity )
+					net.WriteType( options[ i ].attachtype )
+					net.WriteType( options[ i ].attachment )
+					net.WriteType( options[ i ].position )
+					
+				end
+				
+			end
+			
+		net.Broadcast()
+		
+	else
+		
+		local num = #self.CreatedParticles + 1
+		
+		local mdls = {}
+		
+		for i = 1, #options do
+			
+			local option = options[ i ]
+			
+			if option.entity == nil then option.entity = self end
+			
+			if IsValid( option.entity ) == true and isstring( option.attachment ) == true then option.attachment = option.entity:LookupAttachment( option.attachment ) end
+			
+			if option.attachtype == PATTACH_POINT_FOLLOW and option.attachment != nil and IsValid( option.entity ) == true then
+				
+				local attach = option.entity:GetAttachment( option.attachment )
+				local ang = Angle( 0, 0, 0 )
+				if attach != nil and attach.Ang != nil then ang = attach.Ang end
+				
+				local mdl = ClientsideModel( "models/weapons/w_models/w_drg_ball.mdl" )
+				mdl:SetNoDraw( true )
+				mdl:SetPos( option.entity:GetPos() )
+				mdl:SetAngles( ang )
+				mdl:SetParent( option.entity, option.attachment )
+				option.entity = mdl
+				
+				table.insert( mdls, mdl )
+				
+				option.attachtype = PATTACH_ABSORIGIN
+				
+			end
+			
+		end
+		
+		local newparticle = self:CreateParticleEffect( particle, options )
+		
+		for i = 1, #mdls do
+			
+			mdls[ i ].particle = newparticle
+			
+		end
+		
+		self.CreatedParticles[ num ] = {
+			
+			particle = newparticle,
+			models = mdls,
+			
+		}
+		
+		return newparticle, num
+		
+	end
+	
+end
+
+function ENT:GetParticle( id )
+	
+	return self.CreatedParticles[ id ]
+	
+end
+
+function ENT:RemoveParticle( particletbl, force )
+	
+	local remove = {}
+	
+	local particle = particletbl.particle
+	local models = particletbl.models
+	
+	if IsValid( particle ) == true then
+		
+		if force == true then
+			
+			particle:StopEmissionAndDestroyImmediately()
+			
+		else
+			
+			particle:StopEmission()
+			
+		end
+		
+	end
+	
+	if force == true then
+		
+		for i_ = 1, #models do
+			
+			if IsValid( models[ i_ ] ) == true then models[ i_ ]:Remove() end
+			
+		end
+		
+	end
+	
+end
+
+function ENT:RemoveParticles( force )
+	
+	for i = 1, #self.CreatedParticles do
+		
+		self:RemoveParticle( self.CreatedParticles[ i ], force )
+		if force == true then self.CreatedParticles[ i ] = nil end
+		
+	end
+	
+end
+
+function ENT:HandleParticles()
+	
+	local remove = {}
+	
+	for i = 1, #self.CreatedParticles do
+		
+		local tbl = self.CreatedParticles[ i ]
+		if IsValid( tbl.particle ) != true then
+			
+			self:RemoveParticle( tbl, true )
+			table.insert( remove, i )
+			
+		end
+		
+	end
+	
+	for i = 1, #remove do
+		
+		table.remove( self.CreatedParticles, remove[ i ] )
+		
+	end
+	
+end
+
 function ENT:Think()
 	
 	self:HandleLevel()
@@ -331,6 +492,8 @@ function ENT:Think()
 	self:HandleUpgrade()
 	
 	self:HandleUpgradeHealth()
+	
+	self:HandleParticles()
 	
 	local stats = self.Levels[ self:GetTFLevel() ]
 	

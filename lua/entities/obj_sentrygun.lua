@@ -1,10 +1,6 @@
 AddCSLuaFile()
 
-if CLIENT then
-	
-	game.AddParticles( "particles/muzzle_flash.pcf" )
-	
-end
+game.AddParticles( "particles/muzzle_flash.pcf" )
 
 hook.Add( "OnEntityCreated", "TF2Weapons_Sentry_InsertTargets", function( ent )
 	

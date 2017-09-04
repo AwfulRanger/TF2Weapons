@@ -1,10 +1,6 @@
 AddCSLuaFile()
 
-if CLIENT then
-	
-	game.AddParticles( "particles/teleport_status.pcf" )
-	
-end
+game.AddParticles( "particles/teleport_status.pcf" )
 
 CreateConVar( "tf2weapons_teleporter_teammates", 0, { FCVAR_SERVER_CAN_EXECUTE, FCVAR_REPLICATED }, [[0 to allow teleporter to teleport teammates and prevent it from teleporting enemies
 1 to prevent teleporter from teleporting teammates and allow it to teleport enemies
