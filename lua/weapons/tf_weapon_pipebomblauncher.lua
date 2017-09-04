@@ -391,17 +391,13 @@ function SWEP:RemovePipes( explode, force, mute )
 				
 				playsound = true
 				
-				if SERVER then
+				if explode == true then
 					
-					if explode == true then
-						
-						v:Explode( true )
-						
-					else
-						
-						v:Remove()
-						
-					end
+					v:Explode( true )
+					
+				elseif SERVER then
+					
+					v:Remove()
 					
 				end
 				
@@ -423,17 +419,13 @@ function SWEP:RemovePipes( explode, force, mute )
 				
 				if CurTime() > v:GetTFTime() then playsound = true end
 				
-				if SERVER then
+				if explode == true then
 					
-					if explode == true then
-						
-						v:Explode( true )
-						
-					else
-						
-						v:Remove()
-						
-					end
+					v:Explode( true )
+					
+				elseif SERVER then
+					
+					v:Remove()
 					
 				end
 				

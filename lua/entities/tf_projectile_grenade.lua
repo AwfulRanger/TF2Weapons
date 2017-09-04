@@ -155,6 +155,13 @@ end
 
 function ENT:Explode( remove, damage )
 	
+	if game.SinglePlayer() == true or IsFirstTimePredicted() == true then
+		
+		local explode = self:GetParticles().explode
+		if explode != nil and explode != "" then ParticleEffect( explode, self:GetPos(), self:GetAngles() ) end
+		
+	end
+	
 	if CLIENT then return end
 	
 	if IsValid( self:GetOwner() ) == false then
@@ -170,9 +177,6 @@ function ENT:Explode( remove, damage )
 	if damage == nil then damage = self:GetTFDamage() end
 	
 	self:PlaySound( self.ExplodeSound )
-	
-	local explode = self:GetParticles().explode
-	if explode != nil and explode != "" then ParticleEffect( explode, self:GetPos(), self:GetAngles() ) end
 	
 	local playerhit = false
 	local ownerhit = false
