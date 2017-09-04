@@ -14,7 +14,7 @@ SWEP.Author = "AwfulRanger"
 SWEP.Description = ""
 SWEP.Category = "Team Fortress 2 - Engineer"
 SWEP.Level = 15
-SWEP.Type = "TF_Weapon_Robot_Arm"
+SWEP.Type = "#TF_Weapon_Robot_Arm"
 SWEP.Base = "tf_weapon_wrench"
 SWEP.Classes = { [ TF2Weapons.Class.ENGINEER ] = true }
 SWEP.Quality = TF2Weapons.Quality.UNIQUE
