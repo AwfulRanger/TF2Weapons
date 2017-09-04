@@ -1,13 +1,9 @@
 AddCSLuaFile()
 
-if CLIENT then
-	
-	game.AddParticles( "particles/rockettrail.pcf" )
-	game.AddParticles( "particles/explosion.pcf" )
-	
-end
+game.AddParticles( "particles/rockettrail.pcf" )
+game.AddParticles( "particles/explosion.pcf" )
 
-ENT.Base = "base_anim"
+ENT.Base = "tf_projectile_base"
 ENT.Type = "anim"
 ENT.PrintName = "Rocket"
 ENT.Category = "Team Fortress 2"
@@ -40,30 +36,6 @@ ENT.Particles = {
 ENT.OwnerHitMult = 0.6
 ENT.OwnerEnemyHitMult = 1
 
-function ENT:TFNetworkVar( vartype, varname, default, slot, extended )
-	
-	if self[ "GetTF" .. varname ] != nil or self[ "SetTF" .. varname ] != nil then return end
-	
-	if self.CreatedNetworkVars == nil then self.CreatedNetworkVars = {} end
-	
-	if self.CreatedNetworkVars[ vartype ] == nil then
-		
-		self.CreatedNetworkVars[ vartype ] = 0
-		
-	end
-	
-	if slot != nil then self.CreatedNetworkVars[ vartype ] = slot end
-	slot = self.CreatedNetworkVars[ vartype ]
-	
-	self:NetworkVar( vartype, slot, "TF" .. varname, extended )
-	if SERVER and default != nil then self[ "SetTF" .. varname ]( self, default ) end
-	
-	self.CreatedNetworkVars[ vartype ] = self.CreatedNetworkVars[ vartype ] + 1
-	
-	return self[ "GetTF" .. varname ]( self )
-	
-end
-
 function ENT:BaseDataTables()
 	
 	self:TFNetworkVar( "Bool", "BLU", false )
@@ -80,56 +52,9 @@ function ENT:BaseDataTables()
 	
 end
 
-function ENT:SetupDataTables()
-	
-	self:BaseDataTables()
-	
-end
-
-function ENT:SetParticles( particles )
-	
-	for _, v in pairs( self.Particles ) do
-		
-		if particles[ _ ] != nil then
-			
-			self:SetNW2String( "particle_" .. _, particles[ _ ] )
-			
-		end
-		
-	end
-	
-end
-
-function ENT:GetParticles()
-	
-	local particles = {}
-	for _, v in pairs( self.Particles ) do
-		
-		particles[ _ ] = self:GetNW2String( "particle_" .. _, v )
-		
-	end
-		
-	return particles
-	
-end
-
 function ENT:SetVariables()
 	
 	self.ExplodeSound = { Sound( "weapons/explode1.wav" ), Sound( "weapons/explode2.wav" ), Sound( "weapons/explode3.wav" ) }
-	
-end
-
-function ENT:PlaySound( sound )
-	
-	if istable( sound ) == true then
-		
-		self:EmitSound( sound[ math.random( #sound ) ] )
-		
-	else
-		
-		self:EmitSound( sound )
-		
-	end
 	
 end
 
@@ -137,7 +62,7 @@ function ENT:Initialize()
 	
 	for _, v in pairs( self:GetParticles() ) do
 		
-		PrecacheParticleSystem( v )
+		if isstring( v ) == true then PrecacheParticleSystem( v ) end
 		
 	end
 	
@@ -160,21 +85,12 @@ function ENT:Initialize()
 		
 	end
 	
-	local trail = self:GetParticles().trail
-	
-	if trail != nil and trail != "" then
+	self:AddParticle( self:GetParticles().trail, { {
 		
-		if self:LookupAttachment( "trail" ) != nil then
-			
-			ParticleEffectAttach( trail, PATTACH_POINT_FOLLOW, self, self:LookupAttachment( "trail" ) )
-			
-		else
-			
-			ParticleEffectAttach( trail, PATTACH_ABSORIGIN_FOLLOW, self, -1 )
-			
-		end
+		attachtype = PATTACH_POINT_FOLLOW,
+		attachment = "trail",
 		
-	end
+	} } )
 	
 	self:SetVariables()
 	
@@ -187,6 +103,8 @@ function ENT:Touch( ent )
 end
 
 function ENT:Think()
+	
+	self:HandleParticles()
 	
 	self:SetAngles( self:GetTFAngle() )
 	
@@ -255,8 +173,7 @@ function ENT:Explode( remove, damage )
 	self:PlaySound( self.ExplodeSound )
 	
 	local explode = self:GetParticles().explode
-	
-	ParticleEffect( explode, self:GetPos(), self:GetAngles() )
+	if explode != nil and explode != "" then ParticleEffect( explode, self:GetPos(), self:GetAngles() ) end
 	
 	local playerhit = false
 	local ownerhit = false

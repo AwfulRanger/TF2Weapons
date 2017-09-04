@@ -1,6 +1,6 @@
 AddCSLuaFile()
 
-ENT.Base = "base_anim"
+ENT.Base = "tf_projectile_base"
 ENT.Type = "anim"
 ENT.PrintName = "Syringe"
 ENT.Category = "Team Fortress 2"
@@ -11,30 +11,6 @@ ENT.AdminOnly = false
 ENT.TF2Weapons_NoAirblast = true
 
 ENT.Life = 10
-
-function ENT:TFNetworkVar( vartype, varname, default, slot, extended )
-	
-	if self[ "GetTF" .. varname ] != nil or self[ "SetTF" .. varname ] != nil then return end
-	
-	if self.CreatedNetworkVars == nil then self.CreatedNetworkVars = {} end
-	
-	if self.CreatedNetworkVars[ vartype ] == nil then
-		
-		self.CreatedNetworkVars[ vartype ] = 0
-		
-	end
-	
-	if slot != nil then self.CreatedNetworkVars[ vartype ] = slot end
-	slot = self.CreatedNetworkVars[ vartype ]
-	
-	self:NetworkVar( vartype, slot, "TF" .. varname, extended )
-	if SERVER and default != nil then self[ "SetTF" .. varname ]( self, default ) end
-	
-	self.CreatedNetworkVars[ vartype ] = self.CreatedNetworkVars[ vartype ] + 1
-	
-	return self[ "GetTF" .. varname ]( self )
-	
-end
 
 function ENT:BaseDataTables()
 	
@@ -51,13 +27,13 @@ function ENT:BaseDataTables()
 	
 end
 
-function ENT:SetupDataTables()
-	
-	self:BaseDataTables()
-	
-end
-
 function ENT:Initialize()
+	
+	for _, v in pairs( self:GetParticles() ) do
+		
+		if isstring( v ) == true then PrecacheParticleSystem( v ) end
+		
+	end
 	
 	if SERVER then
 		
@@ -77,6 +53,8 @@ function ENT:Initialize()
 		self:GetPhysicsObject():AddGameFlag( FVPHYSICS_NO_IMPACT_DMG )
 		
 	end
+	
+	self:SetVariables()
 	
 end
 
@@ -154,6 +132,8 @@ function ENT:Touch( ent )
 end
 
 function ENT:Think()
+	
+	self:HandleParticles()
 	
 	--[[
 	if CLIENT then

@@ -24,6 +24,8 @@ end
 
 function ENT:Think()
 	
+	self:HandleParticles()
+	
 	self:SetAngles( self:GetTFAngle() )
 	
 	if IsValid( self:GetPhysicsObject() ) == true then
