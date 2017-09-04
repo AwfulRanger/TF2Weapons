@@ -611,11 +611,6 @@ function ENT:HandleBeam()
 	
 	if SERVER or self:GetTFUpgrading() == true then return end
 	
-	--check for beams not in targets
-	--if so remove
-	--check for targets not in beams
-	--if so add
-	
 	local beamparticle = self.BeamRed
 	if self:GetTFBLU() == true then beamparticle = self.BeamBlue end
 	

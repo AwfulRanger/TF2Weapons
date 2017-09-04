@@ -1445,6 +1445,10 @@ SWEP.CreatedParticles = {}
 				--Create more tables in here for each control point
 				
 			}
+	
+	Ret1:	Particle
+	
+	Ret2:	Particle ID
 ]]--
 function SWEP:AddParticle( particle, options )
 	
@@ -1536,6 +1540,8 @@ end
 	Desc:	Returns a particle based on ID
 	
 	Arg1:	Particle ID
+	
+	Ret1:	Particle
 ]]--
 function SWEP:GetParticle( id )
 	
