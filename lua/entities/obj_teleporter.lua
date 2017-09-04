@@ -6,7 +6,10 @@ if CLIENT then
 	
 end
 
-CreateConVar( "tf2weapons_teleporter_teammates", 0, { FCVAR_SERVER_CAN_EXECUTE, FCVAR_REPLICATED }, "0 to allow teleporter to teleport teammates and prevent it from teleporting enemies, 1 for inverted" )
+CreateConVar( "tf2weapons_teleporter_teammates", 0, { FCVAR_SERVER_CAN_EXECUTE, FCVAR_REPLICATED }, [[0 to allow teleporter to teleport teammates and prevent it from teleporting enemies
+1 to prevent teleporter from teleporting teammates and allow it to teleport enemies
+2 to allow teleporter to teleport anyone
+3 to prevent teleporter from teleporting anyone but owner]] )
 
 ENT.Base = "obj_base"
 ENT.Type = "anim"
@@ -376,23 +379,7 @@ function ENT:CanSend( ent )
 		if self.TeleportNonPlayers != true and ent:IsPlayer() != true then return false end
 		if ent:GetAbsVelocity():Length() >= 5 then return false end
 		
-		local friendly = true
-		
-		if GetConVar( "tf2weapons_teleporter_teammates" ):GetBool() == true then
-			
-			if ent:IsNPC() == true and ent:Disposition( self:GetTFOwner() ) != D_HT then friendly = false end
-			if ent:IsNPC() != true and hook.Call( "PlayerShouldTakeDamage", GAMEMODE, self:GetTFOwner(), ent ) != true then friendly = false end
-			
-		else
-			
-			if ent:IsNPC() == true and ent:Disposition( self:GetTFOwner() ) == D_HT then friendly = false end
-			if ent:IsNPC() != true and hook.Call( "PlayerShouldTakeDamage", GAMEMODE, self:GetTFOwner(), ent ) == true then friendly = false end
-			
-		end
-		
-		if ent == self:GetTFOwner() then friendly = true end
-		
-		if friendly != true then return false end
+		if TF2Weapons:TeleporterCanSend( self, ent ) != true then return false end
 		
 	end
 	

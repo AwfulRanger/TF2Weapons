@@ -40,7 +40,10 @@ hook.Add( "EntityRemoved", "TF2Weapons_Sentry_RemoveTargets", function( ent )
 	
 end )
 
-CreateConVar( "tf2weapons_sentry_teammates", 0, { FCVAR_SERVER_CAN_EXECUTE, FCVAR_REPLICATED }, "0 to prevent sentry from shooting teammates and allow it to shoot enemies, 1 for inverted" )
+CreateConVar( "tf2weapons_sentry_teammates", 0, { FCVAR_SERVER_CAN_EXECUTE, FCVAR_REPLICATED }, [[0 to prevent sentry from shooting teammates and allow it to shoot enemies
+1 to allow sentry to shoot teammates and prevent it from shooting enemies
+2 to prevent sentry from shooting anyone
+3 to allow sentry to shoot anyone but owner]] )
 
 ENT.Base = "obj_base"
 ENT.Type = "anim"
@@ -691,25 +694,7 @@ function ENT:GetSentryTarget()
 			
 			if dist <= self.Range and ( bullettr.HitWorld != true or rockettr.HitWorld != true ) then
 				
-				local friendly = true
-				
-				if GetConVar( "tf2weapons_sentry_teammates" ):GetBool() == true then
-					
-					if t:IsNPC() == true and t:Disposition( self:GetTFOwner() ) != D_HT then friendly = false end
-					if t:IsNPC() != true and hook.Call( "PlayerShouldTakeDamage", GAMEMODE, self:GetTFOwner(), t ) != true then friendly = false end
-					
-				else
-					
-					if t:IsNPC() == true and t:Disposition( self:GetTFOwner() ) == D_HT then friendly = false end
-					if t:IsNPC() != true and hook.Call( "PlayerShouldTakeDamage", GAMEMODE, self:GetTFOwner(), t ) == true then friendly = false end
-					
-				end
-				
-				if t == self:GetTFOwner() then friendly = true end
-				if t.GetTFOwner != nil and self:GetTFOwner() == t:GetTFOwner() then friendly = true end
-				if t:GetOwner() == self:GetTFOwner() then friendly = true end
-				
-				if friendly != true and ( distance < 0 or dist < distance ) then
+				if TF2Weapons:SentryCanTarget( self, t ) != true and ( distance < 0 or dist < distance ) then
 					
 					target = t
 					distance = dist

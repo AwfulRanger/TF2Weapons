@@ -31,31 +31,15 @@ else
 				
 				if weapon.OwnOnAirblast[ v:GetClass() ] == true or v.TF2Weapons_OwnOnAirblast == true then sound = weapon.AirblastRedirectSound end
 				
-				if v:IsPlayer() == true then
+				if v:IsPlayer() == true or v:IsNPC() == true then
 					
-					if GetConVar( "tf2weapons_airblast_teammates" ):GetBool() == true then
+					if TF2Weapons:FlameThrowerCanAirblast( weapon, v ) == true then
 						
-						if hook.Call( "PlayerShouldTakeDamage", GAMEMODE, v, weapon:GetOwner() ) != true then
-							
-							if IsValid( v:GetPhysicsObject() ) != false then v:SetVelocity( Vector( weapon:GetOwner():GetAimVector().x * ( weapon.Secondary.Force * 0.5 ), weapon:GetOwner():GetAimVector().y * ( weapon.Secondary.Force * 0.5 ), weapon.	Secondary.UpForce ) ) end
-							
-						elseif v:IsOnFire() == true then
-							
-							weapon:PlaySound( weapon.AirblastExtinguishSound, nil, v )
-							
-						end
+						if v:IsPlayer() == true then v:SetVelocity( Vector( weapon:GetOwner():GetAimVector().x * ( weapon.Secondary.Force * 0.5 ), weapon:GetOwner():GetAimVector().y * ( weapon.Secondary.Force * 0.5 ), weapon.Secondary.UpForce ) ) end
 						
-					else
+					elseif v:IsOnFire() == true then
 						
-						if hook.Call( "PlayerShouldTakeDamage", GAMEMODE, v, weapon:GetOwner() ) == true then
-							
-							if IsValid( v:GetPhysicsObject() ) != false then v:SetVelocity( Vector( weapon:GetOwner():GetAimVector().x * ( weapon.Secondary.Force * 0.5 ), weapon:GetOwner():GetAimVector().y * ( weapon.Secondary.Force * 0.5 ), weapon.Secondary.UpForce ) ) end
-							
-						elseif v:IsOnFire() == true then
-							
-							weapon:PlaySound( weapon.AirblastExtinguishSound, nil, v )
-							
-						end
+						weapon:PlaySound( weapon.AirblastExtinguishSound, nil, v )
 						
 					end
 					
@@ -88,8 +72,13 @@ else
 	
 end
 
-CreateConVar( "tf2weapons_airblast_teammates", 0, { FCVAR_SERVER_CAN_EXECUTE, FCVAR_REPLICATED }, "0 to allow flamethrower airblast to extinguish teammates and push enemies, 1 for inverted" )
-CreateConVar( "tf2weapons_ignite_teammates", 0, { FCVAR_SERVER_CAN_EXECUTE, FCVAR_REPLICATED }, "0 to prevent flamethrowers from igniting teammates, 1 for inverted" )
+CreateConVar( "tf2weapons_ignite_teammates", 0, { FCVAR_SERVER_CAN_EXECUTE, FCVAR_REPLICATED }, [[0 to prevent flamethrower from igniting teammates and allow it to ignite enemies
+1 to allow flamethrower to ignite teammates and prevent it from igniting enemies
+2 to allow flamethrower to ignite anyone]] )
+CreateConVar( "tf2weapons_airblast_teammates", 0, { FCVAR_SERVER_CAN_EXECUTE, FCVAR_REPLICATED }, [[0 to allow flamethrower airblast to extinguish teammates and push enemies
+1 to allow flamethrower airblast to extinguish enemies and push teammates
+2 to allow flamethrower airblast to extinguish anyone
+3 to allow flamethrower airblast to push anyone]] )
 
 SWEP.Slot = 0
 SWEP.SlotPos = 0
@@ -425,21 +414,7 @@ function SWEP:ManageFlames()
 						
 						hit[ i ]:TakeDamageInfo( dmg )
 						
-						local valid = true
-						if hit[ i ]:IsPlayer() == true then
-							
-							if GetConVar( "tf2weapons_ignite_teammates" ):GetBool() == true then
-								
-								if hook.Call( "PlayerShouldTakeDamage", GAMEMODE, hit[ i ], self:GetOwner() ) == true then valid = false end
-								
-							else
-								
-								if hook.Call( "PlayerShouldTakeDamage", GAMEMODE, hit[ i ], self:GetOwner() ) != true then valid = false end
-								
-							end
-							
-						end
-						if valid == true then hit[ i ]:Ignite( flame.time ) end
+						if TF2Weapons:FlameThrowerCanIgnite( self, hit[ i ] ) == true then hit[ i ]:Ignite( flame.time ) end
 						
 						flame.hit[ hit[ i ] ] = true
 						
@@ -637,57 +612,26 @@ function SWEP:SecondaryAttack()
 				
 				if self.OwnOnAirblast[ v:GetClass() ] == true or v.TF2Weapons_OwnOnAirblast == true then sound = self.AirblastRedirectSound end
 				
-				if v:IsPlayer() == true then
+				if v:IsPlayer() == true or v:IsNPC() == true then
 					
-					if GetConVar( "tf2weapons_airblast_teammates" ):GetBool() == true then
+					if TF2Weapons:FlameThrowerCanAirblast( self, v ) == true then
 						
-						if hook.Call( "PlayerShouldTakeDamage", GAMEMODE, v, self:GetOwner() ) != true then
-							
-							if IsValid( v:GetPhysicsObject() ) != false then v:SetVelocity( Vector( self:GetOwner():GetAimVector().x * ( self.Secondary.Force * 0.5 ), self:GetOwner():GetAimVector().y * ( self.Secondary.Force * 0.5 ), self.Secondary.UpForce ) ) end
-							
-						elseif v:IsOnFire() == true then
-							
-							self:PlaySound( self.AirblastExtinguishSound, nil, v )
-							v:Extinguish()
-							
-							if self:GetOwner():Health() < self:GetOwner():GetMaxHealth() and self:GetAttributeClass( "extinguish_restores_health" ) != nil then
-								
-								if self:GetOwner():Health() + self:GetAttributeClass( "extinguish_restores_health" ) > self:GetOwner():GetMaxHealth() then
-									
-									self:GetOwner():SetHealth( self:GetOwner():GetMaxHealth() )
-									
-								else
-									
-									self:GetOwner():SetHealth( self:GetOwner():Health() + self:GetAttributeClass( "extinguish_restores_health" ) )
-									
-								end
-								
-							end
-							
-						end
+						if v:IsPlayer() == true then v:SetVelocity( Vector( self:GetOwner():GetAimVector().x * ( self.Secondary.Force * 0.5 ), self:GetOwner():GetAimVector().y * ( self.Secondary.Force * 0.5 ), self.Secondary.UpForce ) ) end
 						
-					else
+					elseif v:IsOnFire() == true then
 						
-						if hook.Call( "PlayerShouldTakeDamage", GAMEMODE, v, self:GetOwner() ) == true then
+						self:PlaySound( self.AirblastExtinguishSound, nil, v )
+						v:Extinguish()
+						
+						if self:GetOwner():Health() < self:GetOwner():GetMaxHealth() and self:GetAttributeClass( "extinguish_restores_health" ) != nil then
 							
-							if IsValid( v:GetPhysicsObject() ) != false then v:SetVelocity( Vector( self:GetOwner():GetAimVector().x * ( self.Secondary.Force * 0.5 ), self:GetOwner():GetAimVector().y * ( self.Secondary.Force * 0.5 ), self.Secondary.UpForce ) ) end
-							
-						elseif v:IsOnFire() == true then
-							
-							self:PlaySound( self.AirblastExtinguishSound, nil, v )
-							v:Extinguish()
-							
-							if self:GetOwner():Health() < self:GetOwner():GetMaxHealth() then
+							if self:GetOwner():Health() + self:GetAttributeClass( "extinguish_restores_health" ) > self:GetOwner():GetMaxHealth() then
 								
-								if self:GetOwner():Health() + self.ExtinguishHealth > self:GetOwner():GetMaxHealth() then
-									
-									self:GetOwner():SetHealth( self:GetOwner():GetMaxHealth() )
-									
-								else
-									
-									self:GetOwner():SetHealth( self:GetOwner():Health() + self.ExtinguishHealth )
-									
-								end
+								self:GetOwner():SetHealth( self:GetOwner():GetMaxHealth() )
+								
+							else
+								
+								self:GetOwner():SetHealth( self:GetOwner():Health() + self:GetAttributeClass( "extinguish_restores_health" ) )
 								
 							end
 							

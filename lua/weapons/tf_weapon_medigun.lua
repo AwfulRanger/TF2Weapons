@@ -79,7 +79,9 @@ else
 	
 end
 
-CreateConVar( "tf2weapons_heal_teammates", 0, { FCVAR_SERVER_CAN_EXECUTE, FCVAR_REPLICATED }, "0 to allow medigun to heal teammates but not enemies, 1 for inverted" )
+CreateConVar( "tf2weapons_heal_teammates", 0, { FCVAR_SERVER_CAN_EXECUTE, FCVAR_REPLICATED }, [[0 to allow medigun to heal teammates and prevent it from healing enemies
+1 to prevent medigun from healing teammates and allow it to heal enemies
+2 to allow medigun to heal anyone]] )
 
 SWEP.Slot = 1
 SWEP.SlotPos = 0
@@ -272,14 +274,6 @@ function SWEP:CreateBeamParticle()
 		
 		local hands, weapon = self:GetViewModels()
 		
-		self:AddParticle( muzzle, { {
-			
-			entity = weapon,
-			attachtype = PATTACH_POINT_FOLLOW,
-			attachment = "muzzle",
-			
-		} } )
-		
 		self:AddParticle( particle, {
 			
 			{
@@ -456,25 +450,10 @@ function SWEP:GetPatient()
 			
 		end
 		
-		if IsValid( trace.Entity ) == true and ( trace.Entity:IsPlayer() == true or trace.Entity:IsNPC() == true ) then
+		local ent = trace.Entity
+		if IsValid( ent ) == true and ( ent:IsPlayer() == true or ent:IsNPC() == true ) then
 			
-			local valid = true
-			
-			if trace.Entity:IsPlayer() == true then
-				
-				if GetConVar( "tf2weapons_heal_teammates" ):GetBool() == true then
-					
-					if hook.Call( "PlayerShouldTakeDamage", GAMEMODE, trace.Entity, self:GetOwner() ) != true then valid = false end
-					
-				else
-					
-					if hook.Call( "PlayerShouldTakeDamage", GAMEMODE, trace.Entity, self:GetOwner() ) == true then valid = false end
-					
-				end
-				
-			end
-			
-			if valid == true then self:SetTFPatient( trace.Entity ) end
+			if TF2Weapons:MediGunCanHeal( self, ent ) == true then self:SetTFPatient( ent ) end
 			
 		end
 		
@@ -486,7 +465,8 @@ end
 
 function SWEP:CheckPatient( dontremove )
 	
-	local valid = IsValid( self:GetTFPatient() )
+	local ent = self:GetTFPatient()
+	local valid = IsValid( ent )
 	if valid == true then
 		
 		if IsValid( self:GetOwner() ) != true then
@@ -495,15 +475,21 @@ function SWEP:CheckPatient( dontremove )
 			
 		else
 			
-			if SERVER and self:GetTFPatient():Visible( self:GetOwner() ) != true then valid = false end
-			if self:GetTFPatient():GetPos():Distance( self:GetOwner():GetPos() ) > self.Primary.Range then valid = false end
-			if GetConVar( "tf2weapons_heal_teammates" ):GetBool() == true then
+			if SERVER and ent:Visible( self:GetOwner() ) != true then valid = false end
+			if ent:GetPos():Distance( self:GetOwner():GetPos() ) > self.Primary.Range then valid = false end
+			
+			local teammates = GetConVar( "tf2weapons_heal_teammates" ):GetInt()
+			if teammates != 2 then
 				
-				if hook.Call( "PlayerShouldTakeDamage", GAMEMODE, self:GetTFPatient(), self:GetOwner() ) != true then valid = false end
-				
-			else
-				
-				if hook.Call( "PlayerShouldTakeDamage", GAMEMODE, self:GetTFPatient(), self:GetOwner() ) == true then valid = false end
+				if teammates <= 0 then
+					
+					if ent:IsNPC() != true and hook.Run( "PlayerShouldTakeDamage", self:GetOwner(), ent ) == true then valid = false end
+					
+				elseif teammates == 1 then
+					
+					if ent:IsNPC() != true and hook.Run( "PlayerShouldTakeDamage", self:GetOwner(), ent ) != true then valid = false end
+					
+				end
 				
 			end
 			
@@ -513,7 +499,7 @@ function SWEP:CheckPatient( dontremove )
 	
 	if valid == false and dontremove != true then
 		
-		if IsValid( self:GetTFPatient() ) == true then self:DisableUbercharge( self:GetTFPatient() ) end
+		if IsValid( ent ) == true then self:DisableUbercharge( ent ) end
 		self:SetTFPatient( nil )
 		
 	end

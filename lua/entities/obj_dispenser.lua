@@ -36,7 +36,10 @@ hook.Add( "EntityRemoved", "TF2Weapons_Dispenser_RemoveTargets", function( ent )
 	
 end )
 
-CreateConVar( "tf2weapons_dispenser_teammates", 0, { FCVAR_SERVER_CAN_EXECUTE, FCVAR_REPLICATED }, "0 to allow dispenser to restock teammates and prevent it from restocking enemies, 1 for inverted" )
+CreateConVar( "tf2weapons_dispenser_teammates", 0, { FCVAR_SERVER_CAN_EXECUTE, FCVAR_REPLICATED }, [[0 to allow dispenser to restock teammates and prevent it from restocking enemies
+1 to prevent dispenser from restocking teammates and allow it to restock enemies
+2 to allow dispenser to restock anyone
+3 to prevent dispenser from restocking anyone but owner]] )
 
 ENT.Base = "obj_base"
 ENT.Type = "anim"
@@ -357,23 +360,7 @@ function ENT:GetRegenTargets()
 			
 			if dist <= self.Range * 0.5 and tr.Entity == t then
 				
-				local friendly = true
-				
-				if GetConVar( "tf2weapons_dispenser_teammates" ):GetBool() == true then
-					
-					if t:IsNPC() == true and t:Disposition( self:GetTFOwner() ) != D_HT then friendly = false end
-					if t:IsNPC() != true and hook.Call( "PlayerShouldTakeDamage", GAMEMODE, self:GetTFOwner(), t ) != true then friendly = false end
-					
-				else
-					
-					if t:IsNPC() == true and t:Disposition( self:GetTFOwner() ) == D_HT then friendly = false end
-					if t:IsNPC() != true and hook.Call( "PlayerShouldTakeDamage", GAMEMODE, self:GetTFOwner(), t ) == true then friendly = false end
-					
-				end
-				
-				if t == self:GetTFOwner() then friendly = true end
-				
-				if friendly == true then table.insert( targets, t ) end
+				if TF2Weapons:DispenserCanTarget( self, t ) == true then table.insert( targets, t ) end
 				
 			end
 			

@@ -206,8 +206,6 @@ else
 	
 end
 
-CreateConVar( "tf2weapons_repair_teammates", 0, { FCVAR_SERVER_CAN_EXECUTE, FCVAR_REPLICATED }, "0 to prevent enemies from repairing buildings and teammates from damaging them, 1 for inverted" )
-
 SWEP.Slot = 5
 SWEP.SlotPos = 0
 

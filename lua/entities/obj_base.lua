@@ -18,7 +18,10 @@ else
 	
 end
 
-CreateConVar( "tf2weapons_building_teammates", 0, { FCVAR_SERVER_CAN_EXECUTE, FCVAR_REPLICATED }, "0 to prevent teammates from damaging buildings and enemies from repairing them, 1 for inverted" )
+CreateConVar( "tf2weapons_building_teammates", 0, { FCVAR_SERVER_CAN_EXECUTE, FCVAR_REPLICATED }, [[0 to prevent teammates from damaging buildings and enemies from repairing them
+1 to allow teammates to damage buildings and enemies to repair them
+2 to prevent anyone from damaging buildings and allow anyone to repair them
+3 to allow anyone to damage buildings and prevent anyone but owner from repairing them]] )
 
 ENT.Base = "base_anim"
 ENT.Type = "anim"
@@ -426,19 +429,7 @@ function ENT:OnHit( dmg )
 	
 	if IsValid( dmg:GetAttacker() ) == true then
 		
-		if GetConVar( "tf2weapons_sentry_teammates" ):GetBool() == true then
-			
-			if dmg:GetAttacker():IsNPC() == true and dmg:GetAttacker():Disposition( self:GetTFOwner() ) != D_HT then friendly = false end
-			if dmg:GetAttacker():IsNPC() != true and hook.Call( "PlayerShouldTakeDamage", GAMEMODE, self:GetTFOwner(), dmg:GetAttacker() ) != true then friendly = false end
-			
-		else
-			
-			if dmg:GetAttacker():IsNPC() == true and dmg:GetAttacker():Disposition( self:GetTFOwner() ) == D_HT then friendly = false end
-			if dmg:GetAttacker():IsNPC() != true and hook.Call( "PlayerShouldTakeDamage", GAMEMODE, self:GetTFOwner(), dmg:GetAttacker() ) == true then friendly = false end
-			
-		end
-		
-		if self:GetTFOwner() == dmg:GetAttacker() then friendly = true end
+		friendly = TF2Weapons:EntityCanRepair( self, dmg:GetAttacker() )
 		
 	else
 		
