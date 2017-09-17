@@ -1521,7 +1521,7 @@ function SWEP:AddParticle( particle, options )
 			
 		end
 		
-		self.CreatedParticles[ num ] = {
+		self.CreatedParticles[ num + 1 ] = {
 			
 			particle = newparticle,
 			models = mdls,
