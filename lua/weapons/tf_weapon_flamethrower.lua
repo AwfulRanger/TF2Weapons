@@ -553,8 +553,10 @@ end
 
 function SWEP:CanSecondaryAttack()
 	
-	if self:GetAttributeClass( "set_flamethrower_push_disabled" ) != nil and self:GetAttributeClass( "set_flamethrower_push_disabled" ) > 0 then return false end
-	if self:GetAttributeClass( "airblast_disabled" ) != nil and self:GetAttributeClass( "airblast_disabled" ) > 0 then return false end
+	local set_flamethrower_push_disabled = self:GetAttributeClass( "set_flamethrower_push_disabled" )
+	if set_flamethrower_push_disabled != nil and set_flamethrower_push_disabled > 0 then return false end
+	local airblast_disabled = self:GetAttributeClass( "airblast_disabled" )
+	if airblast_disabled != nil and airblast_disabled > 0 then return false end
 	if self:Ammo1() - self.Secondary.TakeAmmo < 0 then return false end
 	
 	return true
@@ -623,15 +625,16 @@ function SWEP:SecondaryAttack()
 						self:PlaySound( self.AirblastExtinguishSound, nil, v )
 						v:Extinguish()
 						
-						if self:GetOwner():Health() < self:GetOwner():GetMaxHealth() and self:GetAttributeClass( "extinguish_restores_health" ) != nil then
+						local extinguish_restores_health = self:GetAttributeClass( "extinguish_restores_health" )
+						if self:GetOwner():Health() < self:GetOwner():GetMaxHealth() and extinguish_restores_health != nil then
 							
-							if self:GetOwner():Health() + self:GetAttributeClass( "extinguish_restores_health" ) > self:GetOwner():GetMaxHealth() then
+							if self:GetOwner():Health() + extinguish_restores_health > self:GetOwner():GetMaxHealth() then
 								
 								self:GetOwner():SetHealth( self:GetOwner():GetMaxHealth() )
 								
 							else
 								
-								self:GetOwner():SetHealth( self:GetOwner():Health() + self:GetAttributeClass( "extinguish_restores_health" ) )
+								self:GetOwner():SetHealth( self:GetOwner():Health() + extinguish_restores_health )
 								
 							end
 							
@@ -726,7 +729,8 @@ function SWEP:GetFlameMods( dmg, mod, target, flame )
 		
 		if IsValid( target ) == true and flame != nil then
 			
-			if self:GetAttributeClass( "set_flamethrower_back_crit" ) != nil and self:GetAttributeClass( "set_flamethrower_back_crit" ) != 0 then
+			local set_flamethrower_back_crit = self:GetAttributeClass( "set_flamethrower_back_crit" )
+			if set_flamethrower_back_crit != nil and set_flamethrower_back_crit != 0 then
 				
 				if target:GetAimVector():Angle().y - 45 < flame.ang.y and target:GetAimVector():Angle().y + 45 > flame.ang.y then basecrit = true end
 				

@@ -319,62 +319,70 @@ function SWEP:DoAttributes( attributes, attributeclass )
 	
 	for _, v in pairs( attributes ) do
 		
-		local attribute = TF2Weapons:GetAttribute( _ )
-		local value
-		if attribute != nil and attribute.func != nil then
+		if _ != "BaseClass" then
 			
-			value = attribute.func( self, v )
-			
-		end
-		
-		if attributeclass != nil and value != nil then
-			
-			local class
-			if attributeclass[ attribute.class ] != nil then class = attributeclass[ attribute.class ] end
-			
-			if attribute.type == "percentage" or attribute.type == "inverted_percentage" then
+			local attribute = TF2Weapons:GetAttribute( _ )
+			local value
+			if attribute != nil then
 				
-				if class == nil then class = { 1 } end
-				
-				for i = 1, #class do
+				if attribute.func != nil then
 					
-					class[ i ] = class[ i ] * value[ i ]
+					value = attribute.func( self, v )
 					
 				end
 				
-			elseif attribute.type == "additive" then
-				
-				if class == nil then class = { 0 } end
-				
-				for i = 1, #class do
+				if attributeclass != nil and value != nil then
 					
-					class[ i ] = class[ i ] + value[ i ]
+					local class
+					if attributeclass[ attribute.class ] != nil then class = attributeclass[ attribute.class ] end
 					
-				end
-				
-			elseif attribute.type == "or" then
-				
-				if class == nil then class = { 0 } end
-				
-				for i = 1, #class do
+					if attribute.type == "percentage" or attribute.type == "inverted_percentage" then
+						
+						if class == nil then class = { 1 } end
+						
+						for i = 1, #class do
+							
+							class[ i ] = class[ i ] * value[ i ]
+							
+						end
+						
+					elseif attribute.type == "additive" then
+						
+						if class == nil then class = { 0 } end
+						
+						for i = 1, #class do
+							
+							class[ i ] = class[ i ] + value[ i ]
+							
+						end
+						
+					elseif attribute.type == "or" then
+						
+						if class == nil then class = { 0 } end
+						
+						for i = 1, #class do
+							
+							class[ i ] = bit.bor( class[ i ], value[ i ] )
+							
+						end
+						
+					else
+						
+						if class == nil then class = { 1 } end
+						
+						for i = 1, #class do
+							
+							class[ i ] = value[ i ]
+							
+						end
+						
+					end
 					
-					class[ i ] = bit.bor( class[ i ], value[ i ] )
-					
-				end
-				
-			else
-				
-				if class == nil then class = { 1 } end
-				
-				for i = 1, #class do
-					
-					class[ i ] = value[ i ]
+					attributeclass[ attribute.class ] = class
 					
 				end
 				
 			end
-			
-			attributeclass[ attribute.class ] = class
 			
 		end
 		
@@ -730,10 +738,10 @@ function SWEP:GetAttributeClass( id, slot, pretty )
 	local value
 	if slot == nil then slot = 1 end
 	
+	local a = TF2Weapons:GetAttribute( id )
+	
 	local class = self.AttributeClass[ id ]
-	if class == nil and TF2Weapons:GetAttribute( id ) != nil then
-		
-		local a = TF2Weapons:GetAttribute( id )
+	if class == nil and a != nil then
 		
 		if self.AttributeClass[ a.id ] != nil then class = self.AttributeClass[ a.id ] end
 		if self.AttributeClass[ a.name ] != nil then class = self.AttributeClass[ a.name ] end
@@ -746,16 +754,15 @@ function SWEP:GetAttributeClass( id, slot, pretty )
 	
 	if pretty == true then
 		
-		local class_ = TF2Weapons:GetAttribute( id )
-		if class_ == nil then
+		if a == nil then
 			
 			return value
 			
-		elseif class_.type == "percentage" then
+		elseif a.type == "percentage" then
 			
 			value = tostring( ( class[ slot ] - 1 ) * 100 )
 			
-		elseif class_.type == "inverted_percentage" then
+		elseif a.type == "inverted_percentage" then
 			
 			value = tostring( ( 1 - class[ slot ] ) * 100 )
 			
@@ -837,7 +844,7 @@ function SWEP:PrintWeaponInfo( x, y, a )
 			
 			local attribute = TF2Weapons:GetAttribute( self.AttributesOrder[ i ] )
 			
-			if attribute.hidden != true then
+			if attribute != nil and attribute.hidden != true then
 				
 				w, h = surface.GetTextSize( attribute.desc )
 				if w > width then width = w end
@@ -851,11 +858,11 @@ function SWEP:PrintWeaponInfo( x, y, a )
 		
 		for _, v in pairs( self.Attributes ) do
 			
-			if isnumber( _ ) == true then
+			if _ != "BaseClass" then
 				
 				local attribute = TF2Weapons:GetAttribute( _ )
 				
-				if attribute.hidden != true then
+				if attribute != nil and attribute.hidden != true then
 					
 					w, h = surface.GetTextSize( attribute.desc )
 					if w > width then width = w end
@@ -914,7 +921,7 @@ function SWEP:PrintWeaponInfo( x, y, a )
 			
 			local attribute = TF2Weapons:GetAttribute( order )
 			
-			if attribute.hidden != true then
+			if attribute != nil and attribute.hidden != true then
 				
 				local text = attribute.desc
 				for i_ = 1, #self.Attributes[ order ] do
@@ -950,37 +957,33 @@ function SWEP:PrintWeaponInfo( x, y, a )
 		
 		for _, v in pairs( self.Attributes ) do
 			
-			if isnumber( _ ) == true then
+			local attribute = TF2Weapons:GetAttribute( _ )
+			
+			if attribute != nil and attribute.hidden != true then
 				
-				local attribute = TF2Weapons:GetAttribute( self.AttributesOrder[ _ ] )
-				
-				if attribute.hidden != true then
+				local text = attribute.desc
+				for i = 1, #v do
 					
-					local text = attribute.desc
-					for i = 1, #self.Attributes[ _ ] do
+					text = string.Replace( text, "%s" .. i, self:GetAttribute( _, i, true ) )
+					
+				end
+				
+				local explode = string.Explode( "\n", text )
+				for i = 1, #explode do
+					
+					w, h = surface.GetTextSize( explode[ i ] )
+					surface.SetTextColor( attribute.color )
+					if width > w then
 						
-						text = string.Replace( text, "%s" .. i, self:GetAttribute( _, i, true ) )
+						surface.SetTextPos( x + ( 10 * ( ScrH() / 480 ) ) + ( ( width - w ) * 0.5 ), y + ( 10 * ( ScrH() / 480 ) ) + height_ )
+						
+					else
+						
+						surface.SetTextPos( x + ( 10 * ( ScrH() / 480 ) ), y + ( 10 * ( ScrH() / 480 ) ) + height_ )
 						
 					end
-					
-					local explode = string.Explode( "\n", text )
-					for i = 1, #explode do
-						
-						w, h = surface.GetTextSize( explode[ i ] )
-						surface.SetTextColor( attribute.color )
-						if width > w then
-							
-							surface.SetTextPos( x + ( 10 * ( ScrH() / 480 ) ) + ( ( width - w ) * 0.5 ), y + ( 10 * ( ScrH() / 480 ) ) + height_ )
-							
-						else
-							
-							surface.SetTextPos( x + ( 10 * ( ScrH() / 480 ) ), y + ( 10 * ( ScrH() / 480 ) ) + height_ )
-							
-						end
-						surface.DrawText( explode[ i ] )
-						height_ = height_ + h
-						
-					end
+					surface.DrawText( explode[ i ] )
+					height_ = height_ + h
 					
 				end
 				
@@ -1991,10 +1994,11 @@ function SWEP:AddAttributes()
 	
 	if IsValid( owner ) == true and owner:IsPlayer() == true then
 		
-		if self:GetAttributeClass( "add_maxhealth" ) != nil then
+		local add_maxhealth = self:GetAttributeClass( "add_maxhealth" )
+		if add_maxhealth != nil then
 			
-			owner:SetMaxHealth( owner:GetMaxHealth() + self:GetAttributeClass( "add_maxhealth" ) )
-			owner:SetHealth( owner:Health() + self:GetAttributeClass( "add_maxhealth" ) )
+			owner:SetMaxHealth( owner:GetMaxHealth() + add_maxhealth )
+			owner:SetHealth( owner:Health() + add_maxhealth )
 			
 		end
 		
@@ -2017,10 +2021,11 @@ function SWEP:RemoveAttributes()
 	
 	if IsValid( owner ) == true and owner:IsPlayer() == true then
 		
-		if self:GetAttributeClass( "add_maxhealth" ) != nil then
+		local add_maxhealth = self:GetAttributeClass( "add_maxhealth" )
+		if add_maxhealth != nil then
 			
-			owner:SetMaxHealth( owner:GetMaxHealth() - self:GetAttributeClass( "add_maxhealth" ) )
-			owner:SetHealth( owner:Health() - self:GetAttributeClass( "add_maxhealth" ) )
+			owner:SetMaxHealth( owner:GetMaxHealth() - add_maxhealth )
+			owner:SetHealth( owner:Health() - add_maxhealth )
 			
 		end
 		
@@ -2045,7 +2050,8 @@ function SWEP:AddActiveAttributes()
 	
 	if IsValid( owner ) == true and owner:IsPlayer() == true then
 		
-		if self:GetAttributeClass( "mod_jump_height_from_weapon" ) != nil then owner:SetJumpPower( owner:GetJumpPower() * self:GetAttributeClass( "mod_jump_height_from_weapon" ) ) end
+		local mod_jump_height_from_weapon = self:GetAttributeClass( "mod_jump_height_from_weapon" )
+		if mod_jump_height_from_weapon != nil then owner:SetJumpPower( owner:GetJumpPower() * mod_jump_height_from_weapon ) end
 		
 	end
 	
@@ -2066,7 +2072,8 @@ function SWEP:RemoveActiveAttributes()
 	
 	if IsValid( owner ) == true and owner:IsPlayer() == true then
 		
-		if self:GetAttributeClass( "mod_jump_height_from_weapon" ) != nil then owner:SetJumpPower( owner:GetJumpPower() / self:GetAttributeClass( "mod_jump_height_from_weapon" ) ) end
+		local mod_jump_height_from_weapon = self:GetAttributeClass( "mod_jump_height_from_weapon" )
+		if mod_jump_height_from_weapon != nil then owner:SetJumpPower( owner:GetJumpPower() / mod_jump_height_from_weapon ) end
 		
 	end
 	
@@ -2402,7 +2409,8 @@ function SWEP:PrimaryAttack()
 							
 							if IsValid( attacker ) == true and attacker:IsPlayer() == true then
 								
-								if self:GetAttributeClass( "add_onhit_addhealth" ) != nil then self:GiveHealth( self:GetAttributeClass( "add_onhit_addhealth" ), attacker, attacker:GetMaxHealth() ) end
+								local add_onhit_addhealth = self:GetAttributeClass( "add_onhit_addhealth" )
+								if add_onhit_addhealth != nil then self:GiveHealth( add_onhit_addhealth, attacker, attacker:GetMaxHealth() ) end
 								
 							end
 							
@@ -2590,8 +2598,10 @@ function SWEP:ModCrit( target )
 	
 	if IsValid( target ) == true then
 		
-		if self:GetAttributeClass( "or_crit_vs_playercond" ) != nil and bit.band( 1, self:GetAttributeClass( "or_crit_vs_playercond" ) ) > 0 and target:IsOnFire() == true then crit = true end
-		if self:GetAttributeClass( "set_nocrit_vs_nonburning" ) != nil and self:GetAttributeClass( "set_nocrit_vs_nonburning" ) > 0 and target:IsOnFire() != true then crit = false end
+		local or_crit_vs_playercond = self:GetAttributeClass( "or_crit_vs_playercond" )
+		if or_crit_vs_playercond != nil and bit.band( 1, or_crit_vs_playercond ) > 0 and target:IsOnFire() == true then crit = true end
+		local set_nocrit_vs_nonburning = self:GetAttributeClass( "set_nocrit_vs_nonburning" )
+		if set_nocrit_vs_nonburning != nil and set_nocrit_vs_nonburning > 0 and target:IsOnFire() != true then crit = false end
 		
 	end
 	
@@ -2699,10 +2709,14 @@ function SWEP:GetDamageMods( damage, mod, target, crit )
 	
 	if IsValid( target ) == true then
 		
-		if self:GetAttributeClass( "mult_dmg_vs_nonburning" ) != nil and target:IsOnFire() != true then damage = damage * self:GetAttributeClass( "mult_dmg_vs_nonburning" ) end
-		if self:GetAttributeClass( "mult_dmg_bonus_while_half_dead" ) != nil and self:GetOwner():Health() < self:GetOwner():GetMaxHealth() * 0.5 then damage = damage * self:GetAttributeClass( "mult_dmg_bonus_while_half_dead" ) end
-		if self:GetAttributeClass( "mult_dmg_penalty_while_half_alive" ) != nil and self:GetOwner():Health() >= self:GetOwner():GetMaxHealth() * 0.5 then damage = damage * self:GetAttributeClass( "mult_dmg_penalty_while_half_alive" ) end
-		if self:GetAttributeClass( "mult_dmg_vs_buildings" ) != nil and target.TF2Weapons_Building == true then damage = damage * self:GetAttributeClass( "mult_dmg_vs_buildings" ) end
+		local mult_dmg_vs_nonburning = self:GetAttributeClass( "mult_dmg_vs_nonburning" )
+		if mult_dmg_vs_nonburning != nil and target:IsOnFire() != true then damage = damage * mult_dmg_vs_nonburning end
+		local mult_dmg_bonus_while_half_dead = self:GetAttributeClass( "mult_dmg_bonus_while_half_dead" )
+		if mult_dmg_bonus_while_half_dead != nil and self:GetOwner():Health() < self:GetOwner():GetMaxHealth() * 0.5 then damage = damage * mult_dmg_bonus_while_half_dead end
+		local mult_dmg_penalty_while_half_alive = self:GetAttributeClass( "mult_dmg_penalty_while_half_alive" )
+		if mult_dmg_penalty_while_half_alive != nil and self:GetOwner():Health() >= self:GetOwner():GetMaxHealth() * 0.5 then damage = damage * mult_dmg_penalty_while_half_alive end
+		local mult_dmg_vs_buildings = self:GetAttributeClass( "mult_dmg_vs_buildings" )
+		if mult_dmg_vs_buildings != nil and target.TF2Weapons_Building == true then damage = damage * mult_dmg_vs_buildings end
 		
 	end
 	

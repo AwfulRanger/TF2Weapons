@@ -350,7 +350,8 @@ hook.Add( "ScalePlayerDamage", "TF2Weapons_ScalePlayerDamage", function( ply, hi
 	
 	if IsValid( weapon ) != true or weapon.TF2Weapon != true then return end
 	
-	if weapon:GetAttributeClass( "mult_dmgtaken" ) != nil then dmg:ScaleDamage( weapon:GetAttributeClass( "mult_dmgtaken" ) ) end
+	local mult_dmgtaken = weapon:GetAttributeClass( "mult_dmgtaken" )
+	if mult_dmgtaken != nil then dmg:ScaleDamage( mult_dmgtaken ) end
 	
 end )
 
@@ -360,7 +361,8 @@ hook.Add( "GetFallDamage", "TF2Weapons_GetFallDamage", function( ply, speed )
 	
 	if IsValid( weapon ) != true or weapon.TF2Weapon != true then return end
 	
-	if weapon:GetAttributeClass( "cancel_falling_damage" ) != nil and weapon:GetAttributeClass( "cancel_falling_damage" ) > 0 then return 0 end
+	local cancel_falling_damage = weapon:GetAttributeClass( "cancel_falling_damage" )
+	if cancel_falling_damage != nil and cancel_falling_damage > 0 then return 0 end
 	
 end )
 
@@ -370,10 +372,11 @@ hook.Add( "Move", "TF2Weapons_Move", function( ply, mv )
 	
 	if IsValid( weapon ) != true or weapon.TF2Weapon != true then return end
 	
-	if weapon:GetAttributeClass( "mult_player_movespeed" ) != nil then
+	local mult_player_movespeed = weapon:GetAttributeClass( "mult_player_movespeed" )
+	if mult_player_movespeed != nil then
 		
-		mv:SetMaxClientSpeed( mv:GetMaxClientSpeed() * weapon:GetAttributeClass( "mult_player_movespeed" ) )
-		mv:SetMaxSpeed( mv:GetMaxSpeed() * weapon:GetAttributeClass( "mult_player_movespeed" ) )
+		mv:SetMaxClientSpeed( mv:GetMaxClientSpeed() * mult_player_movespeed )
+		mv:SetMaxSpeed( mv:GetMaxSpeed() * mult_player_movespeed )
 		
 	end
 	
@@ -435,8 +438,8 @@ function TF2Weapons:AddAttribute( id, name, desc, color, type, class, func )
 	
 	if istable( id ) == true then
 		
-		TF2Weapons.Attributes[ id.id ] = id
-		TF2Weapons.AttributesName[ id.name ] = id
+		self.Attributes[ id.id ] = id
+		self.AttributesName[ id.name ] = id
 		
 	else
 		
@@ -452,8 +455,8 @@ function TF2Weapons:AddAttribute( id, name, desc, color, type, class, func )
 			
 		}
 		
-		TF2Weapons.Attributes[ attribute.id ] = attribute
-		TF2Weapons.AttributesName[ attribute.name ] = attribute
+		self.Attributes[ attribute.id ] = attribute
+		self.AttributesName[ attribute.name ] = attribute
 		
 	end
 	
@@ -461,8 +464,8 @@ end
 
 function TF2Weapons:GetAttribute( id )
 	
-	if TF2Weapons.Attributes[ id ] != nil then return TF2Weapons.Attributes[ id ] end
-	if TF2Weapons.AttributesName[ id ] != nil then return TF2Weapons.AttributesName[ id ] end
+	if self.Attributes[ id ] != nil then return self.Attributes[ id ] end
+	if self.AttributesName[ id ] != nil then return self.AttributesName[ id ] end
 	
 end
 
@@ -629,7 +632,8 @@ function TF2Weapons:EntityKilled( ent, attacker, inflictor )
 	
 	if IsValid( weapon ) != true or weapon.TF2Weapon != true then return end
 	
-	if weapon:GetAttributeClass( "heal_on_kill" ) != nil then weapon:GiveHealth( weapon:GetAttributeClass( "heal_on_kill" ), attacker, attacker:GetMaxHealth() ) end
+	local heal_on_kill = weapon:GetAttributeClass( "heal_on_kill" )
+	if heal_on_kill != nil then weapon:GiveHealth( heal_on_kill, attacker, attacker:GetMaxHealth() ) end
 	
 	
 end
