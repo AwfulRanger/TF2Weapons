@@ -56,8 +56,8 @@ SWEP.AttributesOrder = {
 
 function SWEP:SetVariables()
 	
-	self.ShootSound = Sound( "weapons/shotgun_shoot.wav" )
-	self.ShootSoundCrit = Sound( "weapons/shotgun_shoot_crit.wav" )
+	self.ShootSound = Sound( "weapons/family_business_shoot.wav" )
+	self.ShootSoundCrit = Sound( "weapons/family_business_shoot_crit.wav" )
 	self.EmptySound = Sound( "weapons/shotgun_empty.wav" )
 	
 end

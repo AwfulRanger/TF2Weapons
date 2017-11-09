@@ -44,26 +44,24 @@ SWEP.MuzzleParticle = "muzzle_pistol"
 SWEP.Attributes = {
 	
 	[ "provide on active" ] = { 1 },
-	[ "heal on hit for rapidfire" ] = { 5 },
-	[ "cancel falling damage" ] = { 1 },
-	[ "fire rate penalty" ] = { 1.25 },
-	[ "dmg taken increased" ] = { 1.2 },
+	[ "heal on hit for rapidfire" ] = { 7 },
+	[ "fire rate bonus" ] = { 0.85 },
+	[ "clip size penalty" ] = { 0.75 },
 	
 }
 SWEP.AttributesOrder = {
 	
 	"provide on active",
 	"heal on hit for rapidfire",
-	"cancel falling damage",
-	"fire rate penalty",
-	"dmg taken increased",
+	"fire rate bonus",
+	"clip size penalty",
 	
 }
 
 function SWEP:SetVariables()
 	
-	self.ShootSound = Sound( "weapons/pistol_shoot.wav" )
-	self.ShootSoundCrit = Sound( "weapons/pistol_shoot_crit.wav" )
+	self.ShootSound = Sound( "weapons/doom_scout_pistol.wav" )
+	self.ShootSoundCrit = Sound( "weapons/doom_scout_pistol_crit.wav" )
 	self.EmptySound = Sound( "weapons/shotgun_empty.wav" )
 	
 end
