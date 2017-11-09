@@ -7,7 +7,7 @@ SWEP.CrosshairType = TF2Weapons.Crosshair.PLUS
 SWEP.KillIconX = 388
 SWEP.KillIconY = 64
 
-if CLIENT then SWEP.WepSelectIcon = surface.GetTextureID( "backpack/weapons/c_models/c_shogun_kunai/c_shogun_kunai_large" ) end
+if CLIENT then SWEP.WepSelectIcon = surface.GetTextureID( "backpack/workshop_partner/weapons/c_models/c_shogun_kunai/c_shogun_kunai_large" ) end
 SWEP.PrintName = "#TF_Weapon_Kunai"
 SWEP.Author = "AwfulRanger"
 SWEP.Description = "#TF_Kunai_Desc"

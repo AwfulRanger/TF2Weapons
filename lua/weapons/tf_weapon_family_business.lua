@@ -9,7 +9,7 @@ SWEP.CrosshairType = TF2Weapons.Crosshair.DEFAULT
 SWEP.KillIconX = 384
 SWEP.KillIconY = 576
 
-if CLIENT then SWEP.WepSelectIcon = surface.GetTextureID( "backpack/weapons/c_models/c_russian_riot/c_russian_riot_large" ) end
+if CLIENT then SWEP.WepSelectIcon = surface.GetTextureID( "backpack/workshop/weapons/c_models/c_russian_riot/c_russian_riot_large" ) end
 SWEP.ProperName = true
 SWEP.PrintName = "#TF_RussianRiot"
 SWEP.Author = "AwfulRanger"

@@ -7,7 +7,7 @@ SWEP.CrosshairType = TF2Weapons.Crosshair.CIRCLE
 SWEP.KillIconX = 384
 SWEP.KillIconY = 736
 
-if CLIENT then SWEP.WepSelectIcon = surface.GetTextureID( "backpack/weapons/c_models/c_scimitar/c_scimitar_large" ) end
+if CLIENT then SWEP.WepSelectIcon = surface.GetTextureID( "backpack/workshop/weapons/c_models/c_scimitar/c_scimitar_large" ) end
 SWEP.ProperName = true
 SWEP.PrintName = "#TF_Shahanshah"
 SWEP.Author = "AwfulRanger"

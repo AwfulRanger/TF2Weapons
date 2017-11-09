@@ -8,7 +8,7 @@ SWEP.KillIconX = 256
 SWEP.KillIconY = 832
 SWEP.KillIconW = 128
 
-if CLIENT then SWEP.WepSelectIcon = surface.GetTextureID( "backpack/weapons/c_models/c_bear_claw/c_bear_claw_large" ) end
+if CLIENT then SWEP.WepSelectIcon = surface.GetTextureID( "backpack/workshop/weapons/c_models/c_bear_claw/c_bear_claw_large" ) end
 SWEP.ProperName = true
 SWEP.PrintName = "#TF_WarriorsSpirit"
 SWEP.Author = "AwfulRanger"

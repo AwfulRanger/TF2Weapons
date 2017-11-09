@@ -7,7 +7,7 @@ SWEP.CrosshairType = TF2Weapons.Crosshair.CIRCLE
 SWEP.KillIconX = 192
 SWEP.KillIconY = 704
 
-if CLIENT then SWEP.WepSelectIcon = surface.GetTextureID( "backpack/weapons/c_models/c_battleaxe/c_battleaxe_large" ) end
+if CLIENT then SWEP.WepSelectIcon = surface.GetTextureID( "backpack/workshop/weapons/c_models/c_battleaxe/c_battleaxe_large" ) end
 SWEP.ProperName = true
 SWEP.PrintName = "#TF_Unique_BattleAxe"
 SWEP.Author = "AwfulRanger"

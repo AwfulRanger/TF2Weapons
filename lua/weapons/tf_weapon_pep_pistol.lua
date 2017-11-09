@@ -10,7 +10,7 @@ SWEP.KillIcon = Material( "hud/dneg_images_v3" )
 SWEP.KillIconX = 0
 SWEP.KillIconY = 736
 
-if CLIENT then SWEP.WepSelectIcon = surface.GetTextureID( "backpack/weapons/c_models/c_pep_pistol/c_pep_pistol_large" ) end
+if CLIENT then SWEP.WepSelectIcon = surface.GetTextureID( "backpack/workshop/weapons/c_models/c_pep_pistol/c_pep_pistol_large" ) end
 SWEP.PrintName = "#TF_Weapon_PEP_Pistol"
 SWEP.HUDName = "#TF_Weapon_PEP_Pistol"
 SWEP.Author = "AwfulRanger"

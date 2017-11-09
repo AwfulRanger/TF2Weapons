@@ -9,7 +9,7 @@ SWEP.CrosshairType = TF2Weapons.Crosshair.CIRCLE
 SWEP.KillIconX = 0
 SWEP.KillIconY = 896
 
-if CLIENT then SWEP.WepSelectIcon = surface.GetTextureID( "backpack/weapons/c_models/c_degreaser/c_degreaser_large" ) end
+if CLIENT then SWEP.WepSelectIcon = surface.GetTextureID( "backpack/workshop/weapons/c_models/c_degreaser/c_degreaser_large" ) end
 SWEP.ProperName = true
 SWEP.PrintName = "#TF_TheDegreaser"
 SWEP.Author = "AwfulRanger"

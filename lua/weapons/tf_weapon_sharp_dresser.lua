@@ -8,7 +8,7 @@ SWEP.KillIcon = Material( "hud/dneg_images_v3" )
 SWEP.KillIconX = 0
 SWEP.KillIconY = 288
 
-if CLIENT then SWEP.WepSelectIcon = surface.GetTextureID( "backpack/weapons/c_models/c_acr_hookblade/c_acr_hookblade_large" ) end
+if CLIENT then SWEP.WepSelectIcon = surface.GetTextureID( "backpack/workshop/weapons/c_models/c_acr_hookblade/c_acr_hookblade_large" ) end
 SWEP.ProperName = true
 SWEP.PrintName = "#TF_SharpDresser"
 SWEP.Author = "AwfulRanger"

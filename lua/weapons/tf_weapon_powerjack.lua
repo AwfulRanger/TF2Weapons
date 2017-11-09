@@ -7,7 +7,7 @@ SWEP.CrosshairType = TF2Weapons.Crosshair.PLUS
 SWEP.KillIconX = 0
 SWEP.KillIconY = 928
 
-if CLIENT then SWEP.WepSelectIcon = surface.GetTextureID( "backpack/weapons/c_models/c_powerjack/c_powerjack_large" ) end
+if CLIENT then SWEP.WepSelectIcon = surface.GetTextureID( "backpack/workshop/weapons/c_models/c_powerjack/c_powerjack_large" ) end
 SWEP.ProperName = true
 SWEP.PrintName = "#TF_ThePowerjack"
 SWEP.Author = "AwfulRanger"
