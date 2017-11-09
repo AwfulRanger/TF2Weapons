@@ -514,6 +514,8 @@ SWEP.BuildBonePositionsAdded = false
 ]]--
 function SWEP:DoInitialize()
 	
+	if self.MinLevel != nil and self.MaxLevel != nil then self.Level = math.Round( util.SharedRandom( "tf2weapons_level", self.MinLevel, self.MaxLevel, CurTime() ) ) end
+	
 	if CLIENT then self:AddKillIcon( self.KillIcon, self.KillIconColor, self.KillIconX, self.KillIconY, self.KillIconW, self.KillIconH ) end
 	self:SetHoldType( self.HoldType )
 	if self.HUDName == nil then self.HUDName = self.PrintName end

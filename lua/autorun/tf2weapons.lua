@@ -445,73 +445,6 @@ TF2Weapons.Color = {
 	
 }
 
-TF2Weapons.Attributes = {}
-TF2Weapons.AttributesName = {}
-
-function TF2Weapons:AddAttribute( id, name, desc, color, type, class, func )
-	
-	if istable( id ) == true then
-		
-		self.Attributes[ id.id ] = id
-		self.AttributesName[ id.name ] = id
-		
-	else
-		
-		local attribute = {
-			
-			id = id,
-			name = name,
-			desc = desc,
-			color = color,
-			type = type,
-			class = class,
-			func = func,
-			
-		}
-		
-		self.Attributes[ attribute.id ] = attribute
-		self.AttributesName[ attribute.name ] = attribute
-		
-	end
-	
-end
-
-function TF2Weapons:AddAttributeID( id, func )
-	
-	id = tonumber( id )
-	if id == nil then return end
-	
-	local items = self:GetItemsTable()
-	if items == nil then return end
-	local attributes = items.attributes
-	if attributes == nil then return end
-	local attribute = attributes[ id ]
-	if attribute == nil then return end
-	
-	local t = attribute.description_format
-	if string.StartWith( t, "value_is_" ) == true then t = string.Right( t, #t - 9 ) end
-	
-	self:AddAttribute( {
-		
-		id = id,
-		name = attribute.name or "",
-		desc = attribute.description_string or "",
-		color = self.Color[ string.upper( attribute.effect_type or "" ) ] or self.Color.NEUTRAL,
-		type = t,
-		class = attribute.attribute_class,
-		func = func,
-		
-	} )
-	
-end
-
-function TF2Weapons:GetAttribute( id )
-	
-	if self.Attributes[ id ] != nil then return self.Attributes[ id ] end
-	if self.AttributesName[ id ] != nil then return self.AttributesName[ id ] end
-	
-end
-
 AddCSLuaFile( "tf2weapons/attributes.lua" )
 include( "tf2weapons/attributes.lua" )
 
@@ -630,6 +563,9 @@ TF2Weapons.Building = {
 	EXIT = 4,
 	
 }
+
+AddCSLuaFile( "tf2weapons/weapons.lua" )
+include( "tf2weapons/weapons.lua" )
 
 function TF2Weapons:GetCritChance( ply, weapon )
 	

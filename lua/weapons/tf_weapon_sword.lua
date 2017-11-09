@@ -15,7 +15,7 @@ SWEP.Level = 1
 SWEP.Type = "#TF_Weapon_Sword"
 SWEP.Base = "tf2weapons_base_melee"
 SWEP.Classes = { [ TF2Weapons.Class.DEMOMAN ] = true }
-SWEP.Quality = TF2Weapons.Quality.NORMAL
+SWEP.Quality = TF2Weapons.Quality.UNIQUE
 
 SWEP.Spawnable = false
 SWEP.AdminOnly = false
