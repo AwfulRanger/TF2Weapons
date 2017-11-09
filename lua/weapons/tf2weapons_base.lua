@@ -1,8 +1,5 @@
 AddCSLuaFile()
 
-AddCSLuaFile( "tf2weapons.lua" )
-include( "tf2weapons.lua" )
-
 game.AddParticles( "particles/muzzle_flash.pcf" )
 
 SWEP.TF2Weapon = true
@@ -846,7 +843,10 @@ function SWEP:PrintWeaponInfo( x, y, a )
 			
 			if attribute != nil and attribute.hidden != true then
 				
-				w, h = surface.GetTextSize( attribute.desc )
+				local text = attribute.desc
+				if text != nil and text[ 1 ] == "#" then text = string.Replace( language.GetPhrase( text ), "\\n", "\n" ) end
+				
+				w, h = surface.GetTextSize( text )
 				if w > width then width = w end
 				height = height + h
 				
@@ -864,7 +864,10 @@ function SWEP:PrintWeaponInfo( x, y, a )
 				
 				if attribute != nil and attribute.hidden != true then
 					
-					w, h = surface.GetTextSize( attribute.desc )
+					local text = attribute.desc
+					if text != nil and text[ 1 ] == "#" then text = string.Replace( language.GetPhrase( text ), "\\n", "\n" ) end
+					
+					w, h = surface.GetTextSize( text )
 					if w > width then width = w end
 					height = height + h
 					
@@ -924,6 +927,7 @@ function SWEP:PrintWeaponInfo( x, y, a )
 			if attribute != nil and attribute.hidden != true then
 				
 				local text = attribute.desc
+				if text != nil and text[ 1 ] == "#" then text = string.Replace( language.GetPhrase( text ), "\\n", "\n" ) end
 				for i_ = 1, #self.Attributes[ order ] do
 					
 					text = string.Replace( text, "%s" .. i_, self:GetAttribute( order, i_, true ) )
@@ -962,6 +966,7 @@ function SWEP:PrintWeaponInfo( x, y, a )
 			if attribute != nil and attribute.hidden != true then
 				
 				local text = attribute.desc
+				if text != nil and text[ 1 ] == "#" then text = string.Replace( language.GetPhrase( text ), "\\n", "\n" ) end
 				for i = 1, #v do
 					
 					text = string.Replace( text, "%s" .. i, self:GetAttribute( _, i, true ) )

@@ -1,3 +1,16 @@
+TF2Weapons = {}
+
+function TF2Weapons:GetItemsTable()
+	
+	if self.ItemsTable != nil then return self.ItemsTable end
+	
+	local f = file.Read( "scripts/items/items_game.txt", "GAME" )
+	if f != nil then self.ItemsTable = util.KeyValuesToTable( f, false, true ) end
+	
+	return self.ItemsTable
+	
+end
+
 AddCSLuaFile( "tf2weapons/language.lua" )
 
 if SERVER then
@@ -249,6 +262,7 @@ concommand.Add( "-tf2weapons_inspect", function( ply )
 	if IsValid( ply ) == false then return end
 	
 	ply.TF2Weapons_Inspecting = false
+	
 	if CLIENT then
 		
 		net.Start( "tf2weapons_inspect" )
@@ -412,7 +426,7 @@ CreateConVar( "tf2weapons_criticals", 1, { FCVAR_SERVER_CAN_EXECUTE, FCVAR_REPLI
 CreateConVar( "tf2weapons_allowbroke", 0, { FCVAR_REPLICATED, FCVAR_SERVER_CAN_EXECUTE }, "Allow players to spawn broken/buggy/unoptimized/incomplete weapons and entities (<0 = values are unchanged, 0 = nobody can spawn, 1 = admins can spawn, >1 = all can spawn)" )
 CreateConVar( "tf2weapons_overheal", 1, { FCVAR_REPLICATED, FCVAR_SERVER_CAN_EXECUTE }, "Enable overheal" )
 
-TF2Weapons = {}
+
 
 TF2Weapons.UnspawnableEntities = {
 	
@@ -459,6 +473,35 @@ function TF2Weapons:AddAttribute( id, name, desc, color, type, class, func )
 		self.AttributesName[ attribute.name ] = attribute
 		
 	end
+	
+end
+
+function TF2Weapons:AddAttributeID( id, func )
+	
+	id = tonumber( id )
+	if id == nil then return end
+	
+	local items = self:GetItemsTable()
+	if items == nil then return end
+	local attributes = items.attributes
+	if attributes == nil then return end
+	local attribute = attributes[ id ]
+	if attribute == nil then return end
+	
+	local t = attribute.description_format
+	if string.StartWith( t, "value_is_" ) == true then t = string.Right( t, #t - 9 ) end
+	
+	self:AddAttribute( {
+		
+		id = id,
+		name = attribute.name or "",
+		desc = attribute.description_string or "",
+		color = self.Color[ string.upper( attribute.effect_type or "" ) ] or self.Color.NEUTRAL,
+		type = t,
+		class = attribute.attribute_class,
+		func = func,
+		
+	} )
 	
 end
 
