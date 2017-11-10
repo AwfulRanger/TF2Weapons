@@ -623,6 +623,10 @@ end )
 --minigun no spin sounds
 TF2Weapons:AddAttributeID( 238, function( weapon, values )
 	
+	weapon.SpoolIdleSound = nil
+	weapon.ShootSoundEnd = weapon.SpoolDownSound
+	weapon.SpoolDownSound = nil
+	
 	return values
 	
 end )

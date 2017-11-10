@@ -13,6 +13,36 @@ local function getsound( name )
 	
 end
 
+local sound_single_shot = {
+	
+	"ShootStartSound",
+	
+}
+local sound_burst = {
+	
+	"SwingSoundCrit",
+	
+}
+local sound_special1 = {
+	
+	"GrenadeSound",
+	"PipeSound",
+	"RocketSound",
+	"SpoolUpSound",
+	
+}
+local sound_special2 = {
+	
+	"SpoolDownSound",
+	
+}
+local sound_special3 = {
+	
+	"SpoolIdleSound",
+	"ShootEndSound",
+	
+}
+
 function TF2Weapons:AddWeapon( id, id_, tbl )
 	
 	local item = id
@@ -61,16 +91,69 @@ function TF2Weapons:AddWeapon( id, id_, tbl )
 	if item.attributes != nil then for _, v in pairs( item.attributes ) do if self:GetAttribute( _ ) != nil then SWEP.Attributes[ _ ] = { ( isnumber( v.value ) == true and math.Round( v.value, 3 ) ) or v.value } end end end
 	if item.static_attrs != nil then for _, v in pairs( item.static_attrs ) do if self:GetAttribute( _ ) != nil then SWEP.Attributes[ _ ] = { ( isnumber( v ) == true and math.Round( v, 3 ) ) or v } end end end
 	
-	
 	function SWEP:SetVariables()
 		
 		self.BaseClass.SetVariables( self )
 		
 		if item.visuals != nil then
 			
-			if item.visuals.sound_single_shot != nil then self.ShootSound = getsound( item.visuals.sound_single_shot ) end
-			if item.visuals.sound_burst != nil then self.ShootSoundCrit = getsound( item.visuals.sound_burst ) end
+			if item.visuals.melee_miss != nil then self.SwingSound = getsound( item.visuals.melee_miss ) end
+			if item.visuals.melee_hit != nil then self.HitFleshSound = getsound( item.visuals.melee_hit ) end
+			if item.visuals.melee_hit_world != nil then self.HitWorldSound = getsound( item.visuals.melee_hit_world ) end
+			
+			if item.visuals.sound_single_shot != nil then
+				
+				local found = false
+				for i = 1, #sound_single_shot do
+					
+					if self[ sound_single_shot[ i ] ] != nil then self[ sound_single_shot[ i ] ] = getsound( item.visuals.sound_single_shot ) found = true end
+					
+				end
+				if found != true then self.ShootSound = getsound( item.visuals.sound_single_shot ) end
+				
+			end
+			if item.visuals.sound_double_shot != nil then self.ShootSound = getsound( item.visuals.sound_double_shot ) end
+			if item.visuals.sound_burst != nil then
+				
+				local found = false
+				for i = 1, #sound_burst do
+					
+					if self[ sound_burst[ i ] ] != nil then self[ sound_burst[ i ] ] = getsound( item.visuals.sound_burst ) found = true end
+					
+				end
+				if found != true then self.ShootSoundCrit = getsound( item.visuals.sound_burst ) end
+				
+			end
 			if item.visuals.sound_empty != nil then self.EmptySound = getsound( item.visuals.sound_empty ) end
+			if item.visuals.sound_special1 != nil then
+				
+				local found = false
+				for i = 1, #sound_special1 do
+					
+					if self[ sound_special1[ i ] ] != nil then self[ sound_special1[ i ] ] = getsound( item.visuals.sound_special1 ) found = true end
+					
+				end
+				if found != true then self.ShootSound = getsound( item.visuals.sound_special1 ) end
+				
+			end
+			if item.visuals.sound_special2 != nil then
+				
+				for i = 1, #sound_special2 do
+					
+					if self[ sound_special2[ i ] ] != nil then self[ sound_special2[ i ] ] = getsound( item.visuals.sound_special2 ) end
+					
+				end
+				
+			end
+			if item.visuals.sound_special3 != nil then
+				
+				for i = 1, #sound_special3 do
+					
+					if self[ sound_special3[ i ] ] != nil then self[ sound_special3[ i ] ] = getsound( item.visuals.sound_special3 ) end
+					
+				end
+				
+			end
 			
 		end
 		
@@ -95,14 +178,6 @@ TF2Weapons:AddWeapon( 851, "tf_weapon_awper_hand", {
 	KillIconY = 96,
 	Base = "tf_weapon_sniperrifle",
 	Category = "Team Fortress 2 - Sniper",
-	SetVariables = function( self )
-		
-		self.BaseClass.SetVariables( self )
-		
-		self.ShootSound = Sound( "weapons/csgo_awp_shoot.wav" )
-		self.ShootSoundCrit = Sound( "weapons/csgo_awp_shoot_crit.wav" )
-		
-	end,
 	
 } )
 
@@ -137,16 +212,6 @@ TF2Weapons:AddWeapon( "weapon_battleaxe", "tf_weapon_battleaxe", {
 		"move speed penalty",
 		
 	},
-	SetVariables = function( self )
-		
-		self.BaseClass.SetVariables( self )
-		
-		self.SwingSound = { Sound( "weapons/demo_sword_swing1.wav" ), Sound( "weapons/demo_sword_swing2.wav" ), Sound( "weapons/demo_sword_swing3.wav" ) }
-		self.SwingSoundCrit = Sound( "weapons/demo_sword_swing_crit.wav" )
-		self.HitWorldSound = { Sound( "weapons/demo_sword_hit_world1.wav" ), Sound( "weapons/demo_sword_hit_world2.wav" ) }
-		self.HitFleshSound = { Sound( "weapons/blade_slice_2.wav" ), Sound( "weapons/blade_slice_3.wav" ), Sound( "weapons/blade_slice_4.wav" ) }
-		
-	end,
 	
 } )
 
@@ -174,6 +239,13 @@ TF2Weapons:AddWeapon( "weapon_russian_riot", "tf_weapon_family_business", {
 	KillIconY = 576,
 	Base = "tf_weapon_shotgun_hwg",
 	Category = "Team Fortress 2 - Heavy",
+	AttributesOrder = {
+		
+		"clip size bonus",
+		"fire rate bonus",
+		"damage penalty",
+		
+	},
 	SetVariables = function( self )
 		
 		self.BaseClass.SetVariables( self )
@@ -182,13 +254,6 @@ TF2Weapons:AddWeapon( "weapon_russian_riot", "tf_weapon_family_business", {
 		self.ShootSoundCrit = Sound( "weapons/family_business_shoot_crit.wav" )
 		
 	end,
-	AttributesOrder = {
-		
-		"clip size bonus",
-		"fire rate bonus",
-		"damage penalty",
-		
-	},
 	
 } )
 
@@ -272,14 +337,6 @@ TF2Weapons:AddWeapon( 773, "tf_weapon_pep_pistol", {
 		"clip size penalty",
 		
 	},
-	SetVariables = function( self )
-		
-		self.BaseClass.SetVariables( self )
-		
-		self.ShootSound = Sound( "weapons/doom_scout_pistol.wav" )
-		self.ShootSoundCrit = Sound( "weapons/doom_scout_pistol_crit.wav" )
-		
-	end,
 	
 } )
 
@@ -382,18 +439,6 @@ TF2Weapons:AddWeapon( "weapon_tomislav", "tf_weapon_tomislav", {
 		"fire rate penalty",
 		
 	},
-	SetVariables = function( self )
-		
-		self.BaseClass.SetVariables( self )
-		
-		self.ShootSound = Sound( "weapons/tomislav_shoot.wav" )
-		self.ShootSoundCrit = Sound( "weapons/tomislav_shoot_crit.wav" )
-		self.ShootSoundEnd = Sound( "weapons/tomislav_wind_down.wav" )
-		self.SpoolUpSound = Sound( "weapons/tomislav_wind_up.wav" )
-		self.SpoolIdleSound = nil
-		self.SpoolDownSound = nil
-		
-	end,
 	
 } )
 
