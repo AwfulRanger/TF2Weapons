@@ -58,7 +58,9 @@ function TF2Weapons:AddWeapon( id, id_, tbl )
 	end
 	
 	SWEP.Attributes = {}
-	if item.attributes != nil then for _, v in pairs( item.attributes ) do SWEP.Attributes[ _ ] = { ( isnumber( v.value ) == true and math.Round( v.value, 5 ) ) or v.value } end end
+	if item.attributes != nil then for _, v in pairs( item.attributes ) do if self:GetAttribute( _ ) != nil then SWEP.Attributes[ _ ] = { ( isnumber( v.value ) == true and math.Round( v.value, 3 ) ) or v.value } end end end
+	if item.static_attrs != nil then for _, v in pairs( item.static_attrs ) do if self:GetAttribute( _ ) != nil then SWEP.Attributes[ _ ] = { ( isnumber( v ) == true and math.Round( v, 3 ) ) or v } end end end
+	
 	
 	function SWEP:SetVariables()
 		
@@ -104,12 +106,20 @@ TF2Weapons:AddWeapon( 851, "tf_weapon_awper_hand", {
 	
 } )
 
-TF2Weapons:AddWeapon( 851, "tf_weapon_backburner", {
+TF2Weapons:AddWeapon( "weapon_backburner", "tf_weapon_backburner", {
 	
 	KillIconX = 256,
 	KillIconY = 448,
 	Base = "tf_weapon_flamethrower",
 	Category = "Team Fortress 2 - Pyro",
+	AttributesOrder = {
+		
+		"mod flamethrower back crit",
+		"extinguish restores health",
+		"airblast cost increased",
+		"crit mod disabled hidden",
+		
+	},
 	
 } )
 
@@ -119,6 +129,14 @@ TF2Weapons:AddWeapon( "weapon_battleaxe", "tf_weapon_battleaxe", {
 	KillIconY = 704,
 	Base = "tf_weapon_sword",
 	Category = "Team Fortress 2 - Demoman",
+	AttributesOrder = {
+		
+		"is_a_sword",
+		"provide on active",
+		"damage bonus",
+		"move speed penalty",
+		
+	},
 	SetVariables = function( self )
 		
 		self.BaseClass.SetVariables( self )
@@ -138,6 +156,15 @@ TF2Weapons:AddWeapon( "weapon_degreaser", "tf_weapon_degreaser", {
 	KillIconY = 896,
 	Base = "tf_weapon_flamethrower",
 	Category = "Team Fortress 2 - Pyro",
+	AttributesOrder = {
+		
+		"single wep deploy time decreased",
+		"switch from wep deploy time decreased",
+		"extinguish restores health",
+		"weapon burn dmg reduced",
+		"airblast cost increased",
+		
+	},
 	
 } )
 
@@ -155,6 +182,13 @@ TF2Weapons:AddWeapon( "weapon_russian_riot", "tf_weapon_family_business", {
 		self.ShootSoundCrit = Sound( "weapons/family_business_shoot_crit.wav" )
 		
 	end,
+	AttributesOrder = {
+		
+		"clip size bonus",
+		"fire rate bonus",
+		"damage penalty",
+		
+	},
 	
 } )
 
@@ -197,6 +231,12 @@ TF2Weapons:AddWeapon( 356, "tf_weapon_kunai", {
 		return "item2"
 		
 	end,
+	AttributesOrder = {
+		
+		"sanguisuge",
+		"max health additive penalty",
+		
+	},
 	
 } )
 
@@ -206,6 +246,14 @@ TF2Weapons:AddWeapon( 414, "tf_weapon_liberty_launcher", {
 	KillIconY = 608,
 	Base = "tf_weapon_rocketlauncher",
 	Category = "Team Fortress 2 - Soldier",
+	AttributesOrder = {
+		
+		"clip size bonus",
+		"Projectile speed increased",
+		"rocket jump damage reduction",
+		"damage penalty",
+		
+	},
 	
 } )
 
@@ -216,6 +264,14 @@ TF2Weapons:AddWeapon( 773, "tf_weapon_pep_pistol", {
 	KillIconY = 736,
 	Base = "tf_weapon_pistol_scout",
 	Category = "Team Fortress 2 - Scout",
+	AttributesOrder = {
+		
+		"provide on active",
+		"heal on hit for rapidfire",
+		"fire rate bonus",
+		"clip size penalty",
+		
+	},
 	SetVariables = function( self )
 		
 		self.BaseClass.SetVariables( self )
@@ -233,6 +289,14 @@ TF2Weapons:AddWeapon( "weapon_powerjack", "tf_weapon_powerjack", {
 	KillIconY = 928,
 	Base = "tf_weapon_fireaxe",
 	Category = "Team Fortress 2 - Pyro",
+	AttributesOrder = {
+		
+		"provide on active",
+		"move speed bonus",
+		"heal on kill",
+		"dmg taken increased",
+		
+	},
 	
 } )
 
@@ -242,6 +306,12 @@ TF2Weapons:AddWeapon( "weapon_scimitar", "tf_weapon_shahanshah", {
 	KillIconY = 736,
 	Base = "tf_weapon_club",
 	Category = "Team Fortress 2 - Sniper",
+	AttributesOrder = {
+		
+		"dmg bonus while half dead",
+		"dmg penalty while half alive",
+		
+	},
 	
 } )
 
@@ -304,6 +374,14 @@ TF2Weapons:AddWeapon( "weapon_tomislav", "tf_weapon_tomislav", {
 	KillIconY = 352,
 	Base = "tf_weapon_minigun",
 	Category = "Team Fortress 2 - Heavy",
+	AttributesOrder = {
+		
+		"minigun spinup time decreased",
+		"weapon spread bonus",
+		"minigun no spin sounds",
+		"fire rate penalty",
+		
+	},
 	SetVariables = function( self )
 		
 		self.BaseClass.SetVariables( self )
@@ -326,6 +404,14 @@ TF2Weapons:AddWeapon( 310, "tf_weapon_warrior_spirit", {
 	KillIconW = 128,
 	Base = "tf_weapon_fists",
 	Category = "Team Fortress 2 - Heavy",
+	AttributesOrder = {
+		
+		"provide on active",
+		"damage bonus",
+		"heal on kill",
+		"dmg taken increased",
+		
+	},
 	
 } )
 
@@ -335,6 +421,13 @@ TF2Weapons:AddWeapon( "weapon_winger_pistol", "tf_weapon_winger", {
 	KillIconY = 320,
 	Base = "tf_weapon_pistol_scout",
 	Category = "Team Fortress 2 - Scout",
+	AttributesOrder = {
+		
+		"damage bonus",
+		"increased jump height from weapon",
+		"clip size penalty",
+		
+	},
 	SetVariables = function( self )
 		
 		self.BaseClass.SetVariables( self )
@@ -353,5 +446,14 @@ TF2Weapons:AddWeapon( "weapon_jag", "tf_weapon_wrench_jag", {
 	KillIconW = 64,
 	Base = "tf_weapon_wrench",
 	Category = "Team Fortress 2 - Engineer",
+	AttributesOrder = {
+		
+		"Construction rate increased",
+		"fire rate bonus",
+		"Repair rate decreased",
+		"damage penalty",
+		"dmg penalty vs buildings",
+		
+	},
 	
 } )
