@@ -64,7 +64,7 @@ function TF2Weapons:AddWeapon( id, id_, tbl )
 	
 	function SWEP:SetVariables()
 		
-		self.BaseClass:SetVariables()
+		self.BaseClass.SetVariables( self )
 		
 		if item.visuals != nil then
 			
