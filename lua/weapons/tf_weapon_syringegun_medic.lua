@@ -1,6 +1,7 @@
 AddCSLuaFile()
 
 game.AddParticles( "particles/muzzle_flash.pcf" )
+game.AddParticles( "particles/nailtrails.pcf" )
 
 SWEP.Slot = 0
 SWEP.SlotPos = 0
@@ -68,6 +69,14 @@ function SWEP:GetSyringeModel()
 	return "models/weapons/w_models/w_syringe_proj.mdl"
 	
 end
+SWEP.SyringeParticles = {
+	
+	red_trail = "nailtrails_medic_red",
+	blue_trail = "nailtrails_medic_blue",
+	red_crittrail = "nailtrails_medic_red_crit",
+	blue_crittrail = "nailtrails_medic_blue_crit",
+	
+}
 SWEP.SyringeSpeed = 1000
 
 SWEP.SyringeClass = "tf_projectile_syringe"
@@ -77,6 +86,8 @@ function SWEP:Initialize()
 	self:DoInitialize()
 	
 	--if CLIENT then self:AddKillIcon( self.KillIcon, self.KillIconColor, self.KillIconX, self.KillIconY, self.KillIconW, self.KillIconH, self.SyringeClass ) end
+	
+	self:PrecacheParticles( self.SyringeParticles )
 	
 end
 
@@ -109,6 +120,46 @@ function SWEP:SetProjectileModel( syringe, model, num )
 	
 end
 
+function SWEP:GetProjectileParticles( crit )
+	
+	local pp = self.SyringeParticles
+	
+	local trail
+	
+	if self:GetTeam() ~= true then
+		
+		if self:ShouldCrit() ~= true then
+			
+			trail = pp.red_trail
+			
+		else
+			
+			trail = pp.red_crittrail
+			
+		end
+		
+	else
+		
+		if self:ShouldCrit() ~= true then
+			
+			trail = pp.blue_trail
+			
+		else
+			
+			trail = pp.blue_crittrail
+			
+		end
+		
+	end
+	
+	return {
+		
+		trail = trail,
+		
+	}
+	
+end
+
 function SWEP:PrimaryAttack()
 	
 	if self:CanPrimaryAttack() == false then return end
@@ -132,6 +183,7 @@ function SWEP:PrimaryAttack()
 				syringe:SetOwner( self:GetOwner() )
 				syringe:SetPos( starttrace.HitPos )
 				self:SetProjectileModel( syringe, self:GetSyringeModel() )
+				syringe:SetParticles( self:GetProjectileParticles() )
 				syringe:SetAngles( ( hittrace.HitPos - starttrace.HitPos ):Angle() )
 				syringe:SetTFDamage( self:GetDamageMods( self.Primary.Damage ) )
 				syringe:Spawn()

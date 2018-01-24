@@ -10,6 +10,13 @@ ENT.AdminOnly = false
 
 ENT.TF2Weapons_NoAirblast = true
 
+ENT.Particles = {
+	
+	trail = "nailtrails_medic_red",
+	crittrail = "nailtrails_medic_red_crit",
+	
+}
+
 ENT.Life = 10
 
 function ENT:BaseDataTables()
@@ -53,6 +60,12 @@ function ENT:Initialize()
 		self:GetPhysicsObject():AddGameFlag( FVPHYSICS_NO_IMPACT_DMG )
 		
 	end
+	
+	self.TrailParticle = self:AddParticle( self:GetParticles().trail, { {
+		
+		attachtype = PATTACH_ABSORIGIN_FOLLOW,
+		
+	} } )
 	
 	self:SetVariables()
 	
@@ -170,6 +183,8 @@ function ENT:PhysicsCollide( data, collider )
 			collider:EnableMotion( false )
 			
 			if CLIENT then self.HitAng = self:GetRenderAngles() end
+			
+			self:StopParticles()
 			
 		elseif self:GetTFHit() ~= true then
 			
