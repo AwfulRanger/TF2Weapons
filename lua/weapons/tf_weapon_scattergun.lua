@@ -54,6 +54,7 @@ SWEP.Primary.SpreadRecovery = -1
 SWEP.Primary.Force = 10
 SWEP.Primary.TakeAmmo = 1
 SWEP.Primary.Delay = 0.625
+SWEP.Primary.Recoil = { Angle( -1, 0, 0 ), Angle( -3, 0, 0 ) }
 
 function SWEP:SetVariables()
 	

@@ -2274,6 +2274,14 @@ function SWEP:DoPrimaryAttack( bullet, crit )
 	
 	self:PlaySound( sound )
 	
+	if self.Primary.Recoil ~= nil then
+		
+		local punch = self.Primary.Recoil
+		if istable( self.Primary.Recoil ) == true then punch = LerpAngle( math.Rand( 0, 1 ), punch[ 1 ], punch[ 2 ] ) end
+		self:GetOwner():SetViewPunchAngles( punch )
+		
+	end
+	
 	if game.SinglePlayer() ~= true or SERVER then self:TakePrimaryAmmo( self.Primary.TakeAmmo ) end
 	
 end

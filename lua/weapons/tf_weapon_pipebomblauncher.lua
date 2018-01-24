@@ -72,6 +72,7 @@ SWEP.Primary.SpreadRecovery = -1
 SWEP.Primary.Force = 5
 SWEP.Primary.TakeAmmo = 1
 SWEP.Primary.Delay = 0.6
+SWEP.Primary.Recoil = { Angle( -1, 0, 0 ), Angle( -3, 0, 0 ) }
 
 SWEP.Secondary.Automatic = true
 
