@@ -138,7 +138,7 @@ function SWEP:PrimaryAttack()
 				syringe:PhysWake()
 				if IsValid( syringe:GetPhysicsObject() ) == true then
 					
-					syringe:GetPhysicsObject():SetVelocity( syringe:GetAngles():Forward() * self.SyringeSpeed )
+					syringe:GetPhysicsObject():SetVelocity( syringe:GetAngles():Forward() * ( self.SyringeSpeed * 2 ) )
 					
 				end
 				
