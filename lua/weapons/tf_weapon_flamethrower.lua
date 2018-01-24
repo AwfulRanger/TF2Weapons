@@ -175,8 +175,8 @@ function SWEP:SetVariables()
 end
 
 SWEP.FlameDamage = 60
-SWEP.FlameStartSpeed = 3000
-SWEP.FlameEndSpeed = 1500
+SWEP.FlameStartSpeed = 750
+SWEP.FlameEndSpeed = 250
 SWEP.FlameRadius = 16
 SWEP.FlameLife = 0.5
 SWEP.FlameTime = 10
@@ -202,7 +202,6 @@ function SWEP:SetupDataTables()
 	
 	self:TFNetworkVar( "Float", "NextLoop", 0 )
 	self:TFNetworkVar( "Float", "NextFlame", 0 )
-	self:TFNetworkVar( "Float", "LastManage", 0 )
 	
 	self:TFNetworkVar( "Int", "LastWaterLevel", -1 )
 	
@@ -227,14 +226,17 @@ function SWEP:Initialize()
 	
 end
 
-SWEP.FlameParticleRed = "flamethrower"
-SWEP.FlameParticleBlue = "flamethrower"
-SWEP.WaterParticleRed = "flamethrower_underwater"
-SWEP.WaterParticleBlue = "flamethrower_underwater"
-SWEP.CritParticleRed = "flamethrower"
-SWEP.CritParticleBlue = "flamethrower"
+SWEP.FlameParticleRed = { "new_flame_drips_a", "new_flame_drips_b" }
+SWEP.FlameParticleBlue = { "new_flame_drips_a", "new_flame_drips_b" }
+SWEP.WaterParticleRed = { "flamethrower_underwater" }
+SWEP.WaterParticleBlue = { "flamethrower_underwater" }
+SWEP.CritParticleRed = { "new_flame_crit_red_glow", "new_flame_crit_red_sparks", "new_flame_crit_red_drips_b" }
+SWEP.CritParticleBlue = { "new_flame_crit_blue_glow", "new_flame_crit_blue_sparks", "new_flame_crit_blue_drips_b" }
 SWEP.AirblastParticleRed = "pyro_blast"
 SWEP.AirblastParticleBlue = "pyro_blast"
+
+SWEP.ProjectileParticleRed = "new_flame_core"
+SWEP.ProjectileParticleBlue = "new_flame_core"
 
 function SWEP:StartFlames()
 	
@@ -254,22 +256,30 @@ function SWEP:StartFlames()
 	if self:DrawingVM() == true then
 		
 		local hands, weapon = self:GetViewModels()
-		self:AddParticle( particle, { {
+		for i = 1, #particle do
 			
-			entity = weapon,
-			attachtype = PATTACH_POINT_FOLLOW,
-			attachment = "muzzle",
+			self:AddParticle( particle[ i ], { {
+				
+				entity = weapon,
+				attachtype = PATTACH_POINT_FOLLOW,
+				attachment = "muzzle",
+				
+			} } )
 			
-		} } )
+		end
 		
 	else
 		
-		self:AddParticle( particle, { {
+		for i = 1, #particle do
 			
-			attachtype = PATTACH_POINT_FOLLOW,
-			attachment = "muzzle",
+			self:AddParticle( particle[ i ], { {
+				
+				attachtype = PATTACH_POINT_FOLLOW,
+				attachment = "muzzle",
+				
+			} } )
 			
-		} } )
+		end
 		
 	end
 	
@@ -281,15 +291,15 @@ function SWEP:StopFlames()
 	
 	self:SetTFFlamesDeployed( false )
 	
-	local hands, weapon = self:GetViewModels()
-	if IsValid( self:GetOwner() ) == true and IsValid( weapon ) == true then weapon:StopParticles() end
-	self:RemoveParticles()
+	self.ClearParticles = true
 	
 end
 
 SWEP.Flames = {}
 
 function SWEP:CreateFlame( startpos, endpos )
+	
+	if IsFirstTimePredicted() ~= true then return end
 	
 	if startpos == nil or endpos == nil then
 		
@@ -324,15 +334,35 @@ function SWEP:CreateFlame( startpos, endpos )
 	flame.life = self.FlameLife
 	flame.time = self.FlameTime
 	
+	if CLIENT then
+		
+		local mdl = ClientsideModel( "models/weapons/w_models/w_drg_ball.mdl" )
+		mdl:SetNoDraw( true )
+		mdl:SetPos( flame.pos )
+		mdl:SetAngles( flame.ang )
+		
+		local particle = self.ProjectileParticleRed
+		if self:GetTeam() == true then particle = self.ProjectileParticleBlue end
+		flame.particle = self:AddParticle( particle, { {
+			
+			entity = mdl,
+			attachtype = PATTACH_ABSORIGIN_FOLLOW,
+			
+		} } )
+		
+		flame.mdl = mdl
+		
+	end
+	
 	table.insert( self.Flames, flame )
 	
 end
 
 function SWEP:ManageFlames()
 	
-	local crit = self:DoCrit()
+	if IsFirstTimePredicted() ~= true then return end
 	
-	if self:GetTFLastManage() <= 0 then self:SetTFLastManage( CurTime() ) end
+	local crit = self:DoCrit()
 	
 	for i = 1, #self.Flames do
 		
@@ -342,12 +372,7 @@ function SWEP:ManageFlames()
 			
 			local startpos = flame.pos
 			
-			//local speed = Lerp( flame.delta, flame.speed, flame.endspeed )
-			
-			local endspeed = flame.endspeed - flame.startspeed
-			
-			local speed = flame.endspeed + ( endspeed * ( ( CurTime() - flame.spawned ) / flame.life ) )
-			local vel = speed * ( CurTime() - self:GetTFLastManage() )
+			local vel = Lerp( ( CurTime() - flame.spawned ) / flame.life, flame.startspeed, flame.endspeed ) * FrameTime()
 			
 			local hit = {}
 			
@@ -426,13 +451,27 @@ function SWEP:ManageFlames()
 			
 			flame.pos = tr.HitPos
 			
-			if CurTime() > flame.spawned + flame.life then table.remove( self.Flames, i ) end
+			local mdl = flame.mdl
+			
+			if CurTime() - flame.spawned > flame.life then
+				
+				if IsValid( mdl ) == true then mdl:Remove() end
+				table.remove( self.Flames, i )
+				
+			elseif CurTime() - flame.spawned > flame.life - 0.1 then
+				
+				if IsValid( flame.particle ) == true then flame.particle:StopEmission() end
+				
+			elseif IsValid( mdl ) == true then
+				
+				mdl:SetPos( flame.pos )
+				mdl:SetAngles( flame.ang )
+				
+			end
 			
 		end
 		
 	end
-	
-	self:SetTFLastManage( CurTime() )
 	
 end
 
@@ -481,11 +520,7 @@ function SWEP:Think()
 			
 		end
 		
-		for i = 1, self.Primary.Shots do
-			
-			self:CreateFlame()
-			
-		end
+		for i = 1, self.Primary.Shots do self:CreateFlame() end
 		
 		self:SetTFReloading( false )
 		self:SetTFInspecting( false )
@@ -532,6 +567,16 @@ function SWEP:Think()
 	end
 	
 	self:ManageFlames()
+	
+	if self.ClearParticles == true then
+		
+		local hands, weapon = self:GetViewModels()
+		if IsValid( self:GetOwner() ) == true and IsValid( weapon ) == true then weapon:StopParticles() end
+		self:RemoveParticles()
+		
+		self.ClearParticles = false
+		
+	end
 	
 end
 
