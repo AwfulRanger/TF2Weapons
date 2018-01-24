@@ -162,17 +162,20 @@ function SWEP:DrawSniperDot()
 	local mat = self.SniperDotRedMat
 	if self:GetTeam() == true then mat = self.SniperDotBlueMat end
 	
+	local dist = 32768
+	if self:GetOwner() == LocalPlayer() then dist = 300 end
+	
 	local tr = util.TraceLine( {
 		
 		start = self:GetOwner():GetShootPos(),
-		endpos = self:GetOwner():GetShootPos() + ( self:GetOwner():GetAimVector() * 32768 ),
+		endpos = self:GetOwner():GetShootPos() + ( self:GetOwner():GetAimVector() * dist ),
 		filter = self:GetOwner(),
 		
 	} )
 	
 	local ang = Angle( EyeAngles().r, EyeAngles().y - 90, -EyeAngles().p + 90 )
-	local wh = 64
-	local size = 0.0625
+	local wh = 128
+	local size = 0.0095
 	
 	local center = ( -ang:Forward() * ( wh * ( size * 0.5 ) ) ) + ( -ang:Right() * ( wh * ( size * 0.5 ) ) ) + ( ang:Up() * ( wh * size ) )
 	
@@ -180,7 +183,7 @@ function SWEP:DrawSniperDot()
 		
 		cam.Start3D2D( tr.HitPos + center, ang, size )
 			
-			surface.SetDrawColor( 255, 255, 255, 100 )
+			surface.SetDrawColor( 255, 255, 255, 255 )
 			surface.SetMaterial( mat )
 			
 			surface.DrawTexturedRect( 0, 0, wh, wh )
@@ -194,7 +197,6 @@ function SWEP:DrawSniperDot()
 				local dotsize = wh * charge
 				local dotpos = wh * 0.5
 				
-				surface.SetDrawColor( 255, 255, 255, 255 )
 				surface.DrawTexturedRect( dotpos - ( dotsize * 0.5 ), dotpos - ( dotsize * 0.5 ), dotsize, dotsize )
 				
 			end
