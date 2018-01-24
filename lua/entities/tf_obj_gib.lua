@@ -10,7 +10,7 @@ ENT.AdminOnly = false
 
 function ENT:TFNetworkVar( vartype, varname, default, slot, extended )
 	
-	if self[ "GetTF" .. varname ] != nil or self[ "SetTF" .. varname ] != nil then return end
+	if self[ "GetTF" .. varname ] ~= nil or self[ "SetTF" .. varname ] ~= nil then return end
 	
 	if self.CreatedNetworkVars == nil then self.CreatedNetworkVars = {} end
 	
@@ -20,11 +20,11 @@ function ENT:TFNetworkVar( vartype, varname, default, slot, extended )
 		
 	end
 	
-	if slot != nil then self.CreatedNetworkVars[ vartype ] = slot end
+	if slot ~= nil then self.CreatedNetworkVars[ vartype ] = slot end
 	slot = self.CreatedNetworkVars[ vartype ]
 	
 	self:NetworkVar( vartype, slot, "TF" .. varname, extended )
-	if SERVER and default != nil then self[ "SetTF" .. varname ]( self, default ) end
+	if SERVER and default ~= nil then self[ "SetTF" .. varname ]( self, default ) end
 	
 	self.CreatedNetworkVars[ vartype ] = self.CreatedNetworkVars[ vartype ] + 1
 	
@@ -69,7 +69,7 @@ end
 
 function ENT:Touch( ent )
 	
-	if self:GetTFTouched() != true and ent:IsPlayer() == true then
+	if self:GetTFTouched() ~= true and ent:IsPlayer() == true then
 		
 		ent:GiveAmmo( self:GetTFScrap(), "tf2weapons_metal" )
 		self:Remove()

@@ -145,9 +145,9 @@ function SWEP:GetProjectileParticles()
 	local trail
 	local explode
 	
-	if self:GetTeam() != true then
+	if self:GetTeam() ~= true then
 		
-		if self:ShouldCrit() != true then
+		if self:ShouldCrit() ~= true then
 			
 			trail = pp.red_trail
 			explode = pp.red_explode
@@ -161,7 +161,7 @@ function SWEP:GetProjectileParticles()
 		
 	else
 		
-		if self:ShouldCrit() != true then
+		if self:ShouldCrit() ~= true then
 			
 			trail = pp.blue_trail
 			explode = pp.blue_explode

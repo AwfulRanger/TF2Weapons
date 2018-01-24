@@ -33,7 +33,7 @@ local langfiles = {
 local langf = langfiles[ gmlang ] or defaultlang
 
 local f = file.Open( langf, "r", "tf" )
-if f != nil then
+if f ~= nil then
 	
 	local skip = 2
 	f:Skip( skip )
@@ -47,14 +47,14 @@ if f != nil then
 	local tokens = false
 	for i = 1, #explode do
 		
-		if tokens != true then
+		if tokens ~= true then
 			
-			if string.match( string.lower( explode[ i ] ), "\"tokens\"" ) != nil then tokens = true end
+			if string.match( string.lower( explode[ i ] ), "\"tokens\"" ) ~= nil then tokens = true end
 			
 		else
 			
 			local key, value = string.match( explode[ i ], "\"(.-)\".-\"(.-)\"" )
-			if key != nil and value != nil then
+			if key ~= nil and value ~= nil then
 				
 				language.Add( key, value )
 				

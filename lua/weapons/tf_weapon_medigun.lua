@@ -197,7 +197,7 @@ SWEP.UberchargeMaterialBlue = Material( "models/effects/invulnfx_blue" )
 
 function SWEP:EnableUbercharge( ent )
 	
-	if IsValid( ent ) != true then return end
+	if IsValid( ent ) ~= true then return end
 	
 	local ubermat = self.UberchargeMaterialRed:GetName()
 	if self:GetTeam() == true then ubermat = self.UberchargeMaterialBlue:GetName() end
@@ -220,7 +220,7 @@ end
 
 function SWEP:DisableUbercharge( ent )
 	
-	if IsValid( ent ) != true then return end
+	if IsValid( ent ) ~= true then return end
 	
 	ent:SetNW2Bool( "Ubercharged", false )
 	if SERVER and ent:IsPlayer() == true then ent:GodDisable() end
@@ -268,7 +268,7 @@ function SWEP:CreateBeamParticle()
 	local particle = self.MediGunBeamRed
 	if self:GetTeam() == true then particle = self.MediGunBeamBlue end
 	
-	if SERVER or IsFirstTimePredicted() != true then return end
+	if SERVER or IsFirstTimePredicted() ~= true then return end
 	
 	if self:DrawingVM() == true then
 		
@@ -325,15 +325,15 @@ function SWEP:DoHealing()
 	
 	if self:Healing() == true then
 		
-		if self:CheckPatient() != true then self:GetPatient() end
+		if self:CheckPatient() ~= true then self:GetPatient() end
 		
 		if IsValid( self:GetTFPatient() ) == true then
 			
-			if self:GetTFBeamDeployed() != true or self:GetTFPatient() != self:GetTFBeamTarget() then
+			if self:GetTFBeamDeployed() ~= true or self:GetTFPatient() ~= self:GetTFBeamTarget() then
 				
 				self:SetTFBeamTarget( self:GetTFPatient() )
 				
-				if IsValid( self:GetTFBeamTarget() ) != true then return end
+				if IsValid( self:GetTFBeamTarget() ) ~= true then return end
 				
 				self:CreateBeamParticle()
 				
@@ -367,7 +367,7 @@ function SWEP:DoHealing()
 			self:Heal( self:GetPatient() )
 			
 			/*
-			if CLIENT and self.BeamViewModel != self:DrawingVM() then
+			if CLIENT and self.BeamViewModel ~= self:DrawingVM() then
 				
 				self:CreateBeamParticle()
 				
@@ -436,7 +436,7 @@ end
 
 function SWEP:GetPatient()
 	
-	if IsValid( self:GetTFPatient() ) != true then
+	if IsValid( self:GetTFPatient() ) ~= true then
 		
 		if self:GetOwner():IsPlayer() == true then self:GetOwner():LagCompensation( true ) end
 		trace = util.TraceLine( { start = self:GetOwner():GetShootPos(), endpos = self:GetOwner():GetShootPos() + self:GetOwner():GetAimVector() * self.Primary.Range, filter = self:GetOwner(), mask = MASK_SHOT } )
@@ -469,25 +469,25 @@ function SWEP:CheckPatient( dontremove )
 	local valid = IsValid( ent )
 	if valid == true then
 		
-		if IsValid( self:GetOwner() ) != true then
+		if IsValid( self:GetOwner() ) ~= true then
 			
 			valid = false
 			
 		else
 			
-			if SERVER and ent:Visible( self:GetOwner() ) != true then valid = false end
+			if SERVER and ent:Visible( self:GetOwner() ) ~= true then valid = false end
 			if ent:GetPos():Distance( self:GetOwner():GetPos() ) > self.Primary.Range then valid = false end
 			
 			local teammates = GetConVar( "tf2weapons_heal_teammates" ):GetInt()
-			if teammates != 2 then
+			if teammates ~= 2 then
 				
 				if teammates <= 0 then
 					
-					if ent:IsNPC() != true and hook.Run( "PlayerShouldTakeDamage", self:GetOwner(), ent ) == true then valid = false end
+					if ent:IsNPC() ~= true and hook.Run( "PlayerShouldTakeDamage", self:GetOwner(), ent ) == true then valid = false end
 					
 				elseif teammates == 1 then
 					
-					if ent:IsNPC() != true and hook.Run( "PlayerShouldTakeDamage", self:GetOwner(), ent ) != true then valid = false end
+					if ent:IsNPC() ~= true and hook.Run( "PlayerShouldTakeDamage", self:GetOwner(), ent ) ~= true then valid = false end
 					
 				end
 				
@@ -497,7 +497,7 @@ function SWEP:CheckPatient( dontremove )
 		
 	end
 	
-	if valid == false and dontremove != true then
+	if valid == false and dontremove ~= true then
 		
 		if IsValid( ent ) == true then self:DisableUbercharge( ent ) end
 		self:SetTFPatient( nil )
@@ -518,12 +518,12 @@ end
 
 function SWEP:Heal( target )
 	
-	if IsValid( target ) != true then return end
+	if IsValid( target ) ~= true then return end
 	
 	--health
 	
 	local healthmult = self.Primary.Overheal
-	if GetConVar( "tf2weapons_overheal" ):GetBool() != true then healthmult = 1 end
+	if GetConVar( "tf2weapons_overheal" ):GetBool() ~= true then healthmult = 1 end
 	
 	local hps = self.Primary.HPSInCombat
 	local time = CurTime() - target:GetNW2Float( "TFLastDamage", 0 )
@@ -624,7 +624,7 @@ function SWEP:BuildWorldModelBones( ent, count )
 		
 		local lpos, lang = self:GetOwner():GetBonePosition( lhandbone )
 		
-		if self:GetOwner():LookupAttachment( "anim_attachment_lh" ) != 0 then lpos = self:GetOwner():GetAttachment( self:GetOwner():LookupAttachment( "anim_attachment_lh" ) ).Pos end
+		if self:GetOwner():LookupAttachment( "anim_attachment_lh" ) ~= 0 then lpos = self:GetOwner():GetAttachment( self:GetOwner():LookupAttachment( "anim_attachment_lh" ) ).Pos end
 		
 		lang:RotateAroundAxis( lang:Up(), 180 )
 		
@@ -632,7 +632,7 @@ function SWEP:BuildWorldModelBones( ent, count )
 		
 		for i = 0, self:GetBoneCount() - 1 do
 			
-			if i != weaponbonel and string.lower( self:GetBoneName( i ) ) != "__invalidbone__" then
+			if i ~= weaponbonel and string.lower( self:GetBoneName( i ) ) ~= "__invalidbone__" then
 				
 				local cpos, cang = self:GetBonePosition( i )
 				
@@ -655,7 +655,7 @@ function SWEP:BuildWorldModelBones( ent, count )
 		
 		local rpos, rang = self:GetOwner():GetBonePosition( rhandbone )
 		
-		if self:GetOwner():LookupAttachment( "anim_attachment_rh" ) != 0 then rpos = self:GetOwner():GetAttachment( self:GetOwner():LookupAttachment( "anim_attachment_rh" ) ).Pos end
+		if self:GetOwner():LookupAttachment( "anim_attachment_rh" ) ~= 0 then rpos = self:GetOwner():GetAttachment( self:GetOwner():LookupAttachment( "anim_attachment_rh" ) ).Pos end
 		
 		self:SetBonePosition( weaponboner, rpos, rang )
 		*/

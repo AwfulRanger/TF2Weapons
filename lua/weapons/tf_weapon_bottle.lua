@@ -121,7 +121,7 @@ function SWEP:Think()
 		
 		local trace = self:DoSwing( nil, nil, nil, true )
 		
-		if trace.Entity != nil and trace.Entity != NULL and isentity( trace.Entity ) == true and self.Breakable == true and self:GetTFBroken() == false and self:GetTFNextHitCrit() == true then
+		if trace.Entity ~= nil and trace.Entity ~= NULL and isentity( trace.Entity ) == true and self.Breakable == true and self:GetTFBroken() == false and self:GetTFNextHitCrit() == true then
 			
 			if game.SinglePlayer() == true then
 				

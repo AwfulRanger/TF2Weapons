@@ -147,7 +147,7 @@ end
 function SWEP:OnBackstab( ent, damage )
 	
 	local sanguisuge = self:GetAttributeClass( "sanguisuge" )
-	if sanguisuge != nil and sanguisuge > 0 then self:GiveHealth( ent:Health(), self:GetOwner(), -1 ) end
+	if sanguisuge ~= nil and sanguisuge > 0 then self:GiveHealth( ent:Health(), self:GetOwner(), -1 ) end
 	
 end
 

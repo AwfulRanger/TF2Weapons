@@ -104,7 +104,7 @@ end
 function SWEP:GetCharge()
 	
 	local charge = ( CurTime() - self:GetTFChargeStart() ) / self.ChargeTime
-	if charge < 0 or self:GetTFCharging() != true then charge = 0 end
+	if charge < 0 or self:GetTFCharging() ~= true then charge = 0 end
 	if charge > 1 then charge = 1 end
 	
 	return charge
@@ -193,9 +193,9 @@ function SWEP:GetProjectileParticles()
 	local trail
 	local explode
 	
-	if self:GetTeam() != true then
+	if self:GetTeam() ~= true then
 		
-		if self:ShouldCrit() != true then
+		if self:ShouldCrit() ~= true then
 			
 			trail = pp.red_trail
 			explode = pp.red_explode
@@ -209,7 +209,7 @@ function SWEP:GetProjectileParticles()
 		
 	else
 		
-		if self:ShouldCrit() != true then
+		if self:ShouldCrit() ~= true then
 			
 			trail = pp.blue_trail
 			explode = pp.blue_explode
@@ -236,11 +236,11 @@ SWEP.ChargeTime = 4
 
 function SWEP:Charge()
 	
-	if self:CanPrimaryAttack() != true then return end
+	if self:CanPrimaryAttack() ~= true then return end
 	
 	if self:GetOwner():KeyDown( IN_ATTACK ) == true then
 		
-		if self:GetTFCharging() != true then
+		if self:GetTFCharging() ~= true then
 			
 			self:SetTFCharging( true )
 			self:SetTFChargeStart( CurTime() )
@@ -300,7 +300,7 @@ end
 
 function SWEP:PrimaryAttack( charged, charge )
 	
-	if charged != true or self:CanPrimaryAttack() == false then return end
+	if charged ~= true or self:CanPrimaryAttack() == false then return end
 	
 	if game.SinglePlayer() == true then self:CallOnClient( tostring( charged ) .. " " .. tostring( charge ) ) end
 	
@@ -385,7 +385,7 @@ function SWEP:RemovePipes( explode, force, mute )
 	
 	for _, v in pairs( self.Pipebombs ) do
 		
-		if force != true then
+		if force ~= true then
 			
 			if IsValid( v ) == true and CurTime() > v:GetTFTime() then
 				
@@ -439,7 +439,7 @@ function SWEP:RemovePipes( explode, force, mute )
 		
 	end
 	
-	if playsound == true and mute != true then self:PlaySound( self.DetonateSound ) end
+	if playsound == true and mute ~= true then self:PlaySound( self.DetonateSound ) end
 	
 end
 

@@ -10,9 +10,9 @@ if SERVER then
 	
 	concommand.Add( "tf2weapons_build", function( ply, cmd, args, arg )
 		
-		if ply:HasWeapon( "tf_weapon_pda_engineer_build" ) != true then return end
+		if ply:HasWeapon( "tf_weapon_pda_engineer_build" ) ~= true then return end
 		local wep = ply:GetWeapon( "tf_weapon_pda_engineer_build" )
-		if IsValid( wep ) != true then return end
+		if IsValid( wep ) ~= true then return end
 		
 		local toolbox = wep.Toolbox
 		if toolbox == nil then toolbox = "tf_weapon_builder" end
@@ -30,7 +30,7 @@ if SERVER then
 			
 		elseif build == 1 then --teleporter
 			
-			if alt != nil and alt > 0 then --exit
+			if alt ~= nil and alt > 0 then --exit
 				
 				num = TF2Weapons.Building.EXIT
 				
@@ -52,9 +52,9 @@ if SERVER then
 		
 		if plybuildings == nil or plybuildings[ num ] == nil or #plybuildings[ num ] < building.Limit then
 			
-			if plybuildings != nil then
+			if plybuildings ~= nil then
 				
-				if plybuildings[ num ] != nil then
+				if plybuildings[ num ] ~= nil then
 					
 					id = #plybuildings[ num ] + 1
 					
@@ -101,7 +101,7 @@ if SERVER then
 			
 		elseif build == 1 then --teleporter
 			
-			if alt != nil and alt > 0 then --exit
+			if alt ~= nil and alt > 0 then --exit
 				
 				num = TF2Weapons.Building.EXIT
 				
@@ -115,10 +115,10 @@ if SERVER then
 		
 		local plybuildings = ply.TF2Weapons_Buildings
 		
-		if plybuildings != nil and plybuildings[ num ] != nil then
+		if plybuildings ~= nil and plybuildings[ num ] ~= nil then
 			
 			local building = plybuildings[ num ][ #plybuildings[ num ] ]
-			if IsValid( building ) == true and building.OnDestroy != nil then building:OnDestroy() end
+			if IsValid( building ) == true and building.OnDestroy ~= nil then building:OnDestroy() end
 			
 		end
 		
@@ -147,7 +147,7 @@ else
 		local ent = net.ReadEntity()
 		local level = net.ReadInt( 32 )
 		
-		if IsValid( ent ) == true and ent.SetLevel != nil then
+		if IsValid( ent ) == true and ent.SetLevel ~= nil then
 			
 			ent:SetLevel( level )
 			
@@ -161,7 +161,7 @@ else
 		local num = net.ReadInt( 32 )
 		local build = net.ReadEntity()
 		
-		if IsValid( ply ) == true and num != nil then
+		if IsValid( ply ) == true and num ~= nil then
 			
 			local plybuildings = ply.TF2Weapons_Buildings
 			
@@ -184,7 +184,7 @@ else
 		local key = net.ReadInt( 32 )
 		local build = net.ReadEntity()
 		
-		if IsValid( ply ) != true or num == nil then return end
+		if IsValid( ply ) ~= true or num == nil then return end
 		
 		local plybuildings = ply.TF2Weapons_Buildings
 			
@@ -192,11 +192,11 @@ else
 		
 		if valid == true then
 			
-			if key != nil then plybuildings[ num ][ key ] = nil end
+			if key ~= nil then plybuildings[ num ][ key ] = nil end
 			
 		else
 			
-			if build != nil then table.RemoveByValue( plybuildings[ num ], build ) end
+			if build ~= nil then table.RemoveByValue( plybuildings[ num ], build ) end
 			
 		end
 		
@@ -376,7 +376,7 @@ end
 function SWEP:SetBuild( build, alt )
 	
 	local a = false
-	if alt != nil and alt > 0 then a = true end
+	if alt ~= nil and alt > 0 then a = true end
 	
 	if build == 0 then --dispenser
 		
@@ -500,7 +500,7 @@ function SWEP:ValidBuildPosition( pos, ang, building )
 				
 			} )
 			
-			if tr.Hit != true then valid = false end
+			if tr.Hit ~= true then valid = false end
 			
 		end
 		
@@ -520,20 +520,20 @@ function SWEP:ManageGhostBuilding()
 	
 	if building == nil then return end
 	
-	if IsValid( self.GhostBuilding ) != true then
+	if IsValid( self.GhostBuilding ) ~= true then
 		
 		self.GhostBuilding = ClientsideModel( building.Model )
 		
 	end
-	if IsValid( self.GhostBuilding ) != true then return end
+	if IsValid( self.GhostBuilding ) ~= true then return end
 	
-	if self.GhostBuilding:GetModel() != building.Model then self.GhostBuilding:SetModel( building.Model ) end
+	if self.GhostBuilding:GetModel() ~= building.Model then self.GhostBuilding:SetModel( building.Model ) end
 	
 	self.GhostBuilding:SetPos( self:GetBuildPosition() )
 	self.GhostBuilding:SetAngles( self:GetBuildAngle() )
 	
 	local seq = self.GhostBuilding:LookupSequence( building.IdleAnim )
-	if self:ValidBuildPosition() != true then seq = self.GhostBuilding:LookupSequence( building.RejectAnim ) end
+	if self:ValidBuildPosition() ~= true then seq = self.GhostBuilding:LookupSequence( building.RejectAnim ) end
 	
 	self.GhostBuilding:SetSequence( seq )
 	
@@ -583,7 +583,7 @@ function SWEP:Build()
 	
 	local build = ents.Create( building.Class )
 	
-	if IsValid( build ) != true then return end
+	if IsValid( build ) ~= true then return end
 	
 	build:SetPos( self:GetBuildPosition() )
 	build:SetAngles( self:GetBuildAngle() )
@@ -625,7 +625,7 @@ function SWEP:PrimaryAttack()
 					
 					timer.Simple( 0, function()
 						
-						if IsValid( owner ) != true or num == nil then return end
+						if IsValid( owner ) ~= true or num == nil then return end
 						
 						net.Start( "tf2weapons_building_insert" )
 							

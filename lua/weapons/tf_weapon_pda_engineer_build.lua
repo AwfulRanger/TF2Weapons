@@ -4,17 +4,17 @@ SWEP.TF2Weapons_BlockSlotBinds = true
 
 hook.Add( "PlayerBindPress", "TF2Weapons_PDA_BlockSlotBinds", function( ply, bind, pressed )
 	
-	if pressed != true then return end
+	if pressed ~= true then return end
 	local weapon = ply:GetActiveWeapon()
-	if IsValid( weapon ) != true or weapon.TF2Weapons_BlockSlotBinds != true or weapon.OnSlotBind == nil then return end
+	if IsValid( weapon ) ~= true or weapon.TF2Weapons_BlockSlotBinds ~= true or weapon.OnSlotBind == nil then return end
 	
 	local startpos, endpos = string.find( bind, "slot" )
 	
-	if startpos != 1 then return end
+	if startpos ~= 1 then return end
 	
 	local slot = tonumber( string.Right( bind, #bind - endpos ) )
 	
-	if slot != nil then
+	if slot ~= nil then
 		
 		weapon:OnSlotBind( slot )
 		
@@ -182,7 +182,7 @@ function SWEP:OnSlotBind( slot )
 		
 		RunConsoleCommand( "lastinv" )
 		
-	elseif build != nil then
+	elseif build ~= nil then
 		
 		RunConsoleCommand( self.BuildCommand, build.BuildArguments[ 1 ], build.BuildArguments[ 2 ] )
 		
@@ -199,15 +199,15 @@ function SWEP:HUD_Scale( res, y )
 	
 	local result = size * ( ScrH() / 480 )
 	
-	if y != true then
+	if y ~= true then
 		
-		if string.find( res, "r" ) != nil then result = ScrW() - result end
-		if string.find( res, "c" ) != nil then result = ( ScrW() * 0.5 ) + result end
+		if string.find( res, "r" ) ~= nil then result = ScrW() - result end
+		if string.find( res, "c" ) ~= nil then result = ( ScrW() * 0.5 ) + result end
 		
 	else
 		
-		if string.find( res, "r" ) != nil then result = ScrH() - result end
-		if string.find( res, "c" ) != nil then result = ( ScrH() * 0.5 ) + result end
+		if string.find( res, "r" ) ~= nil then result = ScrH() - result end
+		if string.find( res, "c" ) ~= nil then result = ( ScrH() * 0.5 ) + result end
 		
 	end
 	
@@ -300,7 +300,7 @@ function SWEP:DrawHUD()
 		surface.SetTextPos( x + scale( "6" ), y )
 		surface.DrawText( build[ i ].Name )
 		
-		if alreadybuilt != true and canafford == true then
+		if alreadybuilt ~= true and canafford == true then
 			
 			surface.SetDrawColor( 251, 235, 202, 255 )
 			surface.SetMaterial( mat.BuildBackground )
@@ -316,7 +316,7 @@ function SWEP:DrawHUD()
 			
 		end
 		
-		if alreadybuilt != true and canafford == true then
+		if alreadybuilt ~= true and canafford == true then
 			
 			surface.SetDrawColor( 255, 255, 255, 255 )
 			surface.SetMaterial( build[ i ].BuildIcon )
@@ -330,7 +330,7 @@ function SWEP:DrawHUD()
 			
 			surface.SetDrawColor( 117, 107, 94, 255 )
 			
-		elseif canafford != true then
+		elseif canafford ~= true then
 			
 			surface.SetDrawColor( 192, 28, 0, 255 )
 			
@@ -344,7 +344,7 @@ function SWEP:DrawHUD()
 			
 			surface.SetTextColor( 117, 107, 94, 255 )
 			
-		elseif canafford != true then
+		elseif canafford ~= true then
 			
 			surface.SetTextColor( 192, 28, 0, 255 )
 			
@@ -370,7 +370,7 @@ function SWEP:DrawHUD()
 			surface.SetTextPos( x + scale( "23" ), y + scale( "49" ) )
 			surface.DrawText( "Already Built" )
 			
-		elseif canafford != true then
+		elseif canafford ~= true then
 			
 			surface.SetTextColor( 192, 28, 0, 255 )
 			surface.SetTextPos( x + scale( "21" ), y + scale( "45" ) )

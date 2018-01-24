@@ -216,7 +216,7 @@ function SWEP:Spool()
 	
 	local hands, weapon = self:GetViewModels()
 	
-	if self:GetOwner():KeyDown( IN_ATTACK ) != true and ( self.TF2Weapons_SoundPlaying == self.ShootSound or self.TF2Weapons_SoundPlaying == self.ShootSoundCrit ) then
+	if self:GetOwner():KeyDown( IN_ATTACK ) ~= true and ( self.TF2Weapons_SoundPlaying == self.ShootSound or self.TF2Weapons_SoundPlaying == self.ShootSoundCrit ) then
 		
 		self:PlaySound( self.ShootSoundEnd )
 		
@@ -380,12 +380,12 @@ function SWEP:Spool()
 		if IsValid( self:GetOwner() ) == true and IsValid( hands ) == true and IsValid( weapon ) == true then
 			
 			local bone = weapon:LookupBone( "barrel" )
-			if bone != nil then weapon:ManipulateBoneAngles( bone, Angle( 0, self.SpinAngle, 0 ) ) end
+			if bone ~= nil then weapon:ManipulateBoneAngles( bone, Angle( 0, self.SpinAngle, 0 ) ) end
 			
 		end
 		
 		local bone = self:LookupBone( "barrel" )
-		if bone != nil then self:ManipulateBoneAngles( bone, Angle( 0, self.SpinAngle, 0 ) ) end
+		if bone ~= nil then self:ManipulateBoneAngles( bone, Angle( 0, self.SpinAngle, 0 ) ) end
 		
 	end
 	
@@ -423,7 +423,7 @@ function SWEP:DoPrimaryAttack( bullet, crit )
 	
 	local crit = self:DoCrit()
 	
-	if bullet != nil then self:GetOwner():FireBullets( bullet ) end
+	if bullet ~= nil then self:GetOwner():FireBullets( bullet ) end
 	
 	local fire = self:GetHandAnim( "fire" )
 	self:SetVMAnimation( fire )
@@ -459,7 +459,7 @@ function SWEP:DoPrimaryAttack( bullet, crit )
 	self:SetTFMuzzleParticleRemove( CurTime() + ( engine.TickInterval() * 10 ) )
 	
 	local sound = self.ShootSound
-	if crit == true and self.ShootSoundCrit != nil then sound = self.ShootSoundCrit end
+	if crit == true and self.ShootSoundCrit ~= nil then sound = self.ShootSoundCrit end
 	
 	self:PlaySound( sound )
 	
@@ -484,7 +484,7 @@ function SWEP:Deploy()
 	if IsValid( self:GetOwner() ) == true and IsValid( weapon ) == true then
 		
 		self.LastBarrelBone = weapon:LookupBone( "barrel" )
-		if self.LastBarrelBone != nil then self.LastBarrelAngle = weapon:GetManipulateBoneAngles( self.LastBarrelBone ) end
+		if self.LastBarrelBone ~= nil then self.LastBarrelAngle = weapon:GetManipulateBoneAngles( self.LastBarrelBone ) end
 		
 	end
 	if isangle( self.LastBarrelAngle ) == false then self.LastBarrelAngle = Angle( 0, 0, 0 ) end
@@ -499,7 +499,7 @@ function SWEP:ResetSpool( ang, bone )
 	if isangle( ang ) == false then ang = Angle( 0, 0, 0 ) end
 	if isnumber( bone ) == false then bone = self.LastBarrelBone end
 	local hands, weapon = self:GetViewModels( self:GetTFLastOwner() )
-	if IsValid( self:GetTFLastOwner() ) == true and IsValid( weapon ) == true and ang != nil and bone != nil then weapon:ManipulateBoneAngles( bone, ang ) end
+	if IsValid( self:GetTFLastOwner() ) == true and IsValid( weapon ) == true and ang ~= nil and bone ~= nil then weapon:ManipulateBoneAngles( bone, ang ) end
 	
 end
 

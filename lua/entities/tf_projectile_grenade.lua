@@ -87,9 +87,9 @@ end
 
 function ENT:Touch( ent )
 	
-	if ent != self:GetOwner() and ent:GetOwner() != self:GetOwner() and self:GetTFHit() != true then
+	if ent ~= self:GetOwner() and ent:GetOwner() ~= self:GetOwner() and self:GetTFHit() ~= true then
 		
-		if ( ent:IsPlayer() == true or ent:IsNPC() == true ) and ent != self:GetOwner() and self:GetTFHit() != true then
+		if ( ent:IsPlayer() == true or ent:IsNPC() == true ) and ent ~= self:GetOwner() and self:GetTFHit() ~= true then
 			
 			if IsValid( self:GetTFHitEntity() ) == false then self:SetTFHitEntity( ent ) end
 			
@@ -113,13 +113,13 @@ end
 
 function ENT:PhysicsCollide( data, collider )
 	
-	if util.TraceLine( { start = data.HitPos, endpos = data.HitPos + data.HitNormal } ).HitSky != false then
+	if util.TraceLine( { start = data.HitPos, endpos = data.HitPos + data.HitNormal } ).HitSky ~= false then
 		
 		self:Remove()
 		
 	end
 	
-	if data.HitEntity != self:GetOwner() and data.HitEntity:GetOwner() != self:GetOwner() and self:GetTFHit() != true then
+	if data.HitEntity ~= self:GetOwner() and data.HitEntity:GetOwner() ~= self:GetOwner() and self:GetTFHit() ~= true then
 		
 		if data.HitEntity:IsPlayer() == true or data.HitEntity:IsNPC() == true then
 			
@@ -158,7 +158,7 @@ function ENT:Explode( remove, damage )
 	if game.SinglePlayer() == true or IsFirstTimePredicted() == true then
 		
 		local explode = self:GetParticles().explode
-		if explode != nil and explode != "" then ParticleEffect( explode, self:GetPos(), self:GetAngles() ) end
+		if explode ~= nil and explode ~= "" then ParticleEffect( explode, self:GetPos(), self:GetAngles() ) end
 		
 	end
 	
@@ -184,12 +184,12 @@ function ENT:Explode( remove, damage )
 	local hit = ents.FindInSphere( self:GetPos(), self:GetTFRadius() )
 	for i = 1, #hit do
 		
-		if ( hit[ i ]:IsPlayer() == true or hit[ i ]:IsNPC() == true ) and hit[ i ] != self:GetOwner() then playerhit = true end
+		if ( hit[ i ]:IsPlayer() == true or hit[ i ]:IsNPC() == true ) and hit[ i ] ~= self:GetOwner() then playerhit = true end
 		if hit[ i ] == self:GetOwner() then
 			
 			ownerhit = true
 			
-		elseif hit[ i ] != self:GetTFHitEntity() then
+		elseif hit[ i ] ~= self:GetTFHitEntity() then
 			
 			local distance = self:GetPos():Distance( hit[ i ]:GetPos() + hit[ i ]:OBBCenter() )
 			local damagemod = ( distance / 2.88 ) * 0.01
@@ -201,7 +201,7 @@ function ENT:Explode( remove, damage )
 			dmg:SetReportedPosition( self:GetPos() )
 			dmg:SetDamagePosition( self:GetPos() )
 			dmg:SetDamageType( DMG_BLAST )
-			if self:GetTFCrit() == true and hit[ i ] != self:GetOwner() then
+			if self:GetTFCrit() == true and hit[ i ] ~= self:GetOwner() then
 				
 				dmg:SetDamage( ( damage - ( damage * damagemod ) ) * self:GetTFCritMult() )
 				
@@ -219,7 +219,7 @@ function ENT:Explode( remove, damage )
 				Entity = hit[ i ],
 				HitEntity = self:GetTFHitEntity(),
 				
-			} ) != true then
+			} ) ~= true then
 				
 				local hitpos = hit[ i ]:GetPos() + hit[ i ]:OBBCenter()
 				local dir = ( hitpos - self:GetPos() ):Angle()
@@ -252,7 +252,7 @@ function ENT:Explode( remove, damage )
 			dmg:SetReportedPosition( self:GetPos() )
 			dmg:SetDamagePosition( self:GetPos() )
 			dmg:SetDamageType( DMG_BLAST )
-			if self:GetTFCrit() == true and hit[ i ] != self:GetOwner() then
+			if self:GetTFCrit() == true and hit[ i ] ~= self:GetOwner() then
 				
 				dmg:SetDamage( self:GetTFImpactDamage() * self:GetTFCritMult() )
 				
@@ -270,7 +270,7 @@ function ENT:Explode( remove, damage )
 				Entity = hit[ i ],
 				HitEntity = self:GetTFHitEntity(),
 				
-			} ) != true then
+			} ) ~= true then
 				
 				local hitpos = hit[ i ]:GetPos() + hit[ i ]:OBBCenter()
 				local dir = ( hitpos - self:GetPos() ):Angle()
@@ -324,7 +324,7 @@ function ENT:Explode( remove, damage )
 			Projectile = self,
 			Entity = self:GetOwner(),
 			
-		} ) != true then
+		} ) ~= true then
 			
 			local hitpos = self:GetOwner():GetPos() + self:GetOwner():OBBCenter()
 			local dir = ( hitpos - self:GetPos() ):Angle()

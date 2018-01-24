@@ -160,9 +160,9 @@ function SWEP:DoSwing( hit, damage, ent, keepcrit )
 	if damage == nil then damage = self.Primary.Damage end
 	damage = self:GetDamageMods( damage, nil, ent, self:GetTFNextHitCrit() )
 	
-	if hit != false then
+	if hit ~= false then
 		
-		if ent != nil and ent != NULL then
+		if ent ~= nil and ent ~= NULL then
 			
 			local dmg = DamageInfo()
 			dmg:SetInflictor( self )
@@ -183,7 +183,7 @@ function SWEP:DoSwing( hit, damage, ent, keepcrit )
 				
 			end
 			
-			if SERVER and ent:IsWorld() != true and friendly != true then
+			if SERVER and ent:IsWorld() ~= true and friendly ~= true then
 				
 				ent:TakeDamageInfo( dmg )
 				
@@ -209,11 +209,11 @@ function SWEP:DoSwing( hit, damage, ent, keepcrit )
 					
 					if upgraded == true then
 						
-						if self.HitBuildingSuccessSound != nil then sound = self.HitBuildingSuccessSound end
+						if self.HitBuildingSuccessSound ~= nil then sound = self.HitBuildingSuccessSound end
 						
 					else
 						
-						if self.HitBuildingFailSound != nil then sound = self.HitBuildingFailSound end
+						if self.HitBuildingFailSound ~= nil then sound = self.HitBuildingFailSound end
 						
 					end
 					
@@ -223,9 +223,9 @@ function SWEP:DoSwing( hit, damage, ent, keepcrit )
 				
 			end
 			
-			if friendly != true then
+			if friendly ~= true then
 				
-				if self.HitDecals[ trace.MatType ] != nil then
+				if self.HitDecals[ trace.MatType ] ~= nil then
 					
 					util.Decal( self.HitDecals[ trace.MatType ], self:GetOwner():GetShootPos(), trace.HitPos + trace.Normal * 10 )
 					
@@ -241,7 +241,7 @@ function SWEP:DoSwing( hit, damage, ent, keepcrit )
 		
 		self:SetTFSwinging( false )
 		self:SetTFPreventInspect( false )
-		if keepcrit != true then self:SetTFNextHitCrit( false ) end
+		if keepcrit ~= true then self:SetTFNextHitCrit( false ) end
 		
 	end
 	
@@ -344,7 +344,7 @@ function SWEP:DoPrimaryAttack( anim, crit )
 		if crit == true then swing = self:GetHandAnim( "crit" ) end
 		self:SetVMAnimation( swing )
 		
-	elseif anim != "" then
+	elseif anim ~= "" then
 		
 		local swing = self:GetHandAnim( anim )
 		self:SetVMAnimation( swing )

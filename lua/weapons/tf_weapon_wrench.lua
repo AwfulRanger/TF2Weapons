@@ -84,11 +84,11 @@ function SWEP:BuildUpgradeMax( base )
 	if base == nil then
 		
 		base = 25
-		if self.BuildUpgradeBase != nil then base = self.BuildUpgradeBase end
+		if self.BuildUpgradeBase ~= nil then base = self.BuildUpgradeBase end
 		
 	end
 	
-	if self.BuildUpgradeMult != nil then base = base * self.BuildUpgradeMult end
+	if self.BuildUpgradeMult ~= nil then base = base * self.BuildUpgradeMult end
 	
 	return base
 	
@@ -99,11 +99,11 @@ function SWEP:BuildRepairMax( base )
 	if base == nil then
 		
 		base = 105
-		if self.BuildRepairBase != nil then base = self.BuildRepairBase end
+		if self.BuildRepairBase ~= nil then base = self.BuildRepairBase end
 		
 	end
 	
-	if self.BuildRepairMult != nil then base = base * self.BuildRepairMult end
+	if self.BuildRepairMult ~= nil then base = base * self.BuildRepairMult end
 	
 	return base
 	
@@ -114,11 +114,11 @@ function SWEP:BuildConstructRate( base )
 	if base == nil then
 		
 		base = 2
-		if self.BuildConstructRateBase != nil then base = self.BuildConstructRateBase end
+		if self.BuildConstructRateBase ~= nil then base = self.BuildConstructRateBase end
 		
 	end
 	
-	if self.BuildConstructRateMult != nil then base = base * self.BuildConstructRateMult end
+	if self.BuildConstructRateMult ~= nil then base = base * self.BuildConstructRateMult end
 	
 	return base
 	

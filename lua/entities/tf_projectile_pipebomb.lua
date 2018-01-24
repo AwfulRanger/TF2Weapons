@@ -96,19 +96,19 @@ end
 
 function ENT:Touch( ent )
 	
-	if ent:IsWorld() != false and ent != self:GetOwner() and ent:GetOwner() != self:GetOwner() and IsValid( self:GetPhysicsObject() ) == true then self:GetPhysicsObject():EnableMotion( false ) end
+	if ent:IsWorld() ~= false and ent ~= self:GetOwner() and ent:GetOwner() ~= self:GetOwner() and IsValid( self:GetPhysicsObject() ) == true then self:GetPhysicsObject():EnableMotion( false ) end
 	
 end
 
 function ENT:PhysicsCollide( data, collider )
 	
-	if data.HitEntity != self:GetOwner() and data.HitEntity:GetOwner() != self:GetOwner() then
+	if data.HitEntity ~= self:GetOwner() and data.HitEntity:GetOwner() ~= self:GetOwner() then
 		
-		if util.TraceLine( { start = data.HitPos, endpos = data.HitPos + data.HitNormal } ).HitSky != false then
+		if util.TraceLine( { start = data.HitPos, endpos = data.HitPos + data.HitNormal } ).HitSky ~= false then
 			
 			self:Remove()
 			
-		elseif data.HitEntity:IsWorld() != false and CurTime() > self:GetTFNextFreeze() then
+		elseif data.HitEntity:IsWorld() ~= false and CurTime() > self:GetTFNextFreeze() then
 			
 			if IsValid( self:GetPhysicsObject() ) == true then self:GetPhysicsObject():EnableMotion( false ) end
 			
@@ -141,7 +141,7 @@ function ENT:Explode( remove, damage )
 	if game.SinglePlayer() == true or IsFirstTimePredicted() == true then
 		
 		local explode = self:GetParticles().explode
-		if explode != nil and explode != "" then ParticleEffect( explode, self:GetPos(), self:GetAngles() ) end
+		if explode ~= nil and explode ~= "" then ParticleEffect( explode, self:GetPos(), self:GetAngles() ) end
 		
 	end
 	
@@ -167,7 +167,7 @@ function ENT:Explode( remove, damage )
 	local hit = ents.FindInSphere( self:GetPos(), self:GetTFRadius() )
 	for i = 1, #hit do
 		
-		if ( hit[ i ]:IsPlayer() == true or hit[ i ]:IsNPC() == true ) and hit[ i ] != self:GetOwner() then playerhit = true end
+		if ( hit[ i ]:IsPlayer() == true or hit[ i ]:IsNPC() == true ) and hit[ i ] ~= self:GetOwner() then playerhit = true end
 		if hit[ i ] == self:GetOwner() then
 			
 			ownerhit = true
@@ -201,7 +201,7 @@ function ENT:Explode( remove, damage )
 				Projectile = self,
 				Entity = hit[ i ],
 				
-			} ) != true then
+			} ) ~= true then
 				
 				local hitpos = hit[ i ]:GetPos() + hit[ i ]:OBBCenter()
 				local dir = ( hitpos - self:GetPos() ):Angle()
@@ -255,7 +255,7 @@ function ENT:Explode( remove, damage )
 			Projectile = self,
 			Entity = self:GetOwner(),
 			
-		} ) != true then
+		} ) ~= true then
 			
 			local hitpos = self:GetOwner():GetPos() + self:GetOwner():OBBCenter()
 			local dir = ( hitpos - self:GetPos() ):Angle()

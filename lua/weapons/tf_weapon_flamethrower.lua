@@ -27,7 +27,7 @@ else
 			local _ = i
 			local v = entities[ i ]
 			
-			if IsValid( v ) == true and v != weapon and v != weapon:GetOwner() and weapon.NoAirblast[ v:GetClass() ] != true and v.TF2Weapons_NoAirblast != true then
+			if IsValid( v ) == true and v ~= weapon and v ~= weapon:GetOwner() and weapon.NoAirblast[ v:GetClass() ] ~= true and v.TF2Weapons_NoAirblast ~= true then
 				
 				if weapon.OwnOnAirblast[ v:GetClass() ] == true or v.TF2Weapons_OwnOnAirblast == true then sound = weapon.AirblastRedirectSound end
 				
@@ -43,15 +43,15 @@ else
 						
 					end
 					
-				elseif v.TF2Weapons_OnAirblasted != nil then
+				elseif v.TF2Weapons_OnAirblasted ~= nil then
 					
 					v:TF2Weapons_OnAirblasted( weapon, v )
 					
-				elseif weapon.OnAirblasted[ v:GetClass() ] != nil then
+				elseif weapon.OnAirblasted[ v:GetClass() ] ~= nil then
 					
 					weapon.OnAirblasted[ v:GetClass() ]( weapon, v )
 					
-				elseif IsValid( v:GetPhysicsObject() ) != false then
+				elseif IsValid( v:GetPhysicsObject() ) ~= false then
 					
 					if weapon.NoAirblast[ v:GetClass() ] == true or v.TF2Weapons_NoAirblast == true then return end
 					if weapon.OwnOnAirblast[ v:GetClass() ] == true or v.TF2Weapons_OwnOnAirblast == true then v:SetOwner( weapon:GetOwner() ) end
@@ -338,7 +338,7 @@ function SWEP:ManageFlames()
 		
 		local flame = self.Flames[ i ]
 		
-		if flame != nil then
+		if flame ~= nil then
 			
 			local startpos = flame.pos
 			
@@ -384,7 +384,7 @@ function SWEP:ManageFlames()
 					
 					if flame.hit == nil then flame.hit = {} end
 					
-					if flame.hit[ hit[ i ] ] != true then
+					if flame.hit[ hit[ i ] ] ~= true then
 						
 						local modifier = self.DamageNormal
 						
@@ -457,7 +457,7 @@ function SWEP:Think()
 	
 	local hands, weapon = self:GetViewModels()
 	
-	if self:GetOwner():KeyDown( IN_ATTACK ) == true and self:CanCreateFlame() == true and self:TooClose() != true and CurTime() > self:GetNextSecondaryFire() then
+	if self:GetOwner():KeyDown( IN_ATTACK ) == true and self:CanCreateFlame() == true and self:TooClose() ~= true and CurTime() > self:GetNextSecondaryFire() then
 		
 		local crit = self:DoCrit()
 		
@@ -469,7 +469,7 @@ function SWEP:Think()
 			
 		end
 		
-		if crit != self:GetTFCritSound() then
+		if crit ~= self:GetTFCritSound() then
 			
 			local shootsound = self.ShootSound
 			if crit == true then shootsound = self.ShootSoundCrit end
@@ -503,7 +503,7 @@ function SWEP:Think()
 		
 	end
 	
-	if self:GetTFFlamesDeployed() == true and self:GetTFLastWaterLevel() != self:GetOwner():WaterLevel() then
+	if self:GetTFFlamesDeployed() == true and self:GetTFLastWaterLevel() ~= self:GetOwner():WaterLevel() then
 		
 		self:SetTFLastWaterLevel( self:GetOwner():WaterLevel() )
 		
@@ -514,7 +514,7 @@ function SWEP:Think()
 	
 	if self:GetTFStartFire() == false then
 		
-		if self:GetOwner():KeyDown( IN_ATTACK ) != true or self:GetOwner():KeyDown( IN_ATTACK2 ) == true or self:Ammo1() <= 0 or self:TooClose() == true then
+		if self:GetOwner():KeyDown( IN_ATTACK ) ~= true or self:GetOwner():KeyDown( IN_ATTACK2 ) == true or self:Ammo1() <= 0 or self:TooClose() == true then
 			
 			self:SetTFStartFire( true )
 			self:PlaySound( self.ShootEndSound )
@@ -523,7 +523,7 @@ function SWEP:Think()
 			
 		end
 		
-		if self:GetOwner():KeyDown( IN_ATTACK ) == true and CurTime() > self:GetTFNextLoop() and self:TooClose() != true then
+		if self:GetOwner():KeyDown( IN_ATTACK ) == true and CurTime() > self:GetTFNextLoop() and self:TooClose() ~= true then
 			
 			self:SetTFNextLoop( CurTime() + SoundDuration( self:PlaySound( self.ShootSound ) ) )
 			
@@ -554,9 +554,9 @@ end
 function SWEP:CanSecondaryAttack()
 	
 	local set_flamethrower_push_disabled = self:GetAttributeClass( "set_flamethrower_push_disabled" )
-	if set_flamethrower_push_disabled != nil and set_flamethrower_push_disabled > 0 then return false end
+	if set_flamethrower_push_disabled ~= nil and set_flamethrower_push_disabled > 0 then return false end
 	local airblast_disabled = self:GetAttributeClass( "airblast_disabled" )
-	if airblast_disabled != nil and airblast_disabled > 0 then return false end
+	if airblast_disabled ~= nil and airblast_disabled > 0 then return false end
 	if self:Ammo1() - self.Secondary.TakeAmmo < 0 then return false end
 	
 	return true
@@ -565,7 +565,7 @@ end
 
 function SWEP:SecondaryAttack()
 	
-	if self:CanSecondaryAttack() != true then return end
+	if self:CanSecondaryAttack() ~= true then return end
 	
 	self:SetTFStartFire( true )
 	
@@ -610,7 +610,7 @@ function SWEP:SecondaryAttack()
 		
 		for _, v in pairs( entities ) do
 			
-			if v != self and v != self:GetOwner() and self.NoAirblast[ v:GetClass() ] != true and v.TF2Weapons_NoAirblast != true then
+			if v ~= self and v ~= self:GetOwner() and self.NoAirblast[ v:GetClass() ] ~= true and v.TF2Weapons_NoAirblast ~= true then
 				
 				if self.OwnOnAirblast[ v:GetClass() ] == true or v.TF2Weapons_OwnOnAirblast == true then sound = self.AirblastRedirectSound end
 				
@@ -626,7 +626,7 @@ function SWEP:SecondaryAttack()
 						v:Extinguish()
 						
 						local extinguish_restores_health = self:GetAttributeClass( "extinguish_restores_health" )
-						if self:GetOwner():Health() < self:GetOwner():GetMaxHealth() and extinguish_restores_health != nil then
+						if self:GetOwner():Health() < self:GetOwner():GetMaxHealth() and extinguish_restores_health ~= nil then
 							
 							if self:GetOwner():Health() + extinguish_restores_health > self:GetOwner():GetMaxHealth() then
 								
@@ -642,15 +642,15 @@ function SWEP:SecondaryAttack()
 						
 					end
 					
-				elseif v.TF2Weapons_OnAirblasted != nil then
+				elseif v.TF2Weapons_OnAirblasted ~= nil then
 					
 					v:TF2Weapons_OnAirblasted( self, v )
 					
-				elseif self.OnAirblasted[ v:GetClass() ] != nil then
+				elseif self.OnAirblasted[ v:GetClass() ] ~= nil then
 					
 					self.OnAirblasted[ v:GetClass() ]( self, v )
 					
-				elseif IsValid( v:GetPhysicsObject() ) != false then
+				elseif IsValid( v:GetPhysicsObject() ) ~= false then
 					
 					if self.NoAirblast[ v:GetClass() ] == true or v.TF2Weapons_NoAirblast == true then return end
 					if self.OwnOnAirblast[ v:GetClass() ] == true or v.TF2Weapons_OwnOnAirblast == true then v:SetOwner( self:GetOwner() ) end
@@ -707,7 +707,7 @@ function SWEP:Holster()
 	
 	self:StopFlames()
 	
-	if self:GetTFStartFire() != true then
+	if self:GetTFStartFire() ~= true then
 		
 		self:PlaySound( self.ShootEndSound )
 		
@@ -725,12 +725,12 @@ function SWEP:GetFlameMods( dmg, mod, target, flame )
 	
 	local basedmg, basecrit = self:GetDamageMods( dmg, mod, target )
 	
-	if basecrit != true then
+	if basecrit ~= true then
 		
-		if IsValid( target ) == true and flame != nil then
+		if IsValid( target ) == true and flame ~= nil then
 			
 			local set_flamethrower_back_crit = self:GetAttributeClass( "set_flamethrower_back_crit" )
-			if set_flamethrower_back_crit != nil and set_flamethrower_back_crit != 0 then
+			if set_flamethrower_back_crit ~= nil and set_flamethrower_back_crit ~= 0 then
 				
 				if target:GetAimVector():Angle().y - 45 < flame.ang.y and target:GetAimVector():Angle().y + 45 > flame.ang.y then basecrit = true end
 				

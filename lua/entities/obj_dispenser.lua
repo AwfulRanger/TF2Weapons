@@ -9,12 +9,12 @@ hook.Add( "OnEntityCreated", "TF2Weapons_Dispenser_InsertTargets", function( ent
 	
 	timer.Simple( 0, function()
 		
-		if IsValid( ent ) != true then return end
+		if IsValid( ent ) ~= true then return end
 		if TF2Weapons == nil then return end
 		
 		if TF2Weapons.DispenserTargets == nil then TF2Weapons.DispenserTargets = {} end
 		
-		if ( ent:Health() > 0 or ent:GetMaxHealth() > 0 ) and string.Left( ent:GetClass(), 5 ) != "prop_" then
+		if ( ent:Health() > 0 or ent:GetMaxHealth() > 0 ) and string.Left( ent:GetClass(), 5 ) ~= "prop_" then
 			
 			table.insert( TF2Weapons.DispenserTargets, ent )
 			
@@ -30,7 +30,7 @@ hook.Add( "EntityRemoved", "TF2Weapons_Dispenser_RemoveTargets", function( ent )
 	
 	if TF2Weapons.DispenserTargets == nil then TF2Weapons.DispenserTargets = {} end
 	
-	if ( ent:Health() > 0 or ent:GetMaxHealth() > 0 ) and string.Left( ent:GetClass(), 5 ) != "prop_" then
+	if ( ent:Health() > 0 or ent:GetMaxHealth() > 0 ) and string.Left( ent:GetClass(), 5 ) ~= "prop_" then
 		
 		table.RemoveByValue( TF2Weapons.DispenserTargets, ent )
 		
@@ -335,8 +335,8 @@ end
 
 function ENT:Initialize()
 	
-	if self.BeamRed != nil then PrecacheParticleSystem( self.BeamRed ) end
-	if self.BeamBlue != nil then PrecacheParticleSystem( self.BeamBlue ) end
+	if self.BeamRed ~= nil then PrecacheParticleSystem( self.BeamRed ) end
+	if self.BeamBlue ~= nil then PrecacheParticleSystem( self.BeamBlue ) end
 	
 end
 
@@ -346,10 +346,10 @@ function ENT:GetRegenTargets()
 	
 	if TF2Weapons == nil or TF2Weapons.DispenserTargets == nil then return end
 	
-	if self.TargetsCached != nil then return self.TargetsCached end
+	if self.TargetsCached ~= nil then return self.TargetsCached end
 	
 	local targetlist = TF2Weapons.DispenserTargets
-	if self.HealNonPlayers != true then targetlist = player.GetAll() end
+	if self.HealNonPlayers ~= true then targetlist = player.GetAll() end
 	
 	local targets = {}
 	
@@ -420,13 +420,13 @@ function ENT:HandleHealthRegen()
 		
 		health = health - healthfloor
 		
-		if self:GetTFUpgrading() != true then
+		if self:GetTFUpgrading() ~= true then
 			
 			local stats = self.Levels[ self:GetTFLevel() ]
 			if stats == nil then return end
 			
 			local targets = self:GetRegenTargets()
-			if targets != nil then
+			if targets ~= nil then
 				
 				for i = 1, #targets do
 					
@@ -457,7 +457,7 @@ function ENT:GiveTargetAmmo( target )
 	
 	for i = 1, ammotypes do
 		
-		if i != game.GetAmmoID( metaltype ) then
+		if i ~= game.GetAmmoID( metaltype ) then
 			
 			local maxammo = game.GetAmmoMax( i )
 			local ammo = target:GetAmmoCount( i )
@@ -503,7 +503,7 @@ function ENT:HandleAmmoRegen()
 	if CurTime() > self:GetTFNextAmmoRegen() then
 		
 		local targets = self:GetRegenTargets()
-		if targets != nil then
+		if targets ~= nil then
 			
 			for i = 1, #targets do
 				
@@ -527,12 +527,12 @@ function ENT:HandleRegen()
 	
 	if CLIENT then return end
 	
-	if self:GetTFUpgrading() != true then
+	if self:GetTFUpgrading() ~= true then
 		
 		local targets = self:GetRegenTargets()
-		if targets != nil then
+		if targets ~= nil then
 			
-			if #targets > 0 and self:GetTFSoundPlaying() != true then
+			if #targets > 0 and self:GetTFSoundPlaying() ~= true then
 				
 				self:EmitSound( self.HealSound, nil, nil, nil, CHAN_ITEM )
 				self:SetTFSoundPlaying( true )
@@ -620,7 +620,7 @@ function ENT:HandleBeam()
 	local beams = self.BeamTargets
 	local btargets = {}
 	
-	if targets != nil then
+	if targets ~= nil then
 		
 		for i = 1, #targets do
 			
@@ -657,11 +657,11 @@ function ENT:HandleBeam()
 		
 	end
 	
-	if beams != nil then
+	if beams ~= nil then
 		
 		for _, v in pairs( beams ) do
 			
-			if btargets[ _ ] != true then
+			if btargets[ _ ] ~= true then
 				
 				self:RemoveParticle( self:GetParticle( v ) )
 				beams[ _ ] = nil
@@ -688,9 +688,9 @@ function ENT:Think()
 	
 	local stats = self.Levels[ self:GetTFLevel() ]
 	
-	if self:GetTFUpgrading() != true and stats != nil then
+	if self:GetTFUpgrading() ~= true and stats ~= nil then
 		
-		if stats.Idle != nil then self:SetSequence( stats.Idle ) end
+		if stats.Idle ~= nil then self:SetSequence( stats.Idle ) end
 		
 	end
 	

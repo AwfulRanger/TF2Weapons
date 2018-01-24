@@ -2,10 +2,10 @@ TF2Weapons = {}
 
 function TF2Weapons:GetItemsTable()
 	
-	if self.ItemsTable != nil then return self.ItemsTable end
+	if self.ItemsTable ~= nil then return self.ItemsTable end
 	
 	local f = file.Read( "scripts/items/items_game.txt", "GAME" )
-	if f != nil then self.ItemsTable = util.KeyValuesToTable( f, false, true ) end
+	if f ~= nil then self.ItemsTable = util.KeyValuesToTable( f, false, true ) end
 	
 	return self.ItemsTable
 	
@@ -114,7 +114,7 @@ else
 	net.Receive( "tf2weapons_addparticle", function()
 		
 		local weapon = net.ReadEntity()
-		if IsValid( weapon ) != true then return end
+		if IsValid( weapon ) ~= true then return end
 		
 		local particle = net.ReadString()
 		
@@ -137,7 +137,7 @@ else
 			
 		end
 		
-		if weapon.AddParticle != nil then
+		if weapon.AddParticle ~= nil then
 			
 			weapon:AddParticle( particle, options )
 			
@@ -168,7 +168,7 @@ function meta:TF2Weapons_SetAttribute( attribute, value, t, float )
 		
 	elseif t == TYPE_NUMBER then
 		
-		if float != true then
+		if float ~= true then
 			
 			self:SetNW2Int( "TF2Weapons_Attribute_" .. attribute, value )
 			
@@ -207,7 +207,7 @@ function meta:TF2Weapons_GetAttribute( attribute, value, t, float )
 		
 	elseif t == TYPE_NUMBER then
 		
-		if float != true then
+		if float ~= true then
 			
 			return self:GetNW2Int( "TF2Weapons_Attribute_" .. attribute, value )
 			
@@ -289,7 +289,7 @@ hook.Add( "Initialize", "TF2Weapons_Initialize", function()
 	for _, v in pairs( TF2Weapons.UnspawnableEntities ) do
 		
 		local unspawnablewep = weapons.GetStored( _ )
-		if unspawnablewep != nil then unspawnablewep.Spawnable = false end
+		if unspawnablewep ~= nil then unspawnablewep.Spawnable = false end
 		
 	end
 	
@@ -299,7 +299,7 @@ hook.Add( "Initialize", "TF2Weapons_Initialize", function()
 		
 		local brokenwep = weapons.GetStored( _ )
 		
-		if brokenwep != nil then
+		if brokenwep ~= nil then
 			
 			if level == 0 then
 				
@@ -362,10 +362,10 @@ hook.Add( "ScalePlayerDamage", "TF2Weapons_ScalePlayerDamage", function( ply, hi
 	
 	local weapon = ply:GetActiveWeapon()
 	
-	if IsValid( weapon ) != true or weapon.TF2Weapon != true then return end
+	if IsValid( weapon ) ~= true or weapon.TF2Weapon ~= true then return end
 	
 	local mult_dmgtaken = weapon:GetAttributeClass( "mult_dmgtaken" )
-	if mult_dmgtaken != nil then dmg:ScaleDamage( mult_dmgtaken ) end
+	if mult_dmgtaken ~= nil then dmg:ScaleDamage( mult_dmgtaken ) end
 	
 end )
 
@@ -373,10 +373,10 @@ hook.Add( "GetFallDamage", "TF2Weapons_GetFallDamage", function( ply, speed )
 	
 	local weapon = ply:GetActiveWeapon()
 	
-	if IsValid( weapon ) != true or weapon.TF2Weapon != true then return end
+	if IsValid( weapon ) ~= true or weapon.TF2Weapon ~= true then return end
 	
 	local cancel_falling_damage = weapon:GetAttributeClass( "cancel_falling_damage" )
-	if cancel_falling_damage != nil and cancel_falling_damage > 0 then return 0 end
+	if cancel_falling_damage ~= nil and cancel_falling_damage > 0 then return 0 end
 	
 end )
 
@@ -384,10 +384,10 @@ hook.Add( "Move", "TF2Weapons_Move", function( ply, mv )
 	
 	local weapon = ply:GetActiveWeapon()
 	
-	if IsValid( weapon ) != true or weapon.TF2Weapon != true then return end
+	if IsValid( weapon ) ~= true or weapon.TF2Weapon ~= true then return end
 	
 	local mult_player_movespeed = weapon:GetAttributeClass( "mult_player_movespeed" )
-	if mult_player_movespeed != nil then
+	if mult_player_movespeed ~= nil then
 		
 		mv:SetMaxClientSpeed( mv:GetMaxClientSpeed() * mult_player_movespeed )
 		mv:SetMaxSpeed( mv:GetMaxSpeed() * mult_player_movespeed )
@@ -570,11 +570,11 @@ include( "tf2weapons/weapons.lua" )
 function TF2Weapons:GetCritChance( ply, weapon )
 	
 	local critchance = hook.Call( "TF2Weapons_CritChance", nil, ply, weapon )
-	if critchance != nil then return critchance end
+	if critchance ~= nil then return critchance end
 	
 	if IsValid( weapon ) == true then
 		
-		if weapon.CritChance != nil then return weapon.CritChance end
+		if weapon.CritChance ~= nil then return weapon.CritChance end
 		
 	end
 	
@@ -587,7 +587,7 @@ function TF2Weapons:ShouldCrit( ply, weapon, target, chance )
 	if chance == nil then chance = self:GetCritChance( ply, weapon ) end
 	
 	local shouldcrit = hook.Call( "TF2Weapons_ShouldCrit", nil, ply, weapon, target, chance )
-	if shouldcrit != nil then return shouldcrit end
+	if shouldcrit ~= nil then return shouldcrit end
 	
 	if chance < 0 then return false end
 	return util.SharedRandom( "crit", 0, 1, CurTime() ) <= chance
@@ -597,22 +597,22 @@ end
 function TF2Weapons:OnCrit( ply, weapon, target )
 	
 	local oncrit = hook.Call( "TF2Weapons_OnCrit", nil, ply, weapon )
-	if oncrit != nil then return oncrit end
+	if oncrit ~= nil then return oncrit end
 	
-	if GetConVar( "tf2weapons_criticals" ):GetBool() != true then return false end
+	if GetConVar( "tf2weapons_criticals" ):GetBool() ~= true then return false end
 	
 end
 
 function TF2Weapons:EntityKilled( ent, attacker, inflictor )
 	
-	if attacker:IsPlayer() != true then return end
+	if attacker:IsPlayer() ~= true then return end
 	
 	local weapon = attacker:GetActiveWeapon()
 	
-	if IsValid( weapon ) != true or weapon.TF2Weapon != true then return end
+	if IsValid( weapon ) ~= true or weapon.TF2Weapon ~= true then return end
 	
 	local heal_on_kill = weapon:GetAttributeClass( "heal_on_kill" )
-	if heal_on_kill != nil then weapon:GiveHealth( heal_on_kill, attacker, attacker:GetMaxHealth() ) end
+	if heal_on_kill ~= nil then weapon:GiveHealth( heal_on_kill, attacker, attacker:GetMaxHealth() ) end
 	
 	
 end
@@ -636,22 +636,22 @@ end )
 function TF2Weapons:TeleporterCanSend( teleporter, ent, ... )
 	
 	local teleportercansend = hook.Run( "TF2Weapons_TeleporterCanSend", teleporter, ent, ... )
-	if teleportercansend != nil then return teleportercansend end
+	if teleportercansend ~= nil then return teleportercansend end
 	
 	local valid = true
 	
 	local teammates = GetConVar( "tf2weapons_teleporter_teammates" ):GetInt()
-	if teammates != 2 then
+	if teammates ~= 2 then
 		
 		if teammates <= 0 then
 			
 			if SERVER and ent:IsNPC() == true and ent:Disposition( teleporter:GetTFOwner() ) == D_HT then valid = false end
-			if ent:IsNPC() != true and hook.Run( "PlayerShouldTakeDamage", teleporter:GetTFOwner(), ent ) == true then valid = false end
+			if ent:IsNPC() ~= true and hook.Run( "PlayerShouldTakeDamage", teleporter:GetTFOwner(), ent ) == true then valid = false end
 			
 		elseif teammates == 1 then
 			
-			if SERVER and ent:IsNPC() == true and ent:Disposition( teleporter:GetTFOwner() ) != D_HT then valid = false end
-			if ent:IsNPC() != true and hook.Run( "PlayerShouldTakeDamage", teleporter:GetTFOwner(), ent ) != true then valid = false end
+			if SERVER and ent:IsNPC() == true and ent:Disposition( teleporter:GetTFOwner() ) ~= D_HT then valid = false end
+			if ent:IsNPC() ~= true and hook.Run( "PlayerShouldTakeDamage", teleporter:GetTFOwner(), ent ) ~= true then valid = false end
 			
 		elseif teammates >= 3 then
 			
@@ -670,22 +670,22 @@ end
 function TF2Weapons:SentryCanTarget( sentry, ent, ... )
 	
 	local sentrycantarget = hook.Run( "TF2Weapons_SentryCanTarget", sentry, ent, ... )
-	if sentrycantarget != nil then return sentrycantarget end
+	if sentrycantarget ~= nil then return sentrycantarget end
 	
 	local valid = true
 	
 	local teammates = GetConVar( "tf2weapons_sentry_teammates" ):GetInt()
-	if teammates != 2 then
+	if teammates ~= 2 then
 		
 		if teammates <= 0 then
 			
 			if SERVER and ent:IsNPC() == true and ent:Disposition( sentry:GetTFOwner() ) == D_HT then valid = false end
-			if ent:IsNPC() != true and hook.Run( "PlayerShouldTakeDamage", sentry:GetTFOwner(), ent ) == true then valid = false end
+			if ent:IsNPC() ~= true and hook.Run( "PlayerShouldTakeDamage", sentry:GetTFOwner(), ent ) == true then valid = false end
 			
 		elseif teammates == 1 then
 			
-			if SERVER and ent:IsNPC() == true and ent:Disposition( sentry:GetTFOwner() ) != D_HT then valid = false end
-			if ent:IsNPC() != true and hook.Run( "PlayerShouldTakeDamage", sentry:GetTFOwner(), ent ) != true then valid = false end
+			if SERVER and ent:IsNPC() == true and ent:Disposition( sentry:GetTFOwner() ) ~= D_HT then valid = false end
+			if ent:IsNPC() ~= true and hook.Run( "PlayerShouldTakeDamage", sentry:GetTFOwner(), ent ) ~= true then valid = false end
 			
 		elseif teammates >= 3 then
 			
@@ -696,7 +696,7 @@ function TF2Weapons:SentryCanTarget( sentry, ent, ... )
 	end
 	
 	if ent == sentry:GetTFOwner() then valid = true end
-	if ent.GetTFOwner != nil and sentry:GetTFOwner() == ent:GetTFOwner() then valid = true end
+	if ent.GetTFOwner ~= nil and sentry:GetTFOwner() == ent:GetTFOwner() then valid = true end
 	if ent:GetOwner() == sentry:GetTFOwner() then valid = true end
 	
 	return valid
@@ -706,22 +706,22 @@ end
 function TF2Weapons:DispenserCanTarget( dispenser, ent, ... )
 	
 	local dispensercantarget = hook.Run( "TF2Weapons_DispenserCanTarget", dispenser, ent, ... )
-	if dispensercantarget != nil then return dispensercantarget end
+	if dispensercantarget ~= nil then return dispensercantarget end
 	
 	local valid = true
 	
 	local teammates = GetConVar( "tf2weapons_dispenser_teammates" ):GetInt()
-	if teammates != 2 then
+	if teammates ~= 2 then
 		
 		if teammates <= 0 then
 			
 			if SERVER and ent:IsNPC() == true and ent:Disposition( dispenser:GetTFOwner() ) == D_HT then valid = false end
-			if ent:IsNPC() != true and hook.Run( "PlayerShouldTakeDamage", dispenser:GetTFOwner(), ent ) == true then valid = false end
+			if ent:IsNPC() ~= true and hook.Run( "PlayerShouldTakeDamage", dispenser:GetTFOwner(), ent ) == true then valid = false end
 			
 		elseif teammates == 1 then
 			
-			if SERVER and ent:IsNPC() == true and ent:Disposition( dispenser:GetTFOwner() ) != D_HT then valid = false end
-			if ent:IsNPC() != true and hook.Run( "PlayerShouldTakeDamage", dispenser:GetTFOwner(), ent ) != true then valid = false end
+			if SERVER and ent:IsNPC() == true and ent:Disposition( dispenser:GetTFOwner() ) ~= D_HT then valid = false end
+			if ent:IsNPC() ~= true and hook.Run( "PlayerShouldTakeDamage", dispenser:GetTFOwner(), ent ) ~= true then valid = false end
 			
 		elseif teammates >= 3 then
 			
@@ -740,22 +740,22 @@ end
 function TF2Weapons:EntityCanRepair( building, ent, ... )
 	
 	local entitycanrepair = hook.Run( "TF2Weapons_EntityCanRepair", building, ent, ... )
-	if entitycanrepair != nil then return entitycanrepair end
+	if entitycanrepair ~= nil then return entitycanrepair end
 	
 	local valid = true
 	
 	local teammates = GetConVar( "tf2weapons_building_teammates" ):GetInt()
-	if teammates != 2 then
+	if teammates ~= 2 then
 		
 		if teammates <= 0 then
 			
 			if SERVER and ent:IsNPC() == true and ent:Disposition( building:GetTFOwner() ) == D_HT then valid = false end
-			if ent:IsNPC() != true and hook.Run( "PlayerShouldTakeDamage", building:GetTFOwner(), ent ) == true then valid = false end
+			if ent:IsNPC() ~= true and hook.Run( "PlayerShouldTakeDamage", building:GetTFOwner(), ent ) == true then valid = false end
 			
 		elseif teammates == 1 then
 			
-			if SERVER and ent:IsNPC() == true and ent:Disposition( building:GetTFOwner() ) != D_HT then valid = false end
-			if ent:IsNPC() != true and hook.Run( "PlayerShouldTakeDamage", building:GetTFOwner(), ent ) != true then valid = false end
+			if SERVER and ent:IsNPC() == true and ent:Disposition( building:GetTFOwner() ) ~= D_HT then valid = false end
+			if ent:IsNPC() ~= true and hook.Run( "PlayerShouldTakeDamage", building:GetTFOwner(), ent ) ~= true then valid = false end
 			
 		elseif teammates >= 3 then
 			
@@ -774,20 +774,20 @@ end
 function TF2Weapons:MediGunCanHeal( medigun, ent, ... )
 	
 	local mediguncanheal = hook.Run( "TF2Weapons_MediGunCanHeal", medigun, ent, ... )
-	if mediguncanheal != nil then return mediguncanheal end
+	if mediguncanheal ~= nil then return mediguncanheal end
 	
 	local valid = true
 	
 	local teammates = GetConVar( "tf2weapons_heal_teammates" ):GetInt()
-	if teammates != 2 then
+	if teammates ~= 2 then
 		
 		if teammates <= 0 then
 			
-			if ent:IsNPC() != true and hook.Run( "PlayerShouldTakeDamage", medigun:GetOwner(), ent ) == true then valid = false end
+			if ent:IsNPC() ~= true and hook.Run( "PlayerShouldTakeDamage", medigun:GetOwner(), ent ) == true then valid = false end
 			
 		elseif teammates == 1 then
 			
-			if ent:IsNPC() != true and hook.Run( "PlayerShouldTakeDamage", medigun:GetOwner(), ent ) != true then valid = false end
+			if ent:IsNPC() ~= true and hook.Run( "PlayerShouldTakeDamage", medigun:GetOwner(), ent ) ~= true then valid = false end
 			
 		end
 		
@@ -802,17 +802,17 @@ function TF2Weapons:FlameThrowerCanIgnite( flamethrower, ent, ... )
 	local valid = true
 	
 	local teammates = GetConVar( "tf2weapons_ignite_teammates" ):GetInt()
-	if teammates != 2 then
+	if teammates ~= 2 then
 		
 		if teammates <= 0 then
 			
-			if SERVER and ent:IsNPC() == true and ent:Disposition( flamethrower:GetOwner() ) != D_HT then valid = false end
-			if ent:IsNPC() != true and hook.Run( "PlayerShouldTakeDamage", flamethrower:GetOwner(), ent ) != true then valid = false end
+			if SERVER and ent:IsNPC() == true and ent:Disposition( flamethrower:GetOwner() ) ~= D_HT then valid = false end
+			if ent:IsNPC() ~= true and hook.Run( "PlayerShouldTakeDamage", flamethrower:GetOwner(), ent ) ~= true then valid = false end
 			
 		elseif teammates == 1 then
 			
 			if SERVER and ent:IsNPC() == true and ent:Disposition( flamethrower:GetOwner() ) == D_HT then valid = false end
-			if ent:IsNPC() != true and hook.Run( "PlayerShouldTakeDamage", flamethrower:GetOwner(), ent ) == true then valid = false end
+			if ent:IsNPC() ~= true and hook.Run( "PlayerShouldTakeDamage", flamethrower:GetOwner(), ent ) == true then valid = false end
 			
 		end
 		
@@ -825,7 +825,7 @@ end
 function TF2Weapons:FlameThrowerCanAirblast( flamethrower, ent, ... )
 	
 	local flamethrowercanairblast = hook.Run( "TF2Weapons_FlameThrowerCanAirblast", flamethrower, ent, ... )
-	if flamethrowercanairblast != nil then return flamethrowercanairblast end
+	if flamethrowercanairblast ~= nil then return flamethrowercanairblast end
 	
 	local valid = !ent:IsNPC()
 	
@@ -834,7 +834,7 @@ function TF2Weapons:FlameThrowerCanAirblast( flamethrower, ent, ... )
 		
 		if teammates <= 0 then
 			
-			if hook.Run( "PlayerShouldTakeDamage", flamethrower:GetOwner(), ent ) != true then valid = false end
+			if hook.Run( "PlayerShouldTakeDamage", flamethrower:GetOwner(), ent ) ~= true then valid = false end
 			
 		elseif teammates == 1 then
 			

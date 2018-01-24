@@ -78,9 +78,9 @@ end
 
 function ENT:Touch( ent )
 	
-	if ent != self:GetOwner() and ent:GetOwner() != self:GetOwner() then
+	if ent ~= self:GetOwner() and ent:GetOwner() ~= self:GetOwner() then
 		
-		if ent:IsWorld() != false then
+		if ent:IsWorld() ~= false then
 			
 			self:SetTFRemoveNext( true )
 			self:SetTFRemoveTime( CurTime() + self.Life )
@@ -88,7 +88,7 @@ function ENT:Touch( ent )
 			
 			if CLIENT then self.HitAng = self:GetRenderAngles() end
 			
-		elseif self:GetTFHit() != true then
+		elseif self:GetTFHit() ~= true then
 			
 			if IsValid( self:GetOwner() ) == false then
 				
@@ -115,7 +115,7 @@ function ENT:Touch( ent )
 				Projectile = self,
 				Entity = ent,
 				
-			} ) != true then
+			} ) ~= true then
 				
 				ent:TakeDamageInfo( dmg )
 				
@@ -140,7 +140,7 @@ function ENT:Think()
 		
 		local motion = IsValid( self:GetPhysicsObject() ) == true and self:GetPhysicsObject():IsMotionEnabled() == true
 		
-		if self.LastPos != nil and motion == true and self.LastPos != self:GetPos() then
+		if self.LastPos ~= nil and motion == true and self.LastPos ~= self:GetPos() then
 			
 			self:SetRenderAngles( ( self:GetPos() - self.LastPos ):Angle() )
 			
@@ -157,13 +157,13 @@ end
 
 function ENT:PhysicsCollide( data, collider )
 	
-	if data.HitEntity != self:GetOwner() and data.HitEntity:GetOwner() != self:GetOwner() then
+	if data.HitEntity ~= self:GetOwner() and data.HitEntity:GetOwner() ~= self:GetOwner() then
 		
-		if util.TraceLine( { start = data.HitPos, endpos = data.HitPos + data.HitNormal } ).HitSky != false then
+		if util.TraceLine( { start = data.HitPos, endpos = data.HitPos + data.HitNormal } ).HitSky ~= false then
 			
 			self:Remove()
 			
-		elseif data.HitEntity:IsWorld() != false then
+		elseif data.HitEntity:IsWorld() ~= false then
 			
 			self:SetTFRemoveNext( true )
 			self:SetTFRemoveTime( CurTime() + self.Life )
@@ -171,7 +171,7 @@ function ENT:PhysicsCollide( data, collider )
 			
 			if CLIENT then self.HitAng = self:GetRenderAngles() end
 			
-		elseif self:GetTFHit() != true then
+		elseif self:GetTFHit() ~= true then
 			
 			if IsValid( self:GetOwner() ) == false then
 				
@@ -198,7 +198,7 @@ function ENT:PhysicsCollide( data, collider )
 				Projectile = self,
 				Entity = data.HitEntity,
 				
-			} ) != true then
+			} ) ~= true then
 				
 				data.HitEntity:TakeDamageInfo( dmg )
 				

@@ -67,7 +67,7 @@ ENT.Levels = {
 
 function ENT:TFNetworkVar( vartype, varname, default, slot, extended )
 	
-	if self[ "GetTF" .. varname ] != nil or self[ "SetTF" .. varname ] != nil then return end
+	if self[ "GetTF" .. varname ] ~= nil or self[ "SetTF" .. varname ] ~= nil then return end
 	
 	if self.CreatedNetworkVars == nil then self.CreatedNetworkVars = {} end
 	
@@ -77,11 +77,11 @@ function ENT:TFNetworkVar( vartype, varname, default, slot, extended )
 		
 	end
 	
-	if slot != nil then self.CreatedNetworkVars[ vartype ] = slot end
+	if slot ~= nil then self.CreatedNetworkVars[ vartype ] = slot end
 	slot = self.CreatedNetworkVars[ vartype ]
 	
 	self:NetworkVar( vartype, slot, "TF" .. varname, extended )
-	if SERVER and default != nil then self[ "SetTF" .. varname ]( self, default ) end
+	if SERVER and default ~= nil then self[ "SetTF" .. varname ]( self, default ) end
 	
 	self.CreatedNetworkVars[ vartype ] = self.CreatedNetworkVars[ vartype ] + 1
 	
@@ -133,26 +133,26 @@ function ENT:SetLevelModel( level, building )
 	
 	if building == true then
 		
-		if stats.BuildModel != nil then self:SetModel( stats.BuildModel ) end
-		if stats.BuildAnim != nil then self:ResetSequence( stats.BuildAnim ) end
-		if stats.BuildBodygroups != nil then self:SetBodyGroups( stats.BuildBodygroups ) end
+		if stats.BuildModel ~= nil then self:SetModel( stats.BuildModel ) end
+		if stats.BuildAnim ~= nil then self:ResetSequence( stats.BuildAnim ) end
+		if stats.BuildBodygroups ~= nil then self:SetBodyGroups( stats.BuildBodygroups ) end
 		
 	else
 		
-		if stats.Model != nil then self:SetModel( stats.Model ) end
-		if stats.Bodygroups != nil then self:SetBodyGroups( stats.Bodygroups ) end
+		if stats.Model ~= nil then self:SetModel( stats.Model ) end
+		if stats.Bodygroups ~= nil then self:SetBodyGroups( stats.Bodygroups ) end
 		
 	end
 	
 	if SERVER then
 		
-		if self:GetTFBLU() != true then
+		if self:GetTFBLU() ~= true then
 			
-			if stats.SkinRED != nil then self:SetSkin( stats.SkinRED ) end
+			if stats.SkinRED ~= nil then self:SetSkin( stats.SkinRED ) end
 			
 		else
 			
-			if stats.SkinBLU != nil then self:SetSkin( stats.SkinBLU ) end
+			if stats.SkinBLU ~= nil then self:SetSkin( stats.SkinBLU ) end
 			
 		end
 		
@@ -218,7 +218,7 @@ end
 function ENT:Upgrade( dmg )
 	
 	local weapon = dmg:GetInflictor()
-	if IsValid( weapon ) != true or weapon.TF2Weapons_BuildTool != true then return false end
+	if IsValid( weapon ) ~= true or weapon.TF2Weapons_BuildTool ~= true then return false end
 	
 	local level = self:GetTFLevel()
 	local stats = self.Levels[ level ]
@@ -229,7 +229,7 @@ function ENT:Upgrade( dmg )
 	local upgrade = self:GetTFUpgrade()
 	--local upgrademax = weapon:BuildUpgradeMax()
 	local upgrademax = self.BuildUpgradeBase
-	if weapon.BuildUpgradeMax != nil then upgrademax = weapon:BuildUpgradeMax( self.BuildUpgradeBase ) end
+	if weapon.BuildUpgradeMax ~= nil then upgrademax = weapon:BuildUpgradeMax( self.BuildUpgradeBase ) end
 	if upgrademax > weapon:Ammo1() then upgrademax = weapon:Ammo1() end
 	
 	if upgrademax <= 0 then return false end
@@ -268,7 +268,7 @@ end
 function ENT:HandleUpgrade()
 	
 	local stats = self.Levels[ self:GetTFLevel() ]
-	if self:GetTFUpgrading() == true and stats != nil then
+	if self:GetTFUpgrading() == true and stats ~= nil then
 		
 		local starttime = self:GetTFLastUpgrade()
 		local endtime = stats.BuildTime
@@ -312,9 +312,9 @@ function ENT:HandleUpgradeHealth()
 	local starthealth = self:GetTFUpgradeHealth()
 	local endhealth = stats.Health
 	local health = endhealth - starthealth
-	if self.Levels[ self:GetTFLevel() - 1 ] != nil then health = endhealth - self.Levels[ self:GetTFLevel() - 1 ].Health end
+	if self.Levels[ self:GetTFLevel() - 1 ] ~= nil then health = endhealth - self.Levels[ self:GetTFLevel() - 1 ].Health end
 	local mult = self:GetTFUpgradeAmount()
-	if self:GetTFBuilding() != true then mult = 1 end
+	if self:GetTFBuilding() ~= true then mult = 1 end
 	
 	self:SetHealth( starthealth + ( health * mult ) - self:GetTFUpgradeRemoveHealth() )
 	
@@ -369,11 +369,11 @@ function ENT:AddParticle( particle, options )
 			
 			if IsValid( option.entity ) == true and isstring( option.attachment ) == true then option.attachment = option.entity:LookupAttachment( option.attachment ) end
 			
-			if option.attachtype == PATTACH_POINT_FOLLOW and option.attachment != nil and IsValid( option.entity ) == true then
+			if option.attachtype == PATTACH_POINT_FOLLOW and option.attachment ~= nil and IsValid( option.entity ) == true then
 				
 				local attach = option.entity:GetAttachment( option.attachment )
 				local ang = Angle( 0, 0, 0 )
-				if attach != nil and attach.Ang != nil then ang = attach.Ang end
+				if attach ~= nil and attach.Ang ~= nil then ang = attach.Ang end
 				
 				local mdl = ClientsideModel( "models/weapons/w_models/w_drg_ball.mdl" )
 				mdl:SetNoDraw( true )
@@ -468,7 +468,7 @@ function ENT:HandleParticles()
 	for i = 1, #self.CreatedParticles do
 		
 		local tbl = self.CreatedParticles[ i ]
-		if IsValid( tbl.particle ) != true then
+		if IsValid( tbl.particle ) ~= true then
 			
 			self:RemoveParticle( tbl, true )
 			table.insert( remove, i )
@@ -497,9 +497,9 @@ function ENT:Think()
 	
 	local stats = self.Levels[ self:GetTFLevel() ]
 	
-	if self:GetTFUpgrading() != true and stats != nil then
+	if self:GetTFUpgrading() ~= true and stats ~= nil then
 		
-		if stats.Idle != nil then self:SetSequence( stats.Idle ) end
+		if stats.Idle ~= nil then self:SetSequence( stats.Idle ) end
 		
 	end
 	
@@ -526,7 +526,7 @@ function ENT:DoUpgradeMult()
 		else
 			
 			local addmult = self.RepairerMult
-			if _.BuildConstructRate != nil then addmult = _:BuildConstructRate( self.RepairerMult ) end
+			if _.BuildConstructRate ~= nil then addmult = _:BuildConstructRate( self.RepairerMult ) end
 			
 			mult = mult * addmult
 			
@@ -543,7 +543,7 @@ end
 function ENT:Repair( dmg )
 	
 	local weapon = dmg:GetInflictor()
-	if IsValid( weapon ) != true or weapon.TF2Weapons_BuildTool != true then return false end
+	if IsValid( weapon ) ~= true or weapon.TF2Weapons_BuildTool ~= true then return false end
 	
 	local level = self:GetTFLevel()
 	local stats = self.Levels[ level ]
@@ -554,7 +554,7 @@ function ENT:Repair( dmg )
 	local repair = self:Health()
 	--local repairmax = weapon:BuildRepairMax()
 	local repairmax = self.BuildRepairBase
-	if weapon.BuildRepairMax != nil then repairmax = weapon:BuildRepairMax( self.BuildRepairBase ) end
+	if weapon.BuildRepairMax ~= nil then repairmax = weapon:BuildRepairMax( self.BuildRepairBase ) end
 	if repair + repairmax > self:GetMaxHealth() then repairmax = self:GetMaxHealth() - repair end
 	
 	local cost = ( 1 + repairmax ) / 3
@@ -579,7 +579,7 @@ end
 function ENT:ToolHit( dmg )
 	
 	local upgraded = self:Repair( dmg )
-	if upgraded != true then upgraded = self:Upgrade( dmg ) end
+	if upgraded ~= true then upgraded = self:Upgrade( dmg ) end
 	
 	return upgraded
 	
@@ -607,23 +607,23 @@ function ENT:OnHit( dmg )
 			self.RepairerList[ dmg:GetInflictor() ] = CurTime()
 			upgraded = true
 			
-		elseif self:GetTFUpgrading() != true then
+		elseif self:GetTFUpgrading() ~= true then
 			
 			upgraded = self:ToolHit( dmg )
 			
 		end
 		
-	elseif dmg:GetAttacker() != self then
+	elseif dmg:GetAttacker() ~= self then
 		
 		local health = self:Health()
 		local damage = dmg:GetDamage()
 		
-		if health != nil and damage != nil then
+		if health ~= nil and damage ~= nil then
 			
 			self:SetHealth( self:Health() - dmg:GetDamage() )
 			if self:GetTFBuilding() == true then self:SetTFUpgradeRemoveHealth( self:GetTFUpgradeRemoveHealth() + dmg:GetDamage() ) end
 			
-			if self:GetTFDestroyed() != true and self:Health() <= 0 then
+			if self:GetTFDestroyed() ~= true and self:Health() <= 0 then
 				
 				self:SetTFDestroyed( true )
 				self:OnDestroy( true )
@@ -649,7 +649,7 @@ function ENT:CreateGibs()
 	if CLIENT then return end
 	
 	local stats = self.Levels[ self:GetTFLevel() ]
-	if stats != nil and stats.Gibs != nil then
+	if stats ~= nil and stats.Gibs ~= nil then
 		
 		for i = 1, #stats.Gibs do
 			
@@ -658,15 +658,15 @@ function ENT:CreateGibs()
 			local gib = ents.Create( "tf_obj_gib" )
 			gib:SetPos( self:GetPos() )
 			gib:SetAngles( self:GetAngles() )
-			if gibstat.Model != nil then gib:SetModel( gibstat.Model ) end
-			if gibstat.Scrap != nil then gib:SetTFScrap( gibstat.Scrap ) end
-			if self:GetTFBLU() != true then
+			if gibstat.Model ~= nil then gib:SetModel( gibstat.Model ) end
+			if gibstat.Scrap ~= nil then gib:SetTFScrap( gibstat.Scrap ) end
+			if self:GetTFBLU() ~= true then
 				
-				if gibstat.SkinRED != nil then gib:SetSkin( gibstat.SkinRED ) end
+				if gibstat.SkinRED ~= nil then gib:SetSkin( gibstat.SkinRED ) end
 				
 			else
 				
-				if gibstat.SkinBLU != nil then gib:SetSkin( gibstat.SkinBLU ) end
+				if gibstat.SkinBLU ~= nil then gib:SetSkin( gibstat.SkinBLU ) end
 				
 			end
 			gib:Spawn()
@@ -704,7 +704,7 @@ function ENT:OnDestroy( send )
 	end
 	
 	self:CreateGibs()
-	if self.ExplodeSound != nil then self:EmitSound( self.ExplodeSound ) end
+	if self.ExplodeSound ~= nil then self:EmitSound( self.ExplodeSound ) end
 	self:Remove()
 	
 end

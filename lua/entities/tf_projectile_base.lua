@@ -12,7 +12,7 @@ ENT.Particles = {}
 
 function ENT:TFNetworkVar( vartype, varname, default, slot, extended )
 	
-	if self[ "GetTF" .. varname ] != nil or self[ "SetTF" .. varname ] != nil then return end
+	if self[ "GetTF" .. varname ] ~= nil or self[ "SetTF" .. varname ] ~= nil then return end
 	
 	if self.CreatedNetworkVars == nil then self.CreatedNetworkVars = {} end
 	
@@ -22,11 +22,11 @@ function ENT:TFNetworkVar( vartype, varname, default, slot, extended )
 		
 	end
 	
-	if slot != nil then self.CreatedNetworkVars[ vartype ] = slot end
+	if slot ~= nil then self.CreatedNetworkVars[ vartype ] = slot end
 	slot = self.CreatedNetworkVars[ vartype ]
 	
 	self:NetworkVar( vartype, slot, "TF" .. varname, extended )
-	if SERVER and default != nil then self[ "SetTF" .. varname ]( self, default ) end
+	if SERVER and default ~= nil then self[ "SetTF" .. varname ]( self, default ) end
 	
 	self.CreatedNetworkVars[ vartype ] = self.CreatedNetworkVars[ vartype ] + 1
 	
@@ -47,7 +47,7 @@ function ENT:SetParticles( particles )
 	
 	for _, v in pairs( self.Particles ) do
 		
-		if particles[ _ ] != nil then
+		if particles[ _ ] ~= nil then
 			
 			self:SetNW2String( "particle_" .. _, particles[ _ ] )
 			
@@ -131,11 +131,11 @@ function ENT:AddParticle( particle, options )
 			
 			if IsValid( option.entity ) == true and isstring( option.attachment ) == true then option.attachment = option.entity:LookupAttachment( option.attachment ) end
 			
-			if option.attachtype == PATTACH_POINT_FOLLOW and option.attachment != nil and IsValid( option.entity ) == true then
+			if option.attachtype == PATTACH_POINT_FOLLOW and option.attachment ~= nil and IsValid( option.entity ) == true then
 				
 				local attach = option.entity:GetAttachment( option.attachment )
 				local ang = Angle( 0, 0, 0 )
-				if attach != nil and attach.Ang != nil then ang = attach.Ang end
+				if attach ~= nil and attach.Ang ~= nil then ang = attach.Ang end
 				
 				local mdl = ClientsideModel( "models/weapons/w_models/w_drg_ball.mdl" )
 				mdl:SetNoDraw( true )
@@ -230,7 +230,7 @@ function ENT:HandleParticles()
 	for i = 1, #self.CreatedParticles do
 		
 		local tbl = self.CreatedParticles[ i ]
-		if IsValid( tbl.particle ) != true then
+		if IsValid( tbl.particle ) ~= true then
 			
 			self:RemoveParticle( tbl, true )
 			table.insert( remove, i )

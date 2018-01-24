@@ -143,9 +143,9 @@ function SWEP:GetProjectileParticles( crit )
 	local trail
 	local explode
 	
-	if self:GetTeam() != true then
+	if self:GetTeam() ~= true then
 		
-		if self:ShouldCrit() != true then
+		if self:ShouldCrit() ~= true then
 			
 			trail = pp.red_trail
 			explode = pp.red_explode
@@ -159,7 +159,7 @@ function SWEP:GetProjectileParticles( crit )
 		
 	else
 		
-		if self:ShouldCrit() != true then
+		if self:ShouldCrit() ~= true then
 			
 			trail = pp.blue_trail
 			explode = pp.blue_explode
@@ -196,7 +196,7 @@ end
 
 function SWEP:AttributesMod( attributes, attributeclass )
 	
-	if self.Primary != nil and self.Primary.ImpactDamage != nil and attributeclass[ "mult_dmg" ] != nil and attributeclass[ "mult_dmg" ][ 1 ] != nil then self.Primary.ImpactDamage = self.Primary.ImpactDamage * attributeclass[ "mult_dmg" ][ 1 ] end
+	if self.Primary ~= nil and self.Primary.ImpactDamage ~= nil and attributeclass[ "mult_dmg" ] ~= nil and attributeclass[ "mult_dmg" ][ 1 ] ~= nil then self.Primary.ImpactDamage = self.Primary.ImpactDamage * attributeclass[ "mult_dmg" ][ 1 ] end
 	
 end
 

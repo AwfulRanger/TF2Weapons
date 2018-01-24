@@ -152,7 +152,7 @@ end
 ]]--
 function SWEP:TFNetworkVar( vartype, varname, default, slot, extended )
 	
-	if self[ "GetTF" .. varname ] != nil or self[ "SetTF" .. varname ] != nil then return end
+	if self[ "GetTF" .. varname ] ~= nil or self[ "SetTF" .. varname ] ~= nil then return end
 	
 	if self.CreatedNetworkVars == nil then self.CreatedNetworkVars = {} end
 	
@@ -162,11 +162,11 @@ function SWEP:TFNetworkVar( vartype, varname, default, slot, extended )
 		
 	end
 	
-	if slot != nil then self.CreatedNetworkVars[ vartype ] = slot end
+	if slot ~= nil then self.CreatedNetworkVars[ vartype ] = slot end
 	slot = self.CreatedNetworkVars[ vartype ]
 	
 	self:NetworkVar( vartype, slot, "TF" .. varname, extended )
-	if SERVER and default != nil then self[ "SetTF" .. varname ]( self, default ) end
+	if SERVER and default ~= nil then self[ "SetTF" .. varname ]( self, default ) end
 	
 	self.CreatedNetworkVars[ vartype ] = self.CreatedNetworkVars[ vartype ] + 1
 	
@@ -276,7 +276,7 @@ end
 function SWEP:GetViewModels( owner )
 	
 	if owner == nil then owner = self:GetOwner() end
-	if IsValid( owner ) != true then return end
+	if IsValid( owner ) ~= true then return end
 	
 	--return owner:GetViewModel( 0 ), owner:GetViewModel( 1 )
 	return owner:GetViewModel( 1 ), owner:GetViewModel( 0 )
@@ -307,8 +307,8 @@ end
 ]]--
 function SWEP:DoAttributes( attributes, attributeclass )
 	
-	if self.Primary != nil then self.Primary.DefaultClipSize = self.Primary.ClipSize end
-	if self.Secondary != nil then self.Secondary.DefaultClipSize = self.Secondary.ClipSize end
+	if self.Primary ~= nil then self.Primary.DefaultClipSize = self.Primary.ClipSize end
+	if self.Secondary ~= nil then self.Secondary.DefaultClipSize = self.Secondary.ClipSize end
 	
 	if attributes == nil then attributes = self.Attributes end
 	if attributes == nil then return end
@@ -316,22 +316,22 @@ function SWEP:DoAttributes( attributes, attributeclass )
 	
 	for _, v in pairs( attributes ) do
 		
-		if _ != "BaseClass" then
+		if _ ~= "BaseClass" then
 			
 			local attribute = TF2Weapons:GetAttribute( _ )
 			local value
-			if attribute != nil then
+			if attribute ~= nil then
 				
-				if attribute.func != nil then
+				if attribute.func ~= nil then
 					
 					value = attribute.func( self, v )
 					
 				end
 				
-				if attributeclass != nil and value != nil then
+				if attributeclass ~= nil and value ~= nil then
 					
 					local class
-					if attributeclass[ attribute.class ] != nil then class = attributeclass[ attribute.class ] end
+					if attributeclass[ attribute.class ] ~= nil then class = attributeclass[ attribute.class ] end
 					
 					if attribute.type == "percentage" or attribute.type == "inverted_percentage" then
 						
@@ -404,7 +404,7 @@ function SWEP:GetTeam( ply, color )
 	
 	if ply == nil then ply = self:GetOwner() end
 	
-	if color != nil then return color.b > color.r end
+	if color ~= nil then return color.b > color.r end
 	
 	if IsValid( ply ) == true then
 		
@@ -432,7 +432,7 @@ function SWEP:DoTeamSet( blu )
 	
 	local skin
 	
-	if blu != true then
+	if blu ~= true then
 		
 		skin = self.SkinRED
 		
@@ -478,7 +478,7 @@ function SWEP:GetPlayerClass()
 		
 		for i = 0, #TF2Weapons.Class do
 			
-			if self.Classes[ i ] == true and found != true then
+			if self.Classes[ i ] == true and found ~= true then
 				
 				class = i
 				found = true
@@ -487,7 +487,7 @@ function SWEP:GetPlayerClass()
 			
 		end
 		
-		if found != true then class = 0 end
+		if found ~= true then class = 0 end
 		
 	end
 	
@@ -514,7 +514,7 @@ SWEP.BuildBonePositionsAdded = false
 ]]--
 function SWEP:DoInitialize()
 	
-	if self.MinLevel != nil and self.MaxLevel != nil then self.Level = math.Round( util.SharedRandom( "tf2weapons_level", self.MinLevel, self.MaxLevel, CurTime() ) ) end
+	if self.MinLevel ~= nil and self.MaxLevel ~= nil then self.Level = math.Round( util.SharedRandom( "tf2weapons_level", self.MinLevel, self.MaxLevel, CurTime() ) ) end
 	
 	if CLIENT then self:AddKillIcon( self.KillIcon, self.KillIconColor, self.KillIconX, self.KillIconY, self.KillIconW, self.KillIconH ) end
 	self:SetHoldType( self.HoldType )
@@ -523,7 +523,7 @@ function SWEP:DoInitialize()
 	self:SetVariables()
 	self:DoAttributes()
 	
-	if self.BuildBonePositionsAdded != true then
+	if self.BuildBonePositionsAdded ~= true then
 		
 		self:AddCallback( "BuildBonePositions", function( ent, count )
 			
@@ -535,7 +535,7 @@ function SWEP:DoInitialize()
 		
 	end
 	
-	if self.MuzzleParticle != nil and self.MuzzleParticle != "" then self:PrecacheParticles( self.MuzzleParticle ) end
+	if self.MuzzleParticle ~= nil and self.MuzzleParticle ~= "" then self:PrecacheParticles( self.MuzzleParticle ) end
 	
 end
 
@@ -615,13 +615,13 @@ end
 ]]--
 function SWEP:OnDrawCrosshair( x, y )
 	
-	if self.DrawCrosshair != true then return end
+	if self.DrawCrosshair ~= true then return end
 	
 	surface.SetDrawColor( 255, 255, 255, 255 )
 	surface.SetMaterial( self.Crosshair )
 	local tw = self.Crosshair:Width()
 	local th = self.Crosshair:Height()
-	if self.Crosshairs[ self.CrosshairType ] != nil then
+	if self.Crosshairs[ self.CrosshairType ] ~= nil then
 		
 		local crosshair = self.Crosshairs[ self.CrosshairType ]
 		
@@ -679,12 +679,12 @@ function SWEP:GetAttribute( id, slot, pretty )
 	if slot == nil then slot = 1 end
 	
 	local attribute = self.Attributes[ id ]
-	if attribute == nil and TF2Weapons:GetAttribute( id ) != nil then
+	if attribute == nil and TF2Weapons:GetAttribute( id ) ~= nil then
 		
 		local a = TF2Weapons:GetAttribute( id )
 		
-		if self.Attributes[ a.id ] != nil then attribute = self.Attributes[ a.id ] end
-		if self.Attributes[ a.name ] != nil then attribute = self.Attributes[ a.name ] end
+		if self.Attributes[ a.id ] ~= nil then attribute = self.Attributes[ a.id ] end
+		if self.Attributes[ a.name ] ~= nil then attribute = self.Attributes[ a.name ] end
 		
 	end
 	
@@ -740,10 +740,10 @@ function SWEP:GetAttributeClass( id, slot, pretty )
 	local a = TF2Weapons:GetAttribute( id )
 	
 	local class = self.AttributeClass[ id ]
-	if class == nil and a != nil then
+	if class == nil and a ~= nil then
 		
-		if self.AttributeClass[ a.id ] != nil then class = self.AttributeClass[ a.id ] end
-		if self.AttributeClass[ a.name ] != nil then class = self.AttributeClass[ a.name ] end
+		if self.AttributeClass[ a.id ] ~= nil then class = self.AttributeClass[ a.id ] end
+		if self.AttributeClass[ a.name ] ~= nil then class = self.AttributeClass[ a.name ] end
 		
 	end
 	
@@ -797,16 +797,16 @@ function SWEP:PrintWeaponInfo( x, y, a )
 	if self.ProperName == true then name = language.GetPhrase( "TF_Unique_Prepend_Proper" ) .. name end
 	local prefix = TF2Weapons.QualityPrefix[ self.Quality ]
 	if prefix[ 1 ] == "#" then prefix = string.Replace( language.GetPhrase( prefix ), "\\n", "\n" ) end
-	if prefix != nil and prefix != "" then name = prefix .. " " .. name end
+	if prefix ~= nil and prefix ~= "" then name = prefix .. " " .. name end
 	
 	local level = self.Level
-	if self.HUDLevel != nil then level = self.HUDLevel end
+	if self.HUDLevel ~= nil then level = self.HUDLevel end
 	
 	local wtype = self.Type
 	if wtype[ 1 ] == "#" then wtype = string.Replace( language.GetPhrase( wtype ), "\\n", "\n" ) end
 	
 	local desc = self.Description
-	if desc != nil and desc[ 1 ] == "#" then desc = string.Replace( language.GetPhrase( desc ), "\\n", "\n" ) end
+	if desc ~= nil and desc[ 1 ] == "#" then desc = string.Replace( language.GetPhrase( desc ), "\\n", "\n" ) end
 	
 	--size
 	local width = 0
@@ -824,7 +824,7 @@ function SWEP:PrintWeaponInfo( x, y, a )
 	if w > width then width = w end
 	height = height + h
 	
-	if desc != nil and desc != "" then
+	if desc ~= nil and desc ~= "" then
 		
 		local explode = string.Explode( "\n", desc )
 		for i = 1, #explode do
@@ -837,16 +837,16 @@ function SWEP:PrintWeaponInfo( x, y, a )
 		
 	end
 	
-	if self.AttributesOrder[ 1 ] != nil then
+	if self.AttributesOrder[ 1 ] ~= nil then
 		
 		for i = 1, #self.AttributesOrder do
 			
 			local attribute = TF2Weapons:GetAttribute( self.AttributesOrder[ i ] )
 			
-			if attribute != nil and attribute.hidden != true then
+			if attribute ~= nil and attribute.hidden ~= true then
 				
 				local text = attribute.desc
-				if text != nil and text[ 1 ] == "#" then text = string.Replace( language.GetPhrase( text ), "\\n", "\n" ) end
+				if text ~= nil and text[ 1 ] == "#" then text = string.Replace( language.GetPhrase( text ), "\\n", "\n" ) end
 				
 				w, h = surface.GetTextSize( text )
 				if w > width then width = w end
@@ -860,14 +860,14 @@ function SWEP:PrintWeaponInfo( x, y, a )
 		
 		for _, v in pairs( self.Attributes ) do
 			
-			if _ != "BaseClass" then
+			if _ ~= "BaseClass" then
 				
 				local attribute = TF2Weapons:GetAttribute( _ )
 				
-				if attribute != nil and attribute.hidden != true then
+				if attribute ~= nil and attribute.hidden ~= true then
 					
 					local text = attribute.desc
-					if text != nil and text[ 1 ] == "#" then text = string.Replace( language.GetPhrase( text ), "\\n", "\n" ) end
+					if text ~= nil and text[ 1 ] == "#" then text = string.Replace( language.GetPhrase( text ), "\\n", "\n" ) end
 					
 					w, h = surface.GetTextSize( text )
 					if w > width then width = w end
@@ -918,7 +918,7 @@ function SWEP:PrintWeaponInfo( x, y, a )
 	surface.DrawText( "Level " .. level .. " " .. wtype, "TF2Weapons_InfoSecondary" )
 	height_ = height_ + h
 	
-	if self.AttributesOrder[ 1 ] != nil then
+	if self.AttributesOrder[ 1 ] ~= nil then
 		
 		for i = 1, #self.AttributesOrder do
 			
@@ -926,10 +926,10 @@ function SWEP:PrintWeaponInfo( x, y, a )
 			
 			local attribute = TF2Weapons:GetAttribute( order )
 			
-			if attribute != nil and attribute.hidden != true then
+			if attribute ~= nil and attribute.hidden ~= true then
 				
 				local text = attribute.desc
-				if text != nil and text[ 1 ] == "#" then text = string.Replace( language.GetPhrase( text ), "\\n", "\n" ) end
+				if text ~= nil and text[ 1 ] == "#" then text = string.Replace( language.GetPhrase( text ), "\\n", "\n" ) end
 				for i_ = 1, #self.Attributes[ order ] do
 					
 					text = string.Replace( text, "%s" .. i_, self:GetAttribute( order, i_, true ) )
@@ -965,10 +965,10 @@ function SWEP:PrintWeaponInfo( x, y, a )
 			
 			local attribute = TF2Weapons:GetAttribute( _ )
 			
-			if attribute != nil and attribute.hidden != true then
+			if attribute ~= nil and attribute.hidden ~= true then
 				
 				local text = attribute.desc
-				if text != nil and text[ 1 ] == "#" then text = string.Replace( language.GetPhrase( text ), "\\n", "\n" ) end
+				if text ~= nil and text[ 1 ] == "#" then text = string.Replace( language.GetPhrase( text ), "\\n", "\n" ) end
 				for i = 1, #v do
 					
 					text = string.Replace( text, "%s" .. i, self:GetAttribute( _, i, true ) )
@@ -1000,7 +1000,7 @@ function SWEP:PrintWeaponInfo( x, y, a )
 		
 	end
 	
-	if desc != nil and desc != "" then
+	if desc ~= nil and desc ~= "" then
 		
 		local explode = string.Explode( "\n", desc )
 		for i = 1, #explode do
@@ -1227,9 +1227,9 @@ function SWEP:GetHandModel()
 	
 	local hands = self.HandModel
 	
-	if self.DisableAutomaticHands != true then
+	if self.DisableAutomaticHands ~= true then
 		
-		if TF2Weapons.ClassHand[ self:GetPlayerClass() ] != nil then return TF2Weapons.ClassHand[ self:GetPlayerClass() ] end
+		if TF2Weapons.ClassHand[ self:GetPlayerClass() ] ~= nil then return TF2Weapons.ClassHand[ self:GetPlayerClass() ] end
 		
 	end
 	
@@ -1237,7 +1237,7 @@ function SWEP:GetHandModel()
 		
 		hands = Model( "models/weapons/c_models/c_engineer_gunslinger.mdl" )
 		
-	elseif hands == "models/weapons/c_models/c_engineer_gunslinger.mdl" and self:GetOwner():HasWeapon( "tf_weapon_robot_arm" ) != true then
+	elseif hands == "models/weapons/c_models/c_engineer_gunslinger.mdl" and self:GetOwner():HasWeapon( "tf_weapon_robot_arm" ) ~= true then
 		
 		hands = Model( "models/weapons/c_models/c_engineer_arms.mdl" )
 		
@@ -1263,7 +1263,7 @@ function SWEP:AddHands( owner )
 	
 	local handmodel = self:GetHandModel()
 	
-	if IsValid( hands ) == true and handmodel != nil and handmodel != "" then
+	if IsValid( hands ) == true and handmodel ~= nil and handmodel ~= "" then
 		
 		hands:SetWeaponModel( handmodel, self )
 		
@@ -1271,11 +1271,11 @@ function SWEP:AddHands( owner )
 		
 	end
 	
-	if IsValid( weapon ) == true and self.ViewModel != nil and self.ViewModel != "" then
+	if IsValid( weapon ) == true and self.ViewModel ~= nil and self.ViewModel ~= "" then
 		
 		weapon:SetWeaponModel( self.ViewModel, self )
 		
-		if IsValid( hands ) == true and handmodel != nil and handmodel != "" then
+		if IsValid( hands ) == true and handmodel ~= nil and handmodel ~= "" then
 			
 			weapon:SetParent( hands )
 			weapon:AddEffects( EF_BONEMERGE )
@@ -1336,7 +1336,7 @@ function SWEP:CheckHands( owner )
 	
 	local hands, weapon = self:GetViewModels( owner )
 	
-	if IsValid( weapon ) == false or IsValid( hands ) == false or weapon:GetParent() != hands or weapon:IsEffectActive( EF_BONEMERGE ) == false or hands:GetModel() != self:GetHandModel() or weapon:GetModel() != self.ViewModel then
+	if IsValid( weapon ) == false or IsValid( hands ) == false or weapon:GetParent() ~= hands or weapon:IsEffectActive( EF_BONEMERGE ) == false or hands:GetModel() ~= self:GetHandModel() or weapon:GetModel() ~= self.ViewModel then
 		
 		self:AddHands()
 		
@@ -1426,7 +1426,7 @@ end
 
 function SWEP:SetPlayerAnimation( anim )
 	
-	if IsValid( self:GetOwner() ) == true and ( ( CLIENT and self:DrawingVM() != true ) or ( SERVER and game.SinglePlayer() != true ) ) then self:GetOwner():SetAnimation( anim ) end
+	if IsValid( self:GetOwner() ) == true and ( ( CLIENT and self:DrawingVM() ~= true ) or ( SERVER and game.SinglePlayer() ~= true ) ) then self:GetOwner():SetAnimation( anim ) end
 	
 end
 
@@ -1462,7 +1462,7 @@ SWEP.CreatedParticles = {}
 ]]--
 function SWEP:AddParticle( particle, options )
 	
-	if ( game.SinglePlayer() != true and IsFirstTimePredicted() != true ) or particle == nil or particle == "" or options == nil then return end
+	if ( game.SinglePlayer() ~= true and IsFirstTimePredicted() ~= true ) or particle == nil or particle == "" or options == nil then return end
 	
 	if SERVER then
 		
@@ -1502,11 +1502,11 @@ function SWEP:AddParticle( particle, options )
 			
 			if IsValid( option.entity ) == true and isstring( option.attachment ) == true then option.attachment = option.entity:LookupAttachment( option.attachment ) end
 			
-			if option.attachtype == PATTACH_POINT_FOLLOW and option.attachment != nil and IsValid( option.entity ) == true then
+			if option.attachtype == PATTACH_POINT_FOLLOW and option.attachment ~= nil and IsValid( option.entity ) == true then
 				
 				local attach = option.entity:GetAttachment( option.attachment )
 				local ang = Angle( 0, 0, 0 )
-				if attach != nil and attach.Ang != nil then ang = attach.Ang end
+				if attach ~= nil and attach.Ang ~= nil then ang = attach.Ang end
 				
 				local mdl = ClientsideModel( "models/weapons/w_models/w_drg_ball.mdl" )
 				mdl:SetNoDraw( true )
@@ -1631,7 +1631,7 @@ function SWEP:HandleParticles()
 	for i = 1, #self.CreatedParticles do
 		
 		local tbl = self.CreatedParticles[ i ]
-		if IsValid( tbl.particle ) != true then
+		if IsValid( tbl.particle ) ~= true then
 			
 			self:RemoveParticle( tbl, true )
 			table.insert( remove, i )
@@ -1674,7 +1674,7 @@ end
 ]]--
 function SWEP:Inspect()
 	
-	if self:CanInspect() != true then return end
+	if self:CanInspect() ~= true then return end
 	
 	local hands, weapon = self:GetViewModels()
 	
@@ -1697,7 +1697,7 @@ function SWEP:Inspect()
 				
 				self:SetTFNextIdle( -1 )
 				
-			elseif self:GetTFInspectLoop() != true then
+			elseif self:GetTFInspectLoop() ~= true then
 				
 				self:SetVMAnimation( self:GetInspectAnim( "inspect_start" ) )
 				self:SetTFNextInspect( CurTime() + hands:SequenceDuration( self:GetInspectAnim( "inspect_start" ) ) )
@@ -1710,7 +1710,7 @@ function SWEP:Inspect()
 			
 		end
 		
-	elseif self:GetTFInspecting() == true and hands:GetSequence() != hands:LookupSequence( self:GetInspectAnim( "inspect_start" ) ) then
+	elseif self:GetTFInspecting() == true and hands:GetSequence() ~= hands:LookupSequence( self:GetInspectAnim( "inspect_start" ) ) then
 		
 		self:SetVMAnimation( self:GetInspectAnim( "inspect_end" ) )
 		self:SetTFNextInspect( CurTime() + hands:SequenceDuration( self:GetInspectAnim( "inspect_end" ) ) )
@@ -1729,7 +1729,7 @@ end
 ]]--
 function SWEP:Idle()
 	
-	if self:GetTFNextIdle() != -1 and CurTime() > self:GetTFNextIdle() then
+	if self:GetTFNextIdle() ~= -1 and CurTime() > self:GetTFNextIdle() then
 		
 		local hands, weapon = self:GetViewModels()
 		
@@ -1751,7 +1751,7 @@ end
 ]]--
 function SWEP:HandleCritStreams()
 	
-	if self.CritStream != true then return end
+	if self.CritStream ~= true then return end
 	
 	if CurTime() > self:GetTFCritStreamNextCheck() then
 		
@@ -1837,7 +1837,7 @@ function SWEP:DoReload()
 				
 				local reload_start = self:GetHandAnim( "reload_start" )
 				
-				if self:GetTFReloads() != 0 then
+				if self:GetTFReloads() ~= 0 then
 					
 					self:GetOwner():RemoveAmmo( self.ReloadTakeAmmo, self:GetPrimaryAmmoType() )
 					self:SetClip1( self:Clip1() + self.ReloadAddAmmo )
@@ -2002,7 +2002,7 @@ function SWEP:AddAttributes()
 	if IsValid( owner ) == true and owner:IsPlayer() == true then
 		
 		local add_maxhealth = self:GetAttributeClass( "add_maxhealth" )
-		if add_maxhealth != nil then
+		if add_maxhealth ~= nil then
 			
 			owner:SetMaxHealth( owner:GetMaxHealth() + add_maxhealth )
 			owner:SetHealth( owner:Health() + add_maxhealth )
@@ -2029,7 +2029,7 @@ function SWEP:RemoveAttributes()
 	if IsValid( owner ) == true and owner:IsPlayer() == true then
 		
 		local add_maxhealth = self:GetAttributeClass( "add_maxhealth" )
-		if add_maxhealth != nil then
+		if add_maxhealth ~= nil then
 			
 			owner:SetMaxHealth( owner:GetMaxHealth() - add_maxhealth )
 			owner:SetHealth( owner:Health() - add_maxhealth )
@@ -2058,7 +2058,7 @@ function SWEP:AddActiveAttributes()
 	if IsValid( owner ) == true and owner:IsPlayer() == true then
 		
 		local mod_jump_height_from_weapon = self:GetAttributeClass( "mod_jump_height_from_weapon" )
-		if mod_jump_height_from_weapon != nil then owner:SetJumpPower( owner:GetJumpPower() * mod_jump_height_from_weapon ) end
+		if mod_jump_height_from_weapon ~= nil then owner:SetJumpPower( owner:GetJumpPower() * mod_jump_height_from_weapon ) end
 		
 	end
 	
@@ -2080,7 +2080,7 @@ function SWEP:RemoveActiveAttributes()
 	if IsValid( owner ) == true and owner:IsPlayer() == true then
 		
 		local mod_jump_height_from_weapon = self:GetAttributeClass( "mod_jump_height_from_weapon" )
-		if mod_jump_height_from_weapon != nil then owner:SetJumpPower( owner:GetJumpPower() / mod_jump_height_from_weapon ) end
+		if mod_jump_height_from_weapon ~= nil then owner:SetJumpPower( owner:GetJumpPower() / mod_jump_height_from_weapon ) end
 		
 	end
 	
@@ -2234,14 +2234,14 @@ function SWEP:DoPrimaryAttack( bullet, crit )
 	
 	local crit = self:DoCrit()
 	
-	if bullet != nil then self:GetOwner():FireBullets( bullet ) end
+	if bullet ~= nil then self:GetOwner():FireBullets( bullet ) end
 	
 	local fire = self:GetHandAnim( "fire" )
 	self:SetVMAnimation( fire )
 	self:SetPlayerAnimation( PLAYER_ATTACK1 )
 	
 	local muzzle = self.MuzzleParticle
-	if crit == true and self.MuzzleParticleCrit != nil then muzzle = self.MuzzleParticleCrit end
+	if crit == true and self.MuzzleParticleCrit ~= nil then muzzle = self.MuzzleParticleCrit end
 	
 	if CLIENT then
 		
@@ -2270,11 +2270,11 @@ function SWEP:DoPrimaryAttack( bullet, crit )
 	end
 	
 	local sound = self.ShootSound
-	if crit == true and self.ShootSoundCrit != nil then sound = self.ShootSoundCrit end
+	if crit == true and self.ShootSoundCrit ~= nil then sound = self.ShootSoundCrit end
 	
 	self:PlaySound( sound )
 	
-	if game.SinglePlayer() != true or SERVER then self:TakePrimaryAmmo( self.Primary.TakeAmmo ) end
+	if game.SinglePlayer() ~= true or SERVER then self:TakePrimaryAmmo( self.Primary.TakeAmmo ) end
 	
 end
 
@@ -2315,10 +2315,10 @@ function SWEP:GiveHealth( hp, ply, max )
 		
 	end
 	
-	if max != -1 and ply:Health() >= max then return end
+	if max ~= -1 and ply:Health() >= max then return end
 	
 	local health = ply:Health() + hp
-	if max != -1 and health > max then health = max end
+	if max ~= -1 and health > max then health = max end
 	
 	ply:SetHealth( health )
 	
@@ -2339,7 +2339,7 @@ function SWEP:PrimaryAttack()
 	local crit = self:DoCrit()
 	
 	local spread = self.Primary.Spread
-	if self.Primary.SpreadRecovery != nil and self.Primary.SpreadRecovery != -1 and CurTime() - self.Primary.SpreadRecovery > self:GetTFPrimaryLastShot() then spread = 0 end
+	if self.Primary.SpreadRecovery ~= nil and self.Primary.SpreadRecovery ~= -1 and CurTime() - self.Primary.SpreadRecovery > self:GetTFPrimaryLastShot() then spread = 0 end
 	
 	local bullet = {}
 	bullet.Src = self:GetOwner():GetShootPos()
@@ -2375,7 +2375,7 @@ function SWEP:PrimaryAttack()
 			
 		end
 		
-		if dmg != nil then
+		if dmg ~= nil then
 			
 			if SERVER and IsValid( tr.Entity ) == true then
 				
@@ -2417,7 +2417,7 @@ function SWEP:PrimaryAttack()
 							if IsValid( attacker ) == true and attacker:IsPlayer() == true then
 								
 								local add_onhit_addhealth = self:GetAttributeClass( "add_onhit_addhealth" )
-								if add_onhit_addhealth != nil then self:GiveHealth( add_onhit_addhealth, attacker, attacker:GetMaxHealth() ) end
+								if add_onhit_addhealth ~= nil then self:GiveHealth( add_onhit_addhealth, attacker, attacker:GetMaxHealth() ) end
 								
 							end
 							
@@ -2508,7 +2508,7 @@ end
 ]]--
 function SWEP:PreDrawViewModel( vm, weapon, ply )
 	
-	if weapon.CheckHands != nil then weapon:CheckHands() end
+	if weapon.CheckHands ~= nil then weapon:CheckHands() end
 	
 end
 
@@ -2533,7 +2533,7 @@ function SWEP:DoBuildWorldModelBones( ent, count )
 		
 		local pos, ang = self:GetOwner():GetBonePosition( rhandbone )
 		
-		if self:GetOwner():LookupAttachment( "anim_attachment_rh" ) != 0 then pos = self:GetOwner():GetAttachment( self:GetOwner():LookupAttachment( "anim_attachment_rh" ) ).Pos end
+		if self:GetOwner():LookupAttachment( "anim_attachment_rh" ) ~= 0 then pos = self:GetOwner():GetAttachment( self:GetOwner():LookupAttachment( "anim_attachment_rh" ) ).Pos end
 		
 		ang:RotateAroundAxis( ang:Right(), -90 )
 		ang:RotateAroundAxis( ang:Up(), -90 )
@@ -2542,7 +2542,7 @@ function SWEP:DoBuildWorldModelBones( ent, count )
 		
 		for i = 0, self:GetBoneCount() - 1 do
 			
-			if i != weaponbone and string.lower( self:GetBoneName( i ) ) != "__invalidbone__" then
+			if i ~= weaponbone and string.lower( self:GetBoneName( i ) ) ~= "__invalidbone__" then
 				
 				local cpos, cang = self:GetBonePosition( i )
 				
@@ -2606,9 +2606,9 @@ function SWEP:ModCrit( target )
 	if IsValid( target ) == true then
 		
 		local or_crit_vs_playercond = self:GetAttributeClass( "or_crit_vs_playercond" )
-		if or_crit_vs_playercond != nil and bit.band( 1, or_crit_vs_playercond ) > 0 and target:IsOnFire() == true then crit = true end
+		if or_crit_vs_playercond ~= nil and bit.band( 1, or_crit_vs_playercond ) > 0 and target:IsOnFire() == true then crit = true end
 		local set_nocrit_vs_nonburning = self:GetAttributeClass( "set_nocrit_vs_nonburning" )
-		if set_nocrit_vs_nonburning != nil and set_nocrit_vs_nonburning > 0 and target:IsOnFire() != true then crit = false end
+		if set_nocrit_vs_nonburning ~= nil and set_nocrit_vs_nonburning > 0 and target:IsOnFire() ~= true then crit = false end
 		
 	end
 	
@@ -2632,11 +2632,11 @@ end
 function SWEP:ShouldCrit( chance, stream, target )
 	
 	local mod = self:ModCrit( target )
-	if mod != nil then return mod end
+	if mod ~= nil then return mod end
 	
-	if GetConVar( "tf2weapons_criticals" ):GetBool() != true then return false end
+	if GetConVar( "tf2weapons_criticals" ):GetBool() ~= true then return false end
 	
-	if self.CritStream == true and stream != true then
+	if self.CritStream == true and stream ~= true then
 		
 		return self:GetTFCritStreamActive()
 		
@@ -2712,18 +2712,18 @@ function SWEP:GetDamageMods( damage, mod, target, crit )
 	if damage == nil then damage = self.Primary.Damage end
 	
 	if crit == nil then crit = self:DoCrit( nil, nil, target ) end
-	if mod != nil and crit != true then damage = mod end
+	if mod ~= nil and crit ~= true then damage = mod end
 	
 	if IsValid( target ) == true then
 		
 		local mult_dmg_vs_nonburning = self:GetAttributeClass( "mult_dmg_vs_nonburning" )
-		if mult_dmg_vs_nonburning != nil and target:IsOnFire() != true then damage = damage * mult_dmg_vs_nonburning end
+		if mult_dmg_vs_nonburning ~= nil and target:IsOnFire() ~= true then damage = damage * mult_dmg_vs_nonburning end
 		local mult_dmg_bonus_while_half_dead = self:GetAttributeClass( "mult_dmg_bonus_while_half_dead" )
-		if mult_dmg_bonus_while_half_dead != nil and self:GetOwner():Health() < self:GetOwner():GetMaxHealth() * 0.5 then damage = damage * mult_dmg_bonus_while_half_dead end
+		if mult_dmg_bonus_while_half_dead ~= nil and self:GetOwner():Health() < self:GetOwner():GetMaxHealth() * 0.5 then damage = damage * mult_dmg_bonus_while_half_dead end
 		local mult_dmg_penalty_while_half_alive = self:GetAttributeClass( "mult_dmg_penalty_while_half_alive" )
-		if mult_dmg_penalty_while_half_alive != nil and self:GetOwner():Health() >= self:GetOwner():GetMaxHealth() * 0.5 then damage = damage * mult_dmg_penalty_while_half_alive end
+		if mult_dmg_penalty_while_half_alive ~= nil and self:GetOwner():Health() >= self:GetOwner():GetMaxHealth() * 0.5 then damage = damage * mult_dmg_penalty_while_half_alive end
 		local mult_dmg_vs_buildings = self:GetAttributeClass( "mult_dmg_vs_buildings" )
-		if mult_dmg_vs_buildings != nil and target.TF2Weapons_Building == true then damage = damage * mult_dmg_vs_buildings end
+		if mult_dmg_vs_buildings ~= nil and target.TF2Weapons_Building == true then damage = damage * mult_dmg_vs_buildings end
 		
 	end
 	

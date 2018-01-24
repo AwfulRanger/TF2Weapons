@@ -292,13 +292,13 @@ function ENT:Initialize()
 	for i = 1, #self.Levels do
 		
 		local level = self.Levels[ i ]
-		if level.ChargedParticleRED != nil then PrecacheParticleSystem( level.ChargedParticleRED ) end
-		if level.EntranceParticleRED != nil then PrecacheParticleSystem( level.EntranceParticleRED ) end
-		if level.ExitParticleRED != nil then PrecacheParticleSystem( level.ExitParticleRED ) end
+		if level.ChargedParticleRED ~= nil then PrecacheParticleSystem( level.ChargedParticleRED ) end
+		if level.EntranceParticleRED ~= nil then PrecacheParticleSystem( level.EntranceParticleRED ) end
+		if level.ExitParticleRED ~= nil then PrecacheParticleSystem( level.ExitParticleRED ) end
 		
-		if level.ChargedParticleBLU != nil then PrecacheParticleSystem( level.ChargedParticleBLU ) end
-		if level.EntranceParticleBLU != nil then PrecacheParticleSystem( level.EntranceParticleBLU ) end
-		if level.ExitParticleBLU != nil then PrecacheParticleSystem( level.ExitParticleBLU ) end
+		if level.ChargedParticleBLU ~= nil then PrecacheParticleSystem( level.ChargedParticleBLU ) end
+		if level.EntranceParticleBLU ~= nil then PrecacheParticleSystem( level.EntranceParticleBLU ) end
+		if level.ExitParticleBLU ~= nil then PrecacheParticleSystem( level.ExitParticleBLU ) end
 		
 	end
 	
@@ -343,7 +343,7 @@ function ENT:GetLink()
 	
 	local owner = self:GetTFOwner()
 	
-	if IsValid( owner ) != true then return end
+	if IsValid( owner ) ~= true then return end
 	
 	local plybuildings = owner.TF2Weapons_Buildings
 	
@@ -352,7 +352,7 @@ function ENT:GetLink()
 	local build = TF2Weapons.Building.EXIT
 	if self:GetTFExit() == true then build = TF2Weapons.Building.ENTRANCE end
 	
-	if plybuildings[ build ] != nil and plybuildings[ build ][ self:GetTFBuildID() ] != nil then
+	if plybuildings[ build ] ~= nil and plybuildings[ build ][ self:GetTFBuildID() ] ~= nil then
 		
 		self:SetTFLink( plybuildings[ build ][ self:GetTFBuildID() ] )
 		return plybuildings[ build ][ self:GetTFBuildID() ]
@@ -363,19 +363,19 @@ end
 
 function ENT:CanSend( ent )
 	
-	if self:GetTFTwoWay() != true and self:GetTFExit() == true then return false end
-	if IsValid( self:GetLink() ) != true then return false end
+	if self:GetTFTwoWay() ~= true and self:GetTFExit() == true then return false end
+	if IsValid( self:GetLink() ) ~= true then return false end
 	if CurTime() < self:GetTFNextTeleport() then return false end
-	if self:GetActive() != true then return false end
-	if self:GetLink():GetActive() != true then return false end
+	if self:GetActive() ~= true then return false end
+	if self:GetLink():GetActive() ~= true then return false end
 	
-	if ent != nil then
+	if ent ~= nil then
 		
-		if IsValid( ent ) != true then return false end
-		if self.TeleportNonPlayers != true and ent:IsPlayer() != true then return false end
+		if IsValid( ent ) ~= true then return false end
+		if self.TeleportNonPlayers ~= true and ent:IsPlayer() ~= true then return false end
 		if ent:GetAbsVelocity():Length() >= 5 then return false end
 		
-		if TF2Weapons:TeleporterCanSend( self, ent ) != true then return false end
+		if TF2Weapons:TeleporterCanSend( self, ent ) ~= true then return false end
 		
 	end
 	
@@ -409,7 +409,7 @@ end
 
 function ENT:Touch( ent )
 	
-	if CurTime() < self:GetTFNextTeleport() or self:CanSend( ent ) != true or self:GetTFTeleported() != true then return end
+	if CurTime() < self:GetTFNextTeleport() or self:CanSend( ent ) ~= true or self:GetTFTeleported() ~= true then return end
 	
 	self:SetTFTeleportTarget( ent )
 	self:SetTFTeleportTime( CurTime() + self.TeleportDelay )
@@ -428,7 +428,7 @@ function ENT:GetActive()
 	if self:GetTFBuilding() == true then return false end
 	if self:GetTFUpgrading() == true then return false end
 	if CurTime() < self:GetTFNextTeleport() then return false end
-	if IsValid( self:GetLink() ) != true then return false end
+	if IsValid( self:GetLink() ) ~= true then return false end
 	if self:GetLink():GetTFBuilding() == true then return false end
 	if self:GetLink():GetTFUpgrading() == true then return false end
 	
@@ -441,9 +441,9 @@ function ENT:Teleport( ent, exit )
 	if CLIENT then return end
 	
 	local pos = exit:GetPos()
-	if exit.GetReceivePos != nil then pos = exit:GetReceivePos() end
+	if exit.GetReceivePos ~= nil then pos = exit:GetReceivePos() end
 	local ang = exit:GetAngles()
-	if exit.GetReceiveAngles != nil then ang = exit:GetReceiveAngles() end
+	if exit.GetReceiveAngles ~= nil then ang = exit:GetReceiveAngles() end
 	
 	ent:SetPos( pos )
 	ent:SetAngles( ang )
@@ -453,7 +453,7 @@ function ENT:Teleport( ent, exit )
 	exit:OnReceive( ent )
 	
 	local stats = self.Levels[ self:GetTFLevel() ]
-	if stats != nil then
+	if stats ~= nil then
 		
 		self:SetTFLastTeleport( CurTime() )
 		exit:SetTFLastTeleport( CurTime() )
@@ -467,25 +467,25 @@ end
 function ENT:HandleLinkUpgrade()
 	
 	local link = self:GetLink()
-	if IsValid( link ) != true then return end
+	if IsValid( link ) ~= true then return end
 	
-	if link:GetTFBuilding() != true and self:GetTFLevel() > link:GetTFLevel() then
+	if link:GetTFBuilding() ~= true and self:GetTFLevel() > link:GetTFLevel() then
 		
 		link:SetLevel( self:GetTFLevel() )
 		link:SetTFUpgrade( self:GetTFUpgrade() )
 		
-	elseif self:GetTFBuilding() != true and link:GetTFLevel() > self:GetTFLevel() then
+	elseif self:GetTFBuilding() ~= true and link:GetTFLevel() > self:GetTFLevel() then
 		
 		self:SetLevel( link:GetTFLevel() )
 		self:SetTFUpgrade( link:GetTFUpgrade() )
 		
 	end
 	
-	if link:GetTFBuilding() != true and self:GetTFUpgrade() > link:GetTFUpgrade() then
+	if link:GetTFBuilding() ~= true and self:GetTFUpgrade() > link:GetTFUpgrade() then
 		
 		link:SetTFUpgrade( self:GetTFUpgrade() )
 		
-	elseif self:GetTFBuilding() != true and link:GetTFUpgrade() > self:GetTFUpgrade() then
+	elseif self:GetTFBuilding() ~= true and link:GetTFUpgrade() > self:GetTFUpgrade() then
 		
 		self:SetTFUpgrade( link:GetTFUpgrade() )
 		
@@ -518,38 +518,38 @@ function ENT:HandleAnim()
 	
 	if self:GetActive() == true then
 		
-		if self:GetTFReady() != true then
+		if self:GetTFReady() ~= true then
 			
 			self:EmitSound( self.ReadySound )
 			self:EmitSound( stats.SpinSound, nil, nil, nil, CHAN_WEAPON )
 			
 			if SERVER then
 				
-				if self:GetTFBLU() != true then
+				if self:GetTFBLU() ~= true then
 					
-					if stats.ChargedParticleRED != nil then ParticleEffectAttach( stats.ChargedParticleRED, PATTACH_ABSORIGIN_FOLLOW , self, -1 ) end
+					if stats.ChargedParticleRED ~= nil then ParticleEffectAttach( stats.ChargedParticleRED, PATTACH_ABSORIGIN_FOLLOW , self, -1 ) end
 					
 					if self:GetTFExit() == true then
 						
-						if stats.ExitParticleRED != nil then ParticleEffectAttach( stats.ExitParticleRED, PATTACH_ABSORIGIN_FOLLOW , self, -1 ) end
+						if stats.ExitParticleRED ~= nil then ParticleEffectAttach( stats.ExitParticleRED, PATTACH_ABSORIGIN_FOLLOW , self, -1 ) end
 						
 					else
 						
-						if stats.EntranceParticleRED != nil then ParticleEffectAttach( stats.EntranceParticleRED, PATTACH_ABSORIGIN_FOLLOW , self, -1 ) end
+						if stats.EntranceParticleRED ~= nil then ParticleEffectAttach( stats.EntranceParticleRED, PATTACH_ABSORIGIN_FOLLOW , self, -1 ) end
 						
 					end
 					
 				else
 					
-					if stats.ChargedParticleBLU != nil then ParticleEffectAttach( stats.ChargedParticleBLU, PATTACH_ABSORIGIN_FOLLOW , self, -1 ) end
+					if stats.ChargedParticleBLU ~= nil then ParticleEffectAttach( stats.ChargedParticleBLU, PATTACH_ABSORIGIN_FOLLOW , self, -1 ) end
 					
 					if self:GetTFExit() == true then
 						
-						if stats.ExitParticleBLU != nil then ParticleEffectAttach( stats.ExitParticleBLU, PATTACH_ABSORIGIN_FOLLOW , self, -1 ) end
+						if stats.ExitParticleBLU ~= nil then ParticleEffectAttach( stats.ExitParticleBLU, PATTACH_ABSORIGIN_FOLLOW , self, -1 ) end
 						
 					else
 						
-						if stats.EntranceParticleBLU != nil then ParticleEffectAttach( stats.EntranceParticleBLU, PATTACH_ABSORIGIN_FOLLOW , self, -1 ) end
+						if stats.EntranceParticleBLU ~= nil then ParticleEffectAttach( stats.EntranceParticleBLU, PATTACH_ABSORIGIN_FOLLOW , self, -1 ) end
 						
 					end
 					
@@ -578,7 +578,7 @@ function ENT:HandleAnim()
 		
 	end
 	
-	if self:GetTFBuilding() != true and CurTime() < self:GetTFNextTeleport() then
+	if self:GetTFBuilding() ~= true and CurTime() < self:GetTFNextTeleport() then
 		
 		local endtime = self:GetTFNextTeleport() - self:GetTFLastTeleport()
 		local time = CurTime() - self:GetTFLastTeleport()
@@ -607,7 +607,7 @@ function ENT:HandleAnim()
 		
 	end
 	
-	if self:GetTFBuilding() != true then
+	if self:GetTFBuilding() ~= true then
 		
 		self:SetSequence( stats.ReadyAnim )
 		self:SetSequence( self:LookupSequence( "running" ) )
@@ -616,20 +616,20 @@ function ENT:HandleAnim()
 		if self.SpinCycle < 0 then self.SpinCycle = self.SpinCycle + 1 end
 		self:SetCycle( self.SpinCycle )
 		
-		if self:FindBodygroupByName( "teleporter_blur" ) != -1 then
+		if self:FindBodygroupByName( "teleporter_blur" ) ~= -1 then
 			
 			local blur = ( self.SpinSpeed >= 1 and 1 ) or 0
 			self:SetBodygroup( self:FindBodygroupByName( "teleporter_blur" ), blur )
 			
 		end
 		
-		if self:FindBodygroupByName( "teleporter_direction" ) != -1 then
+		if self:FindBodygroupByName( "teleporter_direction" ) ~= -1 then
 			
 			local direction = 0
 			if self:CanSend() == true then direction = 1 end
 			self:SetBodygroup( self:FindBodygroupByName( "teleporter_direction" ), direction )
 			
-			if CLIENT and IsValid( self:GetLink() ) == true and self:LookupBone( "direction" ) != nil then
+			if CLIENT and IsValid( self:GetLink() ) == true and self:LookupBone( "direction" ) ~= nil then
 				
 				local ang = self:GetAngles().y - ( self:GetLink():GetPos() - self:GetPos() ):Angle().y
 				self:ManipulateBoneAngles( self:LookupBone( "direction" ), Angle( -ang, 0, 0 ) )
@@ -652,7 +652,7 @@ function ENT:HandleTeleport()
 		self:SetTFTeleportTime( 0 )
 		self:SetTFTeleported( true )
 		
-	elseif self:GetActive() != true then
+	elseif self:GetActive() ~= true then
 		
 		self:SetTFTeleportTarget( nil )
 		self:SetTFTeleportTime( 0 )

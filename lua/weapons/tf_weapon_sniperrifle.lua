@@ -13,8 +13,8 @@ hook.Add( "OnEntityCreated", "TF2Weapons_SniperRifle_OnCreated", function( ent )
 	
 	timer.Simple( time, function()
 		
-		if IsValid( ent ) != true then return end
-		if ent.TF2Weapons_SniperRifleDot != true then return end
+		if IsValid( ent ) ~= true then return end
+		if ent.TF2Weapons_SniperRifleDot ~= true then return end
 		if TF2Weapons == nil then return end
 		
 		if TF2Weapons.SniperRifles == nil then TF2Weapons.SniperRifles = {} end
@@ -27,7 +27,7 @@ end )
 
 hook.Add( "EntityRemoved", "TF2Weapons_SniperRifle_OnRemoved", function( ent )
 	
-	if ent.TF2Weapons_SniperRifleDot != true then return end
+	if ent.TF2Weapons_SniperRifleDot ~= true then return end
 	if TF2Weapons == nil then return end
 	
 	if TF2Weapons.SniperRifles == nil then TF2Weapons.SniperRifles = {} end
@@ -46,7 +46,7 @@ hook.Add( "PostDrawOpaqueRenderables", "TF2Weapons_SniperRifle_DrawDot", functio
 		
 		local rifle = TF2Weapons.SniperRifles[ i ]
 		
-		if rifle.GetTFScoped != nil and rifle:GetTFScoped() == true and rifle.DrawSniperDot != nil then rifle:DrawSniperDot() end
+		if rifle.GetTFScoped ~= nil and rifle:GetTFScoped() == true and rifle.DrawSniperDot ~= nil then rifle:DrawSniperDot() end
 		
 	end
 	
@@ -237,7 +237,7 @@ function SWEP:Think()
 				
 				local reload_start = self:GetHandAnim( "reload_start" )
 				
-				if self:GetTFReloads() != 0 then
+				if self:GetTFReloads() ~= 0 then
 					
 					self:GetOwner():RemoveAmmo( 1, self:GetPrimaryAmmoType() )
 					self:SetClip1( self:Clip1() + 1 )
@@ -284,7 +284,7 @@ function SWEP:Think()
 		
 	end
 	
-	if self:GetTFNextIdle() != -1 and CurTime() > self:GetTFNextIdle() then
+	if self:GetTFNextIdle() ~= -1 and CurTime() > self:GetTFNextIdle() then
 		
 		local idle = self:GetHandAnim( "idle" )
 		
@@ -313,11 +313,11 @@ function SWEP:PrimaryAttack()
 	bullet.Force = self.Primary.Force
 	bullet.Callback = function( attacker, tr, dmg )
 		
-		if SERVER and dmg != nil and IsValid( tr.Entity ) == true then
+		if SERVER and dmg ~= nil and IsValid( tr.Entity ) == true then
 			
 			if self:GetTFScoped() == true then
 				
-				if self.HeadshotEnabled == true and CurTime() - self.HeadshotDelay > self:GetTFScopeTime() and tr.HitGroup == HITGROUP_HEAD and self:OnCrit() != false then
+				if self.HeadshotEnabled == true and CurTime() - self.HeadshotDelay > self:GetTFScopeTime() and tr.HitGroup == HITGROUP_HEAD and self:OnCrit() ~= false then
 					
 					dmg:SetDamage( dmg:GetDamage() * self.CritMultiplier )
 					
@@ -390,11 +390,11 @@ function SWEP:DrawHUDBackground()
 	if charge < 0 then charge = 0 end
 	if charge > 1 then charge = 1 end
 	
-	if charge != 1 then self.ChargeSoundPlayed = false end
+	if charge ~= 1 then self.ChargeSoundPlayed = false end
 	
 	if self:GetTFScoped() == true then
 		
-		if charge == 1 and self.ChargeSoundPlayed != true then
+		if charge == 1 and self.ChargeSoundPlayed ~= true then
 			
 			surface.PlaySound( self.ChargedSound )
 			

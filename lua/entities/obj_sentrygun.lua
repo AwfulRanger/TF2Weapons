@@ -6,12 +6,12 @@ hook.Add( "OnEntityCreated", "TF2Weapons_Sentry_InsertTargets", function( ent )
 	
 	timer.Simple( 0, function()
 		
-		if IsValid( ent ) != true then return end
+		if IsValid( ent ) ~= true then return end
 		if TF2Weapons == nil then return end
 		
 		if TF2Weapons.SentryGunTargets == nil then TF2Weapons.SentryGunTargets = {} end
 		
-		if ( ent:Health() > 0 or ent:GetMaxHealth() > 0 ) and string.Left( ent:GetClass(), 5 ) != "prop_" then
+		if ( ent:Health() > 0 or ent:GetMaxHealth() > 0 ) and string.Left( ent:GetClass(), 5 ) ~= "prop_" then
 			
 			table.insert( TF2Weapons.SentryGunTargets, ent )
 			
@@ -23,12 +23,12 @@ end )
 
 hook.Add( "EntityRemoved", "TF2Weapons_Sentry_RemoveTargets", function( ent )
 	
-	if IsValid( ent ) != true then return end
+	if IsValid( ent ) ~= true then return end
 	if TF2Weapons == nil then return end
 	
 	if TF2Weapons.SentryGunTargets == nil then TF2Weapons.SentryGunTargets = {} end
 	
-	if ( ent:Health() > 0 or ent:GetMaxHealth() > 0 ) and string.Left( ent:GetClass(), 5 ) != "prop_" then
+	if ( ent:Health() > 0 or ent:GetMaxHealth() > 0 ) and string.Left( ent:GetClass(), 5 ) ~= "prop_" then
 		
 		table.RemoveByValue( TF2Weapons.SentryGunTargets, ent )
 		
@@ -407,7 +407,7 @@ function ENT:Initialize()
 	for i = 1, #self.Levels do
 		
 		local level = self.Levels[ i ]
-		if level.Bullet != nil and level.Bullet.Particles != nil then
+		if level.Bullet ~= nil and level.Bullet.Particles ~= nil then
 			
 			for i_ = 1, #level.Bullet.Particles do
 				
@@ -416,7 +416,7 @@ function ENT:Initialize()
 			end
 			
 		end
-		if level.Rocket != nil and level.Rocket.Particles != nil then
+		if level.Rocket ~= nil and level.Rocket.Particles ~= nil then
 			
 			for i_ = 1, #level.Rocket.Particles do
 				
@@ -438,26 +438,26 @@ function ENT:SetLevelModel( level, building )
 	
 	if building == true then
 		
-		if stats.BuildModel != nil then self:SetModel( stats.BuildModel ) end
-		if stats.BuildAnim != nil then self:ResetSequence( stats.BuildAnim ) end
-		if stats.BuildBodygroups != nil then self:SetBodyGroups( stats.BuildBodygroups ) end
+		if stats.BuildModel ~= nil then self:SetModel( stats.BuildModel ) end
+		if stats.BuildAnim ~= nil then self:ResetSequence( stats.BuildAnim ) end
+		if stats.BuildBodygroups ~= nil then self:SetBodyGroups( stats.BuildBodygroups ) end
 		
 	else
 		
-		if stats.Model != nil then self:SetModel( stats.Model ) end
-		if stats.Bodygroups != nil then self:SetBodyGroups( stats.Bodygroups ) end
+		if stats.Model ~= nil then self:SetModel( stats.Model ) end
+		if stats.Bodygroups ~= nil then self:SetBodyGroups( stats.Bodygroups ) end
 		
 	end
 	
 	if SERVER then
 		
-		if self:GetTFBLU() != true then
+		if self:GetTFBLU() ~= true then
 			
-			if stats.SkinRED != nil then self:SetSkin( stats.SkinRED ) end
+			if stats.SkinRED ~= nil then self:SetSkin( stats.SkinRED ) end
 			
 		else
 			
-			if stats.SkinBLU != nil then self:SetSkin( stats.SkinBLU ) end
+			if stats.SkinBLU ~= nil then self:SetSkin( stats.SkinBLU ) end
 			
 		end
 		
@@ -488,8 +488,8 @@ function ENT:SetLevel( level )
 	local stats = self.Levels[ level ]
 	if stats == nil then return end
 	
-	if stats.Bullet != nil then self:SetTFBullets( stats.Bullet.Count ) end
-	if stats.Rocket != nil then self:SetTFRockets( stats.Rocket.Count ) end
+	if stats.Bullet ~= nil then self:SetTFBullets( stats.Bullet.Count ) end
+	if stats.Rocket ~= nil then self:SetTFRockets( stats.Rocket.Count ) end
 	
 	if SERVER then
 		
@@ -536,7 +536,7 @@ function ENT:HandleTargetTurning()
 	if self:GetTFLastTurn() <= 0 then self:SetTFLastTurn( CurTime() ) end
 	
 	local target = self:GetTFTarget()
-	if IsValid( target ) != true then return end
+	if IsValid( target ) ~= true then return end
 	
 	local ang = self:GetTFTurnAngle()
 	ang:Normalize()
@@ -565,10 +565,10 @@ function ENT:HandleTargetTurning()
 	pitch = math.ApproachAngle( pitch, pitchtarget, turn )
 	
 	--try to fire if aiming at the target
-	if stats != nil and yaw == yawtarget and pitch == pitchtarget then
+	if stats ~= nil and yaw == yawtarget and pitch == pitchtarget then
 		
-		if stats.Bullet != nil then self:DoFireBullet() end
-		if stats.Rocket != nil then self:DoFireRocket() end
+		if stats.Bullet ~= nil then self:DoFireBullet() end
+		if stats.Rocket ~= nil then self:DoFireRocket() end
 		
 	end
 	
@@ -577,7 +577,7 @@ function ENT:HandleTargetTurning()
 	
 	self:SetTFLastTurn( CurTime() )
 	
-	if self:GetTFTargeting() != true then
+	if self:GetTFTargeting() ~= true then
 		
 		self:EmitSound( self.TargetSound )
 		
@@ -611,7 +611,7 @@ function ENT:HandleNeutralTurning()
 	if SERVER and yaw == yawtarget then
 		
 		self:SetTFTurnCounter( !self:GetTFTurnCounter() )
-		if stats.ScanSound != nil then self:EmitSound( stats.ScanSound ) end
+		if stats.ScanSound ~= nil then self:EmitSound( stats.ScanSound ) end
 		
 	end
 	
@@ -649,7 +649,7 @@ function ENT:GetSentryTarget()
 	
 	if CLIENT then return end
 	
-	if self.TargetCached != nil then return self.TargetCached end
+	if self.TargetCached ~= nil then return self.TargetCached end
 	
 	if TF2Weapons == nil or TF2Weapons.SentryGunTargets == nil then return end
 	
@@ -659,7 +659,7 @@ function ENT:GetSentryTarget()
 	for i = 1, #TF2Weapons.SentryGunTargets do
 		
 		local t = TF2Weapons.SentryGunTargets[ i ]
-		if IsValid( t ) == true and t != self:GetTFOwner() and t:Health() > 0 then
+		if IsValid( t ) == true and t ~= self:GetTFOwner() and t:Health() > 0 then
 			
 			local bulletpos = t:GetPos() + t:OBBCenter()
 			local rocketpos = t:GetPos() + t:OBBCenter()
@@ -688,9 +688,9 @@ function ENT:GetSentryTarget()
 				
 			} )
 			
-			if dist <= self.Range and ( bullettr.HitWorld != true or rockettr.HitWorld != true ) then
+			if dist <= self.Range and ( bullettr.HitWorld ~= true or rockettr.HitWorld ~= true ) then
 				
-				if TF2Weapons:SentryCanTarget( self, t ) != true and ( distance < 0 or dist < distance ) then
+				if TF2Weapons:SentryCanTarget( self, t ) ~= true and ( distance < 0 or dist < distance ) then
 					
 					target = t
 					distance = dist
@@ -728,13 +728,13 @@ function ENT:HandleSentryAmmo()
 	
 	if self:GetTFBuilding() == true then
 		
-		if stats.Bullet != nil then
+		if stats.Bullet ~= nil then
 			
 			if laststats == nil or laststats.Bullet == nil then self:SetTFBullets( stats.Bullet.Count ) end
 			
 		end
 		
-		if stats.Rocket != nil then
+		if stats.Rocket ~= nil then
 			
 			if laststats == nil or laststats.Rocket == nil then self:SetTFRockets( stats.Rocket.Count ) end
 			
@@ -762,9 +762,9 @@ function ENT:Think()
 	
 	local stats = self.Levels[ self:GetTFLevel() ]
 	
-	if self:GetTFUpgrading() != true and stats != nil then
+	if self:GetTFUpgrading() ~= true and stats ~= nil then
 		
-		if stats.Idle != nil then self:SetSequence( stats.Idle ) end
+		if stats.Idle ~= nil then self:SetSequence( stats.Idle ) end
 		
 	end
 	
@@ -800,10 +800,10 @@ function ENT:GetAimPos( target )
 	local dir = target:GetPos() + target:OBBCenter()
 	--if SERVER then dir = target:BodyTarget( self:GetShootPos() ) end
 	local attach = target:LookupAttachment( "chest" )
-	if attach != nil then
+	if attach ~= nil then
 		
 		local attachment = target:GetAttachment( attach )
-		if attachment != nil and attachment.Pos != nil then dir = target:GetAttachment( attach ).Pos end
+		if attachment ~= nil and attachment.Pos ~= nil then dir = target:GetAttachment( attach ).Pos end
 		
 	end
 	
@@ -824,14 +824,14 @@ function ENT:DoFireBullet()
 		
 		self:SetTFNextBulletFire( CurTime() + stats.Bullet.Delay )
 		
-		if stats.Bullet.EmptySound != nil then self:EmitSound( stats.Bullet.EmptySound ) end
+		if stats.Bullet.EmptySound ~= nil then self:EmitSound( stats.Bullet.EmptySound ) end
 		
 		return
 		
 	end
 	
 	local target = self:GetTFTarget()
-	if IsValid( target ) != true then return end
+	if IsValid( target ) ~= true then return end
 	
 	local bullet = {}
 	if IsValid( self:GetTFOwner() ) == true then bullet.Attacker = self:GetTFOwner() end
@@ -844,7 +844,7 @@ function ENT:DoFireBullet()
 	bullet.Force = stats.Bullet.Force
 	bullet.Callback = function( attacker, tr, dmg )
 		
-		if SERVER and dmg != nil and IsValid( tr.Entity ) == true then
+		if SERVER and dmg ~= nil and IsValid( tr.Entity ) == true then
 			
 			tr.Entity:TakeDamageInfo( dmg )
 			
@@ -890,14 +890,14 @@ function ENT:DoFireRocket()
 		
 		self:SetTFNextRocketFire( CurTime() + stats.Rocket.Delay )
 		
-		if stats.Rocket.EmptySound != nil then self:EmitSound( stats.Rocket.EmptySound ) end
+		if stats.Rocket.EmptySound ~= nil then self:EmitSound( stats.Rocket.EmptySound ) end
 		
 		return
 		
 	end
 	
 	local target = self:GetTFTarget()
-	if IsValid( target ) != true then return end
+	if IsValid( target ) ~= true then return end
 	
 	if SERVER then
 		
@@ -956,7 +956,7 @@ end
 function ENT:Restock( dmg )
 	
 	local weapon = dmg:GetInflictor()
-	if IsValid( weapon ) != true or weapon.TF2Weapons_BuildTool != true then return false end
+	if IsValid( weapon ) ~= true or weapon.TF2Weapons_BuildTool ~= true then return false end
 	
 	local level = self:GetTFLevel()
 	local stats = self.Levels[ level ]
@@ -966,7 +966,7 @@ function ENT:Restock( dmg )
 	
 	local restocked = false
 	
-	if stats.Bullet != nil and self:GetTFBullets() < stats.Bullet.Count then
+	if stats.Bullet ~= nil and self:GetTFBullets() < stats.Bullet.Count then
 		
 		local bullets = self:GetTFBullets()
 		local bulletsmax = self.AddBulletsMax
@@ -993,7 +993,7 @@ function ENT:Restock( dmg )
 		
 	end
 	
-	if stats.Rocket != nil and self:GetTFRockets() < stats.Rocket.Count then
+	if stats.Rocket ~= nil and self:GetTFRockets() < stats.Rocket.Count then
 		
 		local rockets = self:GetTFRockets()
 		local rocketsmax = self.AddRocketsMax
@@ -1028,8 +1028,8 @@ function ENT:ToolHit( dmg )
 	
 	local upgraded = self:Repair( dmg )
 	local restocked = self:Restock( dmg )
-	if upgraded != true then upgraded = restocked end
-	if upgraded != true then upgraded = self:Upgrade( dmg ) end
+	if upgraded ~= true then upgraded = restocked end
+	if upgraded ~= true then upgraded = self:Upgrade( dmg ) end
 	
 	return upgraded
 	

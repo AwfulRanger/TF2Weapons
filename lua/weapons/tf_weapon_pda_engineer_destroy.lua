@@ -187,7 +187,7 @@ function SWEP:OnSlotBind( slot )
 		
 		RunConsoleCommand( "lastinv" )
 		
-	elseif build != nil then
+	elseif build ~= nil then
 		
 		RunConsoleCommand( self.DestroyCommand, build.DestroyArguments[ 1 ], build.DestroyArguments[ 2 ] )
 		
@@ -204,15 +204,15 @@ function SWEP:HUD_Scale( res, y )
 	
 	local result = size * ( ScrH() / 480 )
 	
-	if y != true then
+	if y ~= true then
 		
-		if string.find( res, "r" ) != nil then result = ScrW() - result end
-		if string.find( res, "c" ) != nil then result = ( ScrW() * 0.5 ) + result end
+		if string.find( res, "r" ) ~= nil then result = ScrW() - result end
+		if string.find( res, "c" ) ~= nil then result = ( ScrW() * 0.5 ) + result end
 		
 	else
 		
-		if string.find( res, "r" ) != nil then result = ScrH() - result end
-		if string.find( res, "c" ) != nil then result = ( ScrH() * 0.5 ) + result end
+		if string.find( res, "r" ) ~= nil then result = ScrH() - result end
+		if string.find( res, "c" ) ~= nil then result = ( ScrH() * 0.5 ) + result end
 		
 	end
 	
@@ -293,7 +293,7 @@ function SWEP:DrawHUD()
 		local building = plybuildings[ i ][ #plybuildings[ i ] ]
 		
 		local level = 1
-		if IsValid( building ) == true and building.GetTFLevel != nil then level = building:GetTFLevel() end
+		if IsValid( building ) == true and building.GetTFLevel ~= nil then level = building:GetTFLevel() end
 		
 		surface.SetFont( "TF2Weapons_Default" )
 		
@@ -321,7 +321,7 @@ function SWEP:DrawHUD()
 			surface.DrawTexturedRect( x + scale( "13" ), y + scale( "16" ), scale( "70" ), scale( "70" ) )
 			
 			local destroyicon = build[ i ].DestroyIcon[ 1 ]
-			if build[ i ].DestroyIcon[ level ] != nil then destroyicon = build[ i ].DestroyIcon[ level ] end
+			if build[ i ].DestroyIcon[ level ] ~= nil then destroyicon = build[ i ].DestroyIcon[ level ] end
 			
 			--surface.SetDrawColor( 251, 235, 202, 128 )
 			surface.SetDrawColor( 255, 255, 255, 255 )
@@ -329,12 +329,12 @@ function SWEP:DrawHUD()
 			--surface.DrawTexturedRect( x + scale( "4" ), y, scale( "98" ), scale( "135" ) )
 			local pos = build[ i ].DestroyPos[ level ]
 			
-			if pos != nil then surface.DrawTexturedRect( x + scale( pos[ 1 ] ), y + scale( pos[ 2 ] ), scale( pos[ 3 ] ), scale( pos[ 4 ] ) ) end
+			if pos ~= nil then surface.DrawTexturedRect( x + scale( pos[ 1 ] ), y + scale( pos[ 2 ] ), scale( pos[ 3 ] ), scale( pos[ 4 ] ) ) end
 			
 		end
 		
 		surface.SetDrawColor( 255, 255, 255, 255 )
-		if alreadybuilt != true then surface.SetDrawColor( 255, 255, 255, 128 ) end
+		if alreadybuilt ~= true then surface.SetDrawColor( 255, 255, 255, 128 ) end
 		surface.SetMaterial( mat.KeyBackground )
 		surface.DrawTexturedRect( x + scale( "41" ), y + scale( "96" ), scale( "18" ), scale( "18" ) )
 		
@@ -346,7 +346,7 @@ function SWEP:DrawHUD()
 		surface.SetTextPos( x + scale( "50" ) - ( slotw * 0.5 ), y + scale( "99" ) )
 		surface.DrawText( i )
 		
-		if alreadybuilt != true then
+		if alreadybuilt ~= true then
 			
 			surface.SetTextColor( 235, 226, 202, 255 )
 			surface.SetTextPos( x + scale( "31" ), y + scale( "49" ) )

@@ -46,16 +46,16 @@ local sound_special3 = {
 function TF2Weapons:AddWeapon( id, id_, tbl )
 	
 	local item = id
-	if istable( item ) != true then
+	if istable( item ) ~= true then
 		
 		local items = self:GetItemsTable()
 		if items == nil then return end
 		local items_ = items.items
-		if items_ != nil then item = items_[ id ] end
+		if items_ ~= nil then item = items_[ id ] end
 		if item == nil then
 			
 			local prefabs = items.prefabs
-			if prefabs != nil then item = prefabs[ id ] end
+			if prefabs ~= nil then item = prefabs[ id ] end
 			
 		end
 		
@@ -66,20 +66,20 @@ function TF2Weapons:AddWeapon( id, id_, tbl )
 	
 	local SWEP = {}
 	
-	if CLIENT and item.image_inventory != nil then SWEP.WepSelectIcon = surface.GetTextureID( item.image_inventory ) end
-	SWEP.ProperName = item.propername != 0
+	if CLIENT and item.image_inventory ~= nil then SWEP.WepSelectIcon = surface.GetTextureID( item.image_inventory ) end
+	SWEP.ProperName = item.propername ~= 0
 	SWEP.PrintName = item.item_name
 	SWEP.MinLevel = item.min_ilevel
 	SWEP.MaxLevel = item.max_ilevel
 	SWEP.Type = item.item_type_name
 	SWEP.Classes = {}
-	if item.used_by_classes != nil then for _, v in pairs( item.used_by_classes ) do if self.Class[ string.upper( _ ) ] != nil then SWEP.Classes[ self.Class[ string.upper( _ ) ] ] = v != 0 end end end
-	if item.item_quality != nil and TF2Weapons.Quality[ string.upper( item.item_quality ) ] != nil then SWEP.Quality = TF2Weapons.Quality[ string.upper( item.item_quality ) ] end
+	if item.used_by_classes ~= nil then for _, v in pairs( item.used_by_classes ) do if self.Class[ string.upper( _ ) ] ~= nil then SWEP.Classes[ self.Class[ string.upper( _ ) ] ] = v ~= 0 end end end
+	if item.item_quality ~= nil and TF2Weapons.Quality[ string.upper( item.item_quality ) ] ~= nil then SWEP.Quality = TF2Weapons.Quality[ string.upper( item.item_quality ) ] end
 	
-	SWEP.Spawnable = item.enabled != 0
+	SWEP.Spawnable = item.enabled ~= 0
 	
 	local model = item.model_player
-	if model != nil then
+	if model ~= nil then
 		
 		model = Model( model )
 		SWEP.ViewModel = model
@@ -88,68 +88,68 @@ function TF2Weapons:AddWeapon( id, id_, tbl )
 	end
 	
 	SWEP.Attributes = {}
-	if item.attributes != nil then for _, v in pairs( item.attributes ) do if self:GetAttribute( _ ) != nil then SWEP.Attributes[ _ ] = { ( isnumber( v.value ) == true and math.Round( v.value, 3 ) ) or v.value } end end end
-	if item.static_attrs != nil then for _, v in pairs( item.static_attrs ) do if self:GetAttribute( _ ) != nil then SWEP.Attributes[ _ ] = { ( isnumber( v ) == true and math.Round( v, 3 ) ) or v } end end end
+	if item.attributes ~= nil then for _, v in pairs( item.attributes ) do if self:GetAttribute( _ ) ~= nil then SWEP.Attributes[ _ ] = { ( isnumber( v.value ) == true and math.Round( v.value, 3 ) ) or v.value } end end end
+	if item.static_attrs ~= nil then for _, v in pairs( item.static_attrs ) do if self:GetAttribute( _ ) ~= nil then SWEP.Attributes[ _ ] = { ( isnumber( v ) == true and math.Round( v, 3 ) ) or v } end end end
 	
 	function SWEP:SetVariables()
 		
 		self.BaseClass.SetVariables( self )
 		
-		if item.visuals != nil then
+		if item.visuals ~= nil then
 			
-			if item.visuals.melee_miss != nil then self.SwingSound = getsound( item.visuals.melee_miss ) end
-			if item.visuals.melee_hit != nil then self.HitFleshSound = getsound( item.visuals.melee_hit ) end
-			if item.visuals.melee_hit_world != nil then self.HitWorldSound = getsound( item.visuals.melee_hit_world ) end
+			if item.visuals.melee_miss ~= nil then self.SwingSound = getsound( item.visuals.melee_miss ) end
+			if item.visuals.melee_hit ~= nil then self.HitFleshSound = getsound( item.visuals.melee_hit ) end
+			if item.visuals.melee_hit_world ~= nil then self.HitWorldSound = getsound( item.visuals.melee_hit_world ) end
 			
-			if item.visuals.sound_single_shot != nil then
+			if item.visuals.sound_single_shot ~= nil then
 				
 				local found = false
 				for i = 1, #sound_single_shot do
 					
-					if self[ sound_single_shot[ i ] ] != nil then self[ sound_single_shot[ i ] ] = getsound( item.visuals.sound_single_shot ) found = true end
+					if self[ sound_single_shot[ i ] ] ~= nil then self[ sound_single_shot[ i ] ] = getsound( item.visuals.sound_single_shot ) found = true end
 					
 				end
-				if found != true then self.ShootSound = getsound( item.visuals.sound_single_shot ) end
+				if found ~= true then self.ShootSound = getsound( item.visuals.sound_single_shot ) end
 				
 			end
-			if item.visuals.sound_double_shot != nil then self.ShootSound = getsound( item.visuals.sound_double_shot ) end
-			if item.visuals.sound_burst != nil then
+			if item.visuals.sound_double_shot ~= nil then self.ShootSound = getsound( item.visuals.sound_double_shot ) end
+			if item.visuals.sound_burst ~= nil then
 				
 				local found = false
 				for i = 1, #sound_burst do
 					
-					if self[ sound_burst[ i ] ] != nil then self[ sound_burst[ i ] ] = getsound( item.visuals.sound_burst ) found = true end
+					if self[ sound_burst[ i ] ] ~= nil then self[ sound_burst[ i ] ] = getsound( item.visuals.sound_burst ) found = true end
 					
 				end
-				if found != true then self.ShootSoundCrit = getsound( item.visuals.sound_burst ) end
+				if found ~= true then self.ShootSoundCrit = getsound( item.visuals.sound_burst ) end
 				
 			end
-			if item.visuals.sound_empty != nil then self.EmptySound = getsound( item.visuals.sound_empty ) end
-			if item.visuals.sound_special1 != nil then
+			if item.visuals.sound_empty ~= nil then self.EmptySound = getsound( item.visuals.sound_empty ) end
+			if item.visuals.sound_special1 ~= nil then
 				
 				local found = false
 				for i = 1, #sound_special1 do
 					
-					if self[ sound_special1[ i ] ] != nil then self[ sound_special1[ i ] ] = getsound( item.visuals.sound_special1 ) found = true end
+					if self[ sound_special1[ i ] ] ~= nil then self[ sound_special1[ i ] ] = getsound( item.visuals.sound_special1 ) found = true end
 					
 				end
-				if found != true then self.ShootSound = getsound( item.visuals.sound_special1 ) end
+				if found ~= true then self.ShootSound = getsound( item.visuals.sound_special1 ) end
 				
 			end
-			if item.visuals.sound_special2 != nil then
+			if item.visuals.sound_special2 ~= nil then
 				
 				for i = 1, #sound_special2 do
 					
-					if self[ sound_special2[ i ] ] != nil then self[ sound_special2[ i ] ] = getsound( item.visuals.sound_special2 ) end
+					if self[ sound_special2[ i ] ] ~= nil then self[ sound_special2[ i ] ] = getsound( item.visuals.sound_special2 ) end
 					
 				end
 				
 			end
-			if item.visuals.sound_special3 != nil then
+			if item.visuals.sound_special3 ~= nil then
 				
 				for i = 1, #sound_special3 do
 					
-					if self[ sound_special3[ i ] ] != nil then self[ sound_special3[ i ] ] = getsound( item.visuals.sound_special3 ) end
+					if self[ sound_special3[ i ] ] ~= nil then self[ sound_special3[ i ] ] = getsound( item.visuals.sound_special3 ) end
 					
 				end
 				
@@ -161,9 +161,9 @@ function TF2Weapons:AddWeapon( id, id_, tbl )
 	
 	
 	
-	if tbl != nil then for _, v in pairs( tbl ) do SWEP[ _ ] = v end end
+	if tbl ~= nil then for _, v in pairs( tbl ) do SWEP[ _ ] = v end end
 	
-	if id_ == nil and item.logname != nil then id_ = "tf_weapon_" .. item.logname end
+	if id_ == nil and item.logname ~= nil then id_ = "tf_weapon_" .. item.logname end
 	if id_ == nil then id_ = tostring( id ) end
 	
 	weapons.Register( SWEP, id_ )

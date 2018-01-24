@@ -18,7 +18,7 @@ end
 
 function ENT:Touch( ent )
 	
-	if ent != self:GetOwner() and ent:GetClass() != self:GetClass() and ent != self:GetTFSentry() then self:Explode( true ) end
+	if ent ~= self:GetOwner() and ent:GetClass() ~= self:GetClass() and ent ~= self:GetTFSentry() then self:Explode( true ) end
 	
 end
 
@@ -38,8 +38,8 @@ function ENT:Think()
 	
 	if CLIENT then
 		
-		if IsValid( self.ClientModel ) != true then self.ClientModel = ClientsideModel( self:GetTFModel() ) end
-		if self.ClientModel:GetModel() != self:GetTFModel() then self.ClientModel:SetModel( self:GetTFModel() ) end
+		if IsValid( self.ClientModel ) ~= true then self.ClientModel = ClientsideModel( self:GetTFModel() ) end
+		if self.ClientModel:GetModel() ~= self:GetTFModel() then self.ClientModel:SetModel( self:GetTFModel() ) end
 		
 		self.ClientModel:SetPos( self:GetPos() )
 		self.ClientModel:SetAngles( self:GetAngles() )
@@ -50,7 +50,7 @@ end
 
 function ENT:PhysicsCollide( data, collider )
 	
-	if data.HitEntity != self:GetOwner() and data.HitEntity:GetClass() != self:GetClass() and data.HitEntity != self:GetTFSentry() then
+	if data.HitEntity ~= self:GetOwner() and data.HitEntity:GetClass() ~= self:GetClass() and data.HitEntity ~= self:GetTFSentry() then
 		
 		if util.TraceLine( { start = data.HitPos, endpos = data.HitPos + data.HitNormal } ).HitSky == false then
 			
