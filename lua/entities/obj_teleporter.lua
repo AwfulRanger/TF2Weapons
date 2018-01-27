@@ -469,23 +469,25 @@ function ENT:HandleLinkUpgrade()
 	local link = self:GetLink()
 	if IsValid( link ) ~= true then return end
 	
-	if link:GetTFBuilding() ~= true and self:GetTFLevel() > link:GetTFLevel() then
+	if link:GetTFBuilding() ~= true and link:GetTFLevel() > 0 and self:GetTFLevel() > link:GetTFLevel() then
 		
 		link:SetLevel( self:GetTFLevel() )
 		link:SetTFUpgrade( self:GetTFUpgrade() )
 		
-	elseif self:GetTFBuilding() ~= true and link:GetTFLevel() > self:GetTFLevel() then
+	end
+	if self:GetTFBuilding() ~= true and self:GetTFLevel() > 0 and link:GetTFLevel() > self:GetTFLevel() then
 		
 		self:SetLevel( link:GetTFLevel() )
 		self:SetTFUpgrade( link:GetTFUpgrade() )
 		
 	end
 	
-	if link:GetTFBuilding() ~= true and self:GetTFUpgrade() > link:GetTFUpgrade() then
+	if link:GetTFBuilding() ~= true and link:GetTFLevel() > 0 and self:GetTFUpgrade() > link:GetTFUpgrade() then
 		
 		link:SetTFUpgrade( self:GetTFUpgrade() )
 		
-	elseif self:GetTFBuilding() ~= true and link:GetTFUpgrade() > self:GetTFUpgrade() then
+	end
+	if self:GetTFBuilding() ~= true and self:GetTFLevel() > 0 and link:GetTFUpgrade() > self:GetTFUpgrade() then
 		
 		self:SetTFUpgrade( link:GetTFUpgrade() )
 		
