@@ -777,6 +777,47 @@ function SWEP:GetAttributeClass( id, slot, pretty )
 	
 end
 
+local textcache = {}
+function textwidth( text, w, font )
+	
+	if textcache[ font ] ~= nil and textcache[ font ][ text ] ~= nil and textcache[ font ][ w ][ text ] ~= nil then return textcache[ font ][ w ][ text ] end
+	
+	local str = text
+	
+	if surface.GetTextSize( text ) > w then
+		
+		if #text <= 1 then return "" end
+		
+		local pos = 0
+		
+		for i = 1, #text - 1 do
+			
+			if string.sub( text, i, i ) == " " then
+				
+				local str_ = string.sub( text, 1, i )
+				if surface.GetTextSize( str_ ) < w then
+					
+					pos = i
+					str = str_ .. "\n"
+					
+				end
+				
+			end
+			
+		end
+		
+		if str ~= text and pos ~= 0 then str = str .. textwidth( string.sub( text, pos + 1 ), w, font ) end
+		
+	end
+	
+	if textcache[ font ] == nil then textcache[ font ] = {} end
+	if textcache[ font ][ w ] == nil then textcache[ font ][ w ] = {} end
+	textcache[ font ][ w ][ text ] = str
+	
+	return str
+	
+end
+
 --[[
 	Name:	SWEP:PrintWeaponInfo( x, y, a )
 	
@@ -792,12 +833,17 @@ function SWEP:PrintWeaponInfo( x, y, a )
 	
 	if self.DrawWeaponInfoBox == false then return end
 	
+	local textsize = ScrW() * 0.315
+	
+	surface.SetFont( "TF2Weapons_InfoPrimary" )
+	
 	local name = self.HUDName
 	if name[ 1 ] == "#" then name = string.Replace( language.GetPhrase( name ), "\\n", "\n" ) end
 	if self.ProperName == true then name = language.GetPhrase( "TF_Unique_Prepend_Proper" ) .. name end
 	local prefix = TF2Weapons.QualityPrefix[ self.Quality ]
 	if prefix[ 1 ] == "#" then prefix = string.Replace( language.GetPhrase( prefix ), "\\n", "\n" ) end
 	if prefix ~= nil and prefix ~= "" then name = prefix .. " " .. name end
+	name = textwidth( name, textsize, "TF2Weapons_InfoPrimary" )
 	
 	local level = self.Level
 	if self.HUDLevel ~= nil then level = self.HUDLevel end
@@ -805,8 +851,13 @@ function SWEP:PrintWeaponInfo( x, y, a )
 	local wtype = self.Type
 	if wtype[ 1 ] == "#" then wtype = string.Replace( language.GetPhrase( wtype ), "\\n", "\n" ) end
 	
+	surface.SetFont( "TF2Weapons_InfoSecondary" )
+	
+	local iteminfo = textwidth( "Level " .. level .. " " .. wtype, textsize, "TF2Weapons_InfoSecondary" )
+	
 	local desc = self.Description
 	if desc ~= nil and desc[ 1 ] == "#" then desc = string.Replace( language.GetPhrase( desc ), "\\n", "\n" ) end
+	desc = textwidth( desc, textsize, "TF2Weapons_InfoSecondary" )
 	
 	--size
 	local width = 0
@@ -820,7 +871,7 @@ function SWEP:PrintWeaponInfo( x, y, a )
 	height = height + h
 	
 	surface.SetFont( "TF2Weapons_InfoSecondary" )
-	w, h = surface.GetTextSize( "Level " .. level .. " " .. wtype, "TF2Weapons_InfoSecondary" )
+	w, h = surface.GetTextSize( iteminfo )
 	if w > width then width = w end
 	height = height + h
 	
@@ -841,12 +892,15 @@ function SWEP:PrintWeaponInfo( x, y, a )
 		
 		for i = 1, #self.AttributesOrder do
 			
-			local attribute = TF2Weapons:GetAttribute( self.AttributesOrder[ i ] )
+			local order = self.AttributesOrder[ i ]
+			local attribute = TF2Weapons:GetAttribute( order )
 			
 			if attribute ~= nil and attribute.hidden ~= true then
 				
 				local text = attribute.desc
 				if text ~= nil and text[ 1 ] == "#" then text = string.Replace( language.GetPhrase( text ), "\\n", "\n" ) end
+				for i_ = 1, #self.Attributes[ order ] do text = string.Replace( text, "%s" .. i_, self:GetAttribute( order, i_, true ) ) end
+				text = textwidth( text, textsize, "TF2Weapons_InfoSecondary" )
 				
 				w, h = surface.GetTextSize( text )
 				if w > width then width = w end
@@ -868,6 +922,8 @@ function SWEP:PrintWeaponInfo( x, y, a )
 					
 					local text = attribute.desc
 					if text ~= nil and text[ 1 ] == "#" then text = string.Replace( language.GetPhrase( text ), "\\n", "\n" ) end
+					for i = 1, #v do text = string.Replace( text, "%s" .. i, self:GetAttribute( _, i, true ) ) end
+					text = textwidth( text, textsize, "TF2Weapons_InfoSecondary" )
 					
 					w, h = surface.GetTextSize( text )
 					if w > width then width = w end
@@ -904,7 +960,7 @@ function SWEP:PrintWeaponInfo( x, y, a )
 	height_ = height_ + h
 	
 	surface.SetFont( "TF2Weapons_InfoSecondary" )
-	w, h = surface.GetTextSize( "Level " .. level .. " " .. wtype, "TF2Weapons_InfoSecondary" )
+	w, h = surface.GetTextSize( iteminfo )
 	surface.SetTextColor( TF2Weapons.Color.LEVEL )
 	if width > w then
 		
@@ -915,7 +971,7 @@ function SWEP:PrintWeaponInfo( x, y, a )
 		surface.SetTextPos( x + ( 10 * ( ScrH() / 480 ) ), y + ( 10 * ( ScrH() / 480 ) ) + height_ )
 		
 	end
-	surface.DrawText( "Level " .. level .. " " .. wtype, "TF2Weapons_InfoSecondary" )
+	surface.DrawText( iteminfo )
 	height_ = height_ + h
 	
 	if self.AttributesOrder[ 1 ] ~= nil then
@@ -923,18 +979,14 @@ function SWEP:PrintWeaponInfo( x, y, a )
 		for i = 1, #self.AttributesOrder do
 			
 			local order = self.AttributesOrder[ i ]
-			
 			local attribute = TF2Weapons:GetAttribute( order )
 			
 			if attribute ~= nil and attribute.hidden ~= true then
 				
 				local text = attribute.desc
 				if text ~= nil and text[ 1 ] == "#" then text = string.Replace( language.GetPhrase( text ), "\\n", "\n" ) end
-				for i_ = 1, #self.Attributes[ order ] do
-					
-					text = string.Replace( text, "%s" .. i_, self:GetAttribute( order, i_, true ) )
-					
-				end
+				for i_ = 1, #self.Attributes[ order ] do text = string.Replace( text, "%s" .. i_, self:GetAttribute( order, i_, true ) ) end
+				text = textwidth( text, textsize, "TF2Weapons_InfoSecondary" )
 				
 				local explode = string.Explode( "\n", text )
 				for i = 1, #explode do
@@ -969,11 +1021,8 @@ function SWEP:PrintWeaponInfo( x, y, a )
 				
 				local text = attribute.desc
 				if text ~= nil and text[ 1 ] == "#" then text = string.Replace( language.GetPhrase( text ), "\\n", "\n" ) end
-				for i = 1, #v do
-					
-					text = string.Replace( text, "%s" .. i, self:GetAttribute( _, i, true ) )
-					
-				end
+				for i = 1, #v do text = string.Replace( text, "%s" .. i, self:GetAttribute( _, i, true ) ) end
+				text = textwidth( text, textsize, "TF2Weapons_InfoSecondary" )
 				
 				local explode = string.Explode( "\n", text )
 				for i = 1, #explode do
