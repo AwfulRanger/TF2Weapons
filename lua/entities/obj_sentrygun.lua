@@ -705,8 +705,6 @@ function ENT:GetSentryTarget()
 		
 	end
 	
-	print( target )
-	
 	self.TargetCached = target
 	
 	return target
