@@ -263,6 +263,7 @@ TF2Weapons:AddWeapon( 356, "tf_weapon_kunai", {
 	KillIconY = 64,
 	Base = "tf_weapon_knife",
 	Category = "Team Fortress 2 - Spy",
+	Quality = TF2Weapons.Quality.UNIQUE,
 	GetAnimations = function( self )
 		
 		return {
