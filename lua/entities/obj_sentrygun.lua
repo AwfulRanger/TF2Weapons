@@ -676,7 +676,7 @@ function ENT:GetSentryTarget()
 				
 				start = self:GetShootPos(),
 				endpos = bulletpos,
-				filter = self,
+				filter = function( ent ) return ent ~= self and ent:IsPlayer() == false and ent:IsNPC() == false end,
 				
 			} )
 			
@@ -684,11 +684,11 @@ function ENT:GetSentryTarget()
 				
 				start = self:GetRocketPos(),
 				endpos = rocketpos,
-				filter = self,
+				filter = function( ent ) return ent ~= self and ent:IsPlayer() == false and ent:IsNPC() == false end,
 				
 			} )
 			
-			if dist <= self.Range and ( bullettr.HitWorld ~= true or rockettr.HitWorld ~= true ) then
+			if dist <= self.Range and ( bullettr.Hit ~= true or rockettr.Hit ~= true ) then
 				
 				if TF2Weapons:SentryCanTarget( self, t ) ~= true and ( distance < 0 or dist < distance ) then
 					
@@ -704,6 +704,8 @@ function ENT:GetSentryTarget()
 		end
 		
 	end
+	
+	print( target )
 	
 	self.TargetCached = target
 	
