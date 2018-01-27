@@ -104,6 +104,9 @@ SWEP.Primary.Force = 10
 SWEP.Primary.TakeAmmo = 1
 SWEP.Primary.Delay = 1.5
 
+SWEP.Secondary.Automatic = true
+SWEP.Secondary.Delay = 0.325
+
 SWEP.CritChance = 0
 
 SWEP.MaxScopeTime = 3.3
@@ -139,6 +142,8 @@ function SWEP:ScopeIn()
 	self:SetTFScoped( true )
 	self:SetTFScopeTime( CurTime() )
 	
+	self.ScopedTime = CurTime()
+	
 	self:SetHoldType( self.HoldTypeScoped )
 	
 end
@@ -147,6 +152,8 @@ function SWEP:ScopeOut()
 	
 	self:SetTFScoped( false )
 	self:SetTFScopeTime( -1 )
+	
+	self.ScopedTime = CurTime()
 	
 	self:SetHoldType( self.HoldType )
 	
@@ -280,9 +287,13 @@ function SWEP:Think()
 			
 		end
 		
-	elseif CurTime() > self:GetNextPrimaryFire() and self:GetTFScoped() == false and self:GetTFScopeNext() == true then
+	elseif CurTime() > self:GetNextPrimaryFire() and self:GetTFScoped() == false then
 		
-		self:ScopeIn()
+		if self:GetTFScopeNext() == true then self:ScopeIn() end
+		
+	elseif CurTime() < self:GetNextPrimaryFire() and CurTime() > self:LastShootTime() + 0.5 and self:GetTFScoped() == true then
+		
+		self:ScopeOut()
 		
 	end
 	
@@ -295,6 +306,10 @@ function SWEP:Think()
 		self:SetTFNextIdle( CurTime() + hands:SequenceDuration( idle ) )
 		
 	end
+	
+	local hands, weapon = self:GetViewModels()
+	hands:SetNoDraw( self:GetTFScoped() )
+	weapon:SetNoDraw( self:GetTFScoped() )
 	
 end
 
@@ -348,31 +363,29 @@ function SWEP:PrimaryAttack()
 	
 	self:DoPrimaryAttack( bullet )
 	
-	self:ScopeOut()
-	
 	self:SetNextPrimaryFire( CurTime() + self.Primary.Delay )
 	
 end
 
 function SWEP:SecondaryAttack()
 	
-	if CurTime() < self:GetNextSecondaryFire() or CurTime() < self:GetNextPrimaryFire() then return end
-	
-	self:SetNextSecondaryFire( CurTime() + 0.25 )
-	
-	if CLIENT then return end
-	
-	if self:GetTFScoped() == true then
+	if CurTime() >= self:GetNextSecondaryFire() and CurTime() >= self:GetNextPrimaryFire() then
 		
-		self:ScopeOut()
+		self:SetNextSecondaryFire( CurTime() + self.Secondary.Delay )
 		
-	else
-		
-		self:ScopeIn()
+		if self:GetTFScoped() == true then
+			
+			self:ScopeOut()
+			
+		else
+			
+			self:ScopeIn()
+			
+		end
 		
 	end
 	
-	self:SetTFScopeNext( self.Scoped )
+	self:SetTFScopeNext( self:GetTFScoped() )
 	
 end
 
@@ -385,8 +398,6 @@ SWEP.ChargeSoundPlayed = false
 function SWEP:DrawHUDBackground()
 	
 	local hands, weapon = self:GetViewModels()
-	
-	self.DrawCrosshair = !self:GetTFScoped()
 	
 	local charge = ( CurTime() - self:GetTFScopeTime() ) / self.MaxScopeTime
 	if charge < 0 then charge = 0 end
@@ -403,8 +414,6 @@ function SWEP:DrawHUDBackground()
 			self.ChargeSoundPlayed = true
 			
 		end
-		
-		//self:DrawSniperDot()
 		
 		surface.SetDrawColor( 255, 255, 255, 255 )
 		surface.SetMaterial( self.Scope )
@@ -448,34 +457,40 @@ function SWEP:DrawHUDBackground()
 		
 	end
 	
-	hands:SetNoDraw( self:GetTFScoped() )
-	weapon:SetNoDraw( self:GetTFScoped() )
-	
 end
 
 function SWEP:TranslateFOV( fov )
 	
+	local cur = fov
+	local target = fov
 	if self:GetTFScoped() == true then
 		
-		return fov - 60
+		target = fov - 60
+		
+	else
+		
+		cur = fov - 60
 		
 	end
 	
-	return fov
+	local limit = math.min( 0.075, self.Secondary.Delay )
+	local scopetime = math.Clamp( CurTime() - ( self.ScopedTime or 0 ), 0, limit )
+	
+	if scopetime >= limit then return target end
+	
+	return Lerp( scopetime / limit, cur, target )
 	
 end
 
 function SWEP:AdjustMouseSensitivity()
 	
-	if self:GetTFScoped() == true then
-		
-		return -1
-		
-	end
+	if self:GetTFScoped() == true then return -1 end
 	
 end
 
 function SWEP:Holster()
+	
+	if CurTime() < self:GetNextPrimaryFire() and CurTime() <= self:LastShootTime() + 0.5 and self:GetTFScoped() == true then return false end
 	
 	self:RemoveHands()
 	self:SetTFReloading( false )
