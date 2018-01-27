@@ -246,8 +246,8 @@ function SWEP:Charge()
 			self:SetTFCharging( true )
 			self:SetTFChargeStart( CurTime() )
 			
-			local auto_fire = self:GetHandAnim( "auto_fire" )
-			self:SetVMAnimation( auto_fire )
+			local autofire = self:GetHandAnim( "autofire" )
+			self:SetVMAnimation( autofire )
 			
 			self:PlaySound( self.ChargeSound )
 			
