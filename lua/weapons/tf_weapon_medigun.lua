@@ -240,7 +240,11 @@ end
 
 function SWEP:StopHealing()
 	
-	if self:GetTFBeamDeployed() == true then
+	if IsFirstTimePredicted() ~= true then return end
+	
+	if self.StopHealingNext == true and self:GetTFBeamDeployed() == true then
+		
+		self.StopHealingNext = false
 		
 		self:DisableUbercharge( self:GetTFPatient() )
 		
@@ -375,6 +379,8 @@ function SWEP:DoHealing()
 				
 			end
 			*/
+			
+			self.StopHealingNext = true
 			
 		else
 			
