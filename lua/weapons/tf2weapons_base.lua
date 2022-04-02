@@ -1,5 +1,7 @@
 AddCSLuaFile()
 
+if CLIENT then include( "tf2weapons/mount.lua" ) end
+
 game.AddParticles( "particles/muzzle_flash.pcf" )
 
 SWEP.TF2Weapon = true
@@ -19,7 +21,7 @@ SWEP.SwayScale = 0
 SWEP.BounceWeaponIcon = false
 SWEP.DrawAmmo = true
 SWEP.DrawCrosshair = true
-SWEP.Crosshair = Material( "sprites/tf2weapons_crosshairs" )
+SWEP.Crosshair = Material( "tf2weapons/crosshairs" )
 SWEP.CrosshairType = TF2Weapons.Crosshair.DEFAULT
 SWEP.KillIcon = Material( "hud/dneg_images_v2" )
 SWEP.KillIconColor = Color( 255, 255, 255, 255 )

@@ -19,7 +19,8 @@ SWEP.CrosshairType = TF2Weapons.Crosshair.CIRCLE
 SWEP.KillIconX = 0
 SWEP.KillIconY = 288
 
-if CLIENT then SWEP.WepSelectIcon = surface.GetTextureID( "backpack/weapons/w_models/w_grenadelauncher_large" ) end
+SWEP.IconOverride = "backpack/weapons/w_models/w_grenadelauncher_large"
+if CLIENT then SWEP.WepSelectIcon = surface.GetTextureID( SWEP.IconOverride ) end
 SWEP.PrintName = "#TF_Weapon_GrenadeLauncher"
 SWEP.Author = "AwfulRanger"
 SWEP.Category = "Team Fortress 2 - Demoman"

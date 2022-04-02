@@ -215,7 +215,8 @@ SWEP.KillIconY = 0
 SWEP.KillIconW = 0
 SWEP.KillIconH = 0
 
-if CLIENT then SWEP.WepSelectIcon = surface.GetTextureID( "backpack/weapons/w_models/w_toolbox_large" ) end
+SWEP.IconOverride = "backpack/weapons/w_models/w_toolbox_large"
+if CLIENT then SWEP.WepSelectIcon = surface.GetTextureID( SWEP.IconOverride ) end
 SWEP.PrintName = "Toolbox"
 SWEP.Author = "AwfulRanger"
 SWEP.Category = "Team Fortress 2 - Engineer"

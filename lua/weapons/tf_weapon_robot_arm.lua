@@ -7,7 +7,8 @@ SWEP.CrosshairType = TF2Weapons.Crosshair.CIRCLE
 SWEP.KillIconX = 0
 SWEP.KillIconY = 801
 
-if CLIENT then SWEP.WepSelectIcon = surface.GetTextureID( "backpack/weapons/gunslinger_large" ) end
+SWEP.IconOverride = "backpack/weapons/gunslinger_large"
+if CLIENT then SWEP.WepSelectIcon = surface.GetTextureID( SWEP.IconOverride ) end
 SWEP.ProperName = true
 SWEP.PrintName = "#TF_Unique_Robot_Arm"
 SWEP.Author = "AwfulRanger"

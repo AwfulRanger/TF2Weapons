@@ -93,7 +93,8 @@ SWEP.KillIconY = 0
 SWEP.KillIconW = 0
 SWEP.KillIconH = 0
 
-if CLIENT then SWEP.WepSelectIcon = surface.GetTextureID( "backpack/weapons/c_models/c_medigun/c_medigun" ) end
+SWEP.IconOverride = "backpack/weapons/c_models/c_medigun/c_medigun"
+if CLIENT then SWEP.WepSelectIcon = surface.GetTextureID( SWEP.IconOverride ) end
 SWEP.PrintName = "#TF_Weapon_Medigun"
 SWEP.Author = "AwfulRanger"
 SWEP.Category = "Team Fortress 2 - Medic"

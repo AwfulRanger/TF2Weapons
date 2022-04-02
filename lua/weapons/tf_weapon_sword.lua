@@ -7,7 +7,8 @@ SWEP.CrosshairType = TF2Weapons.Crosshair.CIRCLE
 SWEP.KillIconX = 192
 SWEP.KillIconY = 864
 
-if CLIENT then SWEP.WepSelectIcon = surface.GetTextureID( "backpack/weapons/c_models/c_claymore/c_claymore_large" ) end
+SWEP.IconOverride = "backpack/weapons/c_models/c_claymore/c_claymore_large"
+if CLIENT then SWEP.WepSelectIcon = surface.GetTextureID( SWEP.IconOverride ) end
 SWEP.PrintName = "#TF_Weapon_Sword"
 SWEP.Author = "AwfulRanger"
 SWEP.Category = "Team Fortress 2 - Demoman"

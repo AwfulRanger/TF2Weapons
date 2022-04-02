@@ -87,7 +87,8 @@ SWEP.CrosshairType = TF2Weapons.Crosshair.CIRCLE
 SWEP.KillIconX = 0
 SWEP.KillIconY = 416
 
-if CLIENT then SWEP.WepSelectIcon = surface.GetTextureID( "backpack/weapons/w_models/w_flamethrower_large" ) end
+SWEP.IconOverride = "backpack/weapons/w_models/w_flamethrower_large"
+if CLIENT then SWEP.WepSelectIcon = surface.GetTextureID( SWEP.IconOverride ) end
 SWEP.PrintName = "#TF_Weapon_FlameThrower"
 SWEP.Author = "AwfulRanger"
 SWEP.Description = "#TF_Weapon_FlameThrower_desc"

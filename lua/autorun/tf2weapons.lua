@@ -11,6 +11,7 @@ function TF2Weapons:GetItemsTable()
 	
 end
 
+AddCSLuaFile( "tf2weapons/mount.lua" )
 AddCSLuaFile( "tf2weapons/language.lua" )
 
 if SERVER then
@@ -27,6 +28,7 @@ if SERVER then
 	
 else
 	
+	include( "tf2weapons/mount.lua" )
 	include( "tf2weapons/language.lua" )
 	
 	surface.CreateFont( "TF2Weapons_HudFontGiantBold", {

@@ -9,7 +9,8 @@ SWEP.CrosshairType = TF2Weapons.Crosshair.DEFAULT
 SWEP.KillIconX = 96
 SWEP.KillIconY = 192
 
-if CLIENT then SWEP.WepSelectIcon = surface.GetTextureID( "backpack/weapons/c_models/c_scattergun_large" ) end
+SWEP.IconOverride = "backpack/weapons/c_models/c_scattergun_large"
+if CLIENT then SWEP.WepSelectIcon = surface.GetTextureID( SWEP.IconOverride ) end
 SWEP.PrintName = "#TF_Weapon_Scattergun"
 SWEP.Author = "AwfulRanger"
 SWEP.Category = "Team Fortress 2 - Scout"

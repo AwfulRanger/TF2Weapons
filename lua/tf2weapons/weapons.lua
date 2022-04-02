@@ -66,7 +66,12 @@ function TF2Weapons:AddWeapon( id, id_, tbl )
 	
 	local SWEP = {}
 	
-	if CLIENT and item.image_inventory ~= nil then SWEP.WepSelectIcon = surface.GetTextureID( item.image_inventory ) end
+	if CLIENT and item.image_inventory ~= nil then
+		
+		SWEP.IconOverride = item.image_inventory
+		SWEP.WepSelectIcon = surface.GetTextureID( item.image_inventory )
+		
+	end
 	SWEP.ProperName = item.propername ~= 0
 	SWEP.PrintName = item.item_name
 	SWEP.MinLevel = item.min_ilevel

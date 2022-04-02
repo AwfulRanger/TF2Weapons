@@ -23,7 +23,8 @@ SWEP.CrosshairType = TF2Weapons.Crosshair.CIRCLE
 SWEP.KillIconX = 0
 SWEP.KillIconY = 320
 
-if CLIENT then SWEP.WepSelectIcon = surface.GetTextureID( "backpack/weapons/w_models/w_bottle_large" ) end
+SWEP.IconOverride = "backpack/weapons/w_models/w_bottle_large"
+if CLIENT then SWEP.WepSelectIcon = surface.GetTextureID( SWEP.IconOverride ) end
 SWEP.PrintName = "#TF_Weapon_Bottle"
 SWEP.Author = "AwfulRanger"
 SWEP.Category = "Team Fortress 2 - Demoman"

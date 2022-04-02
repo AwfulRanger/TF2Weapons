@@ -9,7 +9,8 @@ SWEP.CrosshairType = TF2Weapons.Crosshair.CIRCLE
 SWEP.KillIconX = 96
 SWEP.KillIconY = 96
 
-if CLIENT then SWEP.WepSelectIcon = surface.GetTextureID( "backpack/weapons/w_models/w_wrench_large" ) end
+SWEP.IconOverride = "backpack/weapons/w_models/w_wrench_large"
+if CLIENT then SWEP.WepSelectIcon = surface.GetTextureID( SWEP.IconOverride ) end
 SWEP.PrintName = "#TF_Weapon_Wrench"
 SWEP.Author = "AwfulRanger"
 SWEP.Description = "#TF_Weapon_Wrench_Desc"

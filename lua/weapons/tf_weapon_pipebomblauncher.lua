@@ -29,7 +29,8 @@ SWEP.CrosshairType = TF2Weapons.Crosshair.CIRCLE
 SWEP.KillIconX = 96
 SWEP.KillIconY = 224
 
-if CLIENT then SWEP.WepSelectIcon = surface.GetTextureID( "backpack/weapons/w_models/w_stickybomb_launcher_large" ) end
+SWEP.IconOverride = "backpack/weapons/w_models/w_stickybomb_launcher_large"
+if CLIENT then SWEP.WepSelectIcon = surface.GetTextureID( SWEP.IconOverride ) end
 SWEP.PrintName = "#TF_Weapon_PipebombLauncher"
 SWEP.Author = "AwfulRanger"
 SWEP.Description = "#TF_Weapon_PipebombLauncher_desc"

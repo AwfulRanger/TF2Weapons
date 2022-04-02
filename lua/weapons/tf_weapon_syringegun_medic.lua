@@ -10,7 +10,8 @@ SWEP.CrosshairType = TF2Weapons.Crosshair.DEFAULT
 SWEP.KillIconX = 0
 SWEP.KillIconY = 352
 
-if CLIENT then SWEP.WepSelectIcon = surface.GetTextureID( "backpack/weapons/w_models/w_syringegun_large" ) end
+SWEP.IconOverride = "backpack/weapons/w_models/w_syringegun_large"
+if CLIENT then SWEP.WepSelectIcon = surface.GetTextureID( SWEP.IconOverride ) end
 SWEP.PrintName = "#TF_Weapon_SyringeGun"
 SWEP.Author = "AwfulRanger"
 SWEP.Category = "Team Fortress 2 - Medic"

@@ -9,7 +9,8 @@ SWEP.CrosshairType = TF2Weapons.Crosshair.DEFAULT
 SWEP.KillIconX = 0
 SWEP.KillIconY = 32
 
-if CLIENT then SWEP.WepSelectIcon = surface.GetTextureID( "backpack/weapons/c_models/c_pistol_large" ) end
+SWEP.IconOverride = "backpack/weapons/c_models/c_pistol_large"
+if CLIENT then SWEP.WepSelectIcon = surface.GetTextureID( SWEP.IconOverride ) end
 SWEP.PrintName = "#TF_Weapon_Pistol"
 SWEP.Author = "AwfulRanger"
 SWEP.Category = "Team Fortress 2 - Engineer"

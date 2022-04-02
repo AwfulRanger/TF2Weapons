@@ -8,7 +8,8 @@ SWEP.KillIconX = 192
 SWEP.KillIconY = 416
 SWEP.KillIconW = 64
 
-if CLIENT then SWEP.WepSelectIcon = surface.GetTextureID( "backpack/weapons/v_models/v_fist_heavy_large" ) end
+SWEP.IconOverride = "backpack/weapons/v_models/v_fist_heavy_large"
+if CLIENT then SWEP.WepSelectIcon = surface.GetTextureID( SWEP.IconOverride ) end
 SWEP.PrintName = "#TF_Weapon_Fists"
 SWEP.Author = "AwfulRanger"
 SWEP.Category = "Team Fortress 2 - Heavy"
